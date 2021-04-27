@@ -1,0 +1,180 @@
+{%extends 'base.html'%} {% block title %} Welcome {% endblock %} 
+{% block content %}
+
+<!-- Wrapper -->
+<div id="wrapper">
+  <!-- Header -->
+  <header id="header">
+    <a href="#" class="logo">Massively</a>
+  </header>
+
+  <!-- Nav -->
+  <nav id="nav">
+    <ul class="links">
+      <li><a href="{% url 'listCommandesD' %}">Liste des commande</a></li>
+      <li class="active"><a>Commande</a></li>
+    </ul>
+    <ul class="icons">
+      <li>
+        <a href="#" class="icon brands fa-twitter"
+          ><span class="label">Twitter</span></a
+        >
+      </li>
+      <li>
+        <a href="#" class="icon brands fa-facebook-f"
+          ><span class="label">Facebook</span></a
+        >
+      </li>
+      <li>
+        <a href="#" class="icon brands fa-instagram"
+          ><span class="label">Instagram</span></a
+        >
+      </li>
+      <li>
+        <a href="#" class="icon brands fa-github"
+          ><span class="label">GitHub</span></a
+        >
+      </li>
+    </ul>
+  </nav>
+
+  <div id="main">
+    <!-- Form -->
+    <h2>Faire une commande</h2>
+    <div style="display: flex; justify-content: space-between">
+      <h3>Societe : Strugal</h3>
+      <input
+        type="text"
+        style="width: 25%"
+        value="{% now 'd/m/Y' %}"
+        disabled
+      />
+    </div>
+
+    <form method="post" action="#">
+      <input name="datalength" id="lenData" hidden value="1" />
+      {% csrf_token %}
+      <table class="table table-bordered" id="ourTable">
+        <thead>
+          <tr>
+            <th scope="col">Article</th>
+            <th scope="col">Description</th>
+            <th scope="col">Quantité</th>
+            <th scope="col">Unité de meusur</th>
+            <th scope="col">Prix Unitaire</th>
+            <th scope="col">TAX</th>
+            <th scope="col">Montan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <select name="demo-category-1" id="demo-category-1">
+                <option value="">- Article -</option>
+                <option value="1">Manufacturing</option>
+                <option value="1">Shipping</option>
+                <option value="1">Administration</option>
+                <option value="1">Human Resources</option>
+              </select>
+            </td>
+            <td>
+              <input
+                type="text"
+                name="description-1"
+                id="description-1"
+                value=""
+                placeholder="..."
+                disabled
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                name="quantite-1"
+                id="quantite-1"
+                value=""
+                placeholder=""
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                name="unitedemeusur-1"
+                id="unitedemeusur-1"
+                value=""
+                placeholder="..."
+                disabled
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                name="prixunitaire-1"
+                id="prixunitaire-1"
+                value=""
+                placeholder="..."
+                disabled
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                name="tax-1"
+                id="tax-1"
+                value=""
+                placeholder="..."
+                disabled
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                name="mantant-1"
+                id="mantant-1"
+                value=""
+                placeholder="..."
+                disabled
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="display: flex; justify-content: center">
+        <svg
+          id="add-one-more"
+          xmlns="http://www.w3.org/2000/svg"
+          width="40"
+          height="40"
+          fill="currentColor"
+          class="bi bi-plus-circle"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+          />
+          <path
+            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
+          />
+        </svg>
+      </div>
+      <div style="display: flex; justify-content: flex-end">
+        <div style="display: flex; flex-direction: column; width: 25%">
+          <div style="display: flex; justify-content: space-between">
+            MHT<input name="MHT" id="MHT" type="text" disabled />
+          </div>
+          <div style="display: flex; justify-content: space-between">
+            TVA <input type="text" disabled placeholder="19%" />
+          </div>
+          <div style="display: flex; justify-content: space-between">
+            TTC <input name="TTC" id="TTC" type="text" disabled />
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: flex-end; margin-top: 2%">
+        <button class="btn btn-primary">Enregistrer</button>
+      </div>
+    </form>
+    <hr />
+  </div>
+</div>
+{% endblock %}

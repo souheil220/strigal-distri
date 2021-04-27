@@ -1,0 +1,168 @@
+{%extends 'base.html'%} {% block title %} Welcome {% endblock %} 
+{% block content %}
+
+<!-- Wrapper -->
+<div id="wrapper">
+  <!-- Header -->
+  <header id="header">
+    <a href="#" class="logo">Massively</a>
+  </header>
+
+  <!-- Nav -->
+  <nav id="nav">
+    <ul class="links">
+      <li><a href="#">Liste des commande</a></li>
+      <li class="active"><a href="#">Commande</a></li>
+    </ul>
+    <ul class="icons">
+      <li>
+        <a href="#" class="icon brands fa-twitter"
+          ><span class="label">Twitter</span></a
+        >
+      </li>
+      <li>
+        <a href="#" class="icon brands fa-facebook-f"
+          ><span class="label">Facebook</span></a
+        >
+      </li>
+      <li>
+        <a href="#" class="icon brands fa-instagram"
+          ><span class="label">Instagram</span></a
+        >
+      </li>
+      <li>
+        <a href="#" class="icon brands fa-github"
+          ><span class="label">GitHub</span></a
+        >
+      </li>
+    </ul>
+  </nav>
+
+  <div id="main">
+    <!-- Form -->
+    <h2>Faire une commande</h2>
+
+    <form method="post" action="#">
+      <div class="row gtr-uniform">
+        <div class="col-12">
+            <select name="demo-category" id="demo-category">
+              <option value="">- Article -</option>
+              <option value="1">Manufacturing</option>
+              <option value="1">Shipping</option>
+              <option value="1">Administration</option>
+              <option value="1">Human Resources</option>
+            </select>
+          </div>
+         <!-- Break -->
+        <div class="col-3">
+          <input
+            type="text"
+            name="demo-email"
+            id="demo-email"
+            value=""
+            placeholder="Description"
+            disabled
+          />
+        </div>
+
+        <div class="col-9">
+            <input
+              type="text"
+              name="demo-email"
+              id="demo-email"
+              value=""
+              placeholder="..."
+              disabled
+            />
+          </div>
+          <!-- Break -->
+
+        <div class="col-3">
+            <input
+              type="text"
+              name="demo-email"
+              id="demo-email"
+              value=""
+              placeholder="Quantité"
+            />
+          </div>
+          <div class="col-9">
+            <input
+              type="text"
+              name="demo-email"
+              id="demo-email"
+              value=""
+              placeholder="..."
+            />
+          </div>
+          <!-- Break -->
+          <div class="col-3">
+            <input
+              type="text"
+              name="demo-email"
+              id="demo-email"
+              value=""
+              placeholder="Prix unitaire"
+              disabled
+            />
+          </div>
+          <div class="col-9">
+            <input
+              type="text"
+              name="demo-email"
+              id="demo-email"
+              value=""
+              placeholder="..."
+            />
+          </div>
+          <!-- Break -->
+          <div class="col-12">
+            <input
+              type="text"
+              name="demo-email"
+              id="demo-email"
+              value=""
+              placeholder="TVA sur vente a 19%"
+              disabled
+            />
+          </div>
+          <!-- Break -->
+          <div class="col-3">
+            <input
+              type="text"
+              name="demo-email"
+              id="demo-email"
+              value=""
+              placeholder="Prix Total"
+              disabled
+            />
+          </div>
+          <div class="col-9">
+            <input
+              type="text"
+              name="demo-email"
+              id="demo-email"
+              value=""
+              placeholder="..."
+              disabled
+            />
+          </div>
+          <!-- Break -->
+    
+       
+        <div class="col-12">
+          <ul class="actions">
+            <li>
+              <input type="submit" value="Send Message" class="primary" />
+            </li>
+            <li><input type="reset" value="Reset" /></li>
+          </ul>
+        </div>
+      </div>
+    </form>
+
+    <hr />
+  </div>
+</div>
+</div>
+{% endblock %}
