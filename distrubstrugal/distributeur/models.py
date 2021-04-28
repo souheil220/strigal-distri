@@ -23,10 +23,25 @@ class Commande(models.Model):
         default=date.today().strftime("%d/%m/%Y"), max_length=255)
 
 
+class Article(models.Model):
+    id_article = models.CharField(max_length=255)
+    nom_article = models.CharField(max_length=255)
+    type_de_categorie = models.CharField(max_length=255)
+    categorie_interne = models.CharField(max_length=255)
+    famille_article = models.CharField(max_length=255)
+    unite_mesure = models.CharField(max_length=255)
+    sale_ok = models.BooleanField()
+    type_article = models.CharField(max_length=255)
+    template_id = models.IntegerField()
+    company_id = models.IntegerField()
+    active = models.BooleanField()
+    product_id = models.IntegerField(primary_key=True)
+
+
 class ListArticleCommande(models.Model):
     id = models.AutoField(primary_key=True)
     id_commande = models.ForeignKey(Commande, on_delete=models.CASCADE)
-    code_article = models.CharField(max_length=255)
+    code_article = models.ForeignKey(Article, on_delete=models.CASCADE)
     description = models.CharField(max_length=255)
     qte = models.IntegerField()
     montant = models.FloatField()

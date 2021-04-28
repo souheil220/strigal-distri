@@ -3,7 +3,7 @@ $('#add-one-more').click(function () {
   $('#ourTable tr:last').after(`<tr id='td_num-` + ((parseInt(len) + 1).toString()) +
     `'>
   <td>
-    <select name="demo-category-` + ((parseInt(len) + 1).toString()) +
+    <select onChange = "selectChange('#demo-category-` + ((parseInt(len) + 1).toString()) + `')" name="demo-category-` + ((parseInt(len) + 1).toString()) +
     `" id="demo-category-` + ((parseInt(len) + 1).toString()) +
     `">
       <option value="">- Article -</option>

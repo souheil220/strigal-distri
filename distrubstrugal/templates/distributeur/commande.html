@@ -50,7 +50,7 @@
         disabled
       />
     </div>
-
+    <input value="{{data}}" hidden />
     <form method="post" action="#">
       <input name="datalength" id="lenData" hidden value="1" />
       {% csrf_token %}
@@ -58,35 +58,53 @@
         <thead>
           <tr>
             <th scope="col">Article</th>
-            <th scope="col">Description</th>
             <th scope="col">Quantité</th>
-            <th scope="col">Unité de meusur</th>
+            <th scope="col">Unité de mesure</th>
             <th scope="col">Prix Unitaire</th>
             <th scope="col">TAX</th>
-            <th scope="col">Montan</th>
+            <th scope="col">Montant</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>
-              <select name="demo-category-1" id="demo-category-1">
-                <option value="">- Article -</option>
-                <option value="1">Manufacturing</option>
+              <!-- <select
+                name="demo-category-1"
+                onChange="selectChange('#demo-category-1')"
+                id="demo-category-1"
+              > -->
+              <!-- <select class="js-data-example-ajax form-control"> -->
+
+                <div class="div-filter">
+                  <div class="filer-ids">
+                      <input autocomplete="off" id="filtrer" name="ids"class="chosen-value" type="text" placeholder="Type to filter">
+                      <div style="position:relative">
+                          <ul class="value-list">
+                              
+                              <li class="nomFournisseur">test</li>
+                             <li class="nomFournisseur">yo</li>
+                             <li class="nomFournisseur">pssss</li>
+                             <li class="nomFournisseur">gggg</li>
+                            
+                             <li class="nomFournisseur">george</li>
+                         
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+
+                <!-- {% for data in elem %}
+                <option value="{{data.1}}" id="{{ forloop.counter }}">
+                  {{data.1}}
+                </option> -->
+                <!-- <option value="1">Manufacturing</option>
                 <option value="1">Shipping</option>
                 <option value="1">Administration</option>
-                <option value="1">Human Resources</option>
-              </select>
+                <option value="1">Human Resources</option> -->
+                <!-- {% endfor %} -->
+              </select> 
             </td>
-            <td>
-              <input
-                type="text"
-                name="description-1"
-                id="description-1"
-                value=""
-                placeholder="..."
-                disabled
-              />
-            </td>
+
             <td>
               <input
                 type="text"
@@ -177,4 +195,16 @@
     <hr />
   </div>
 </div>
+<script>
+  function selectChange(id) {
+    $(id).on("change", function () {
+      console.log(id);
+      // console.log("{{elem.0.0}}");
+      console.log($(this).val());
+      $("#description-1").val($(this).val());
+    });
+  }
+
+  
+</script>
 {% endblock %}

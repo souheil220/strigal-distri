@@ -1,3 +1,52 @@
 from django.contrib import admin
+from .models import *
 
-# Register your models here.
+
+class FilterAricle(admin.ModelAdmin):
+    list_display = ("id_article",
+                    "nom_article",
+                    "type_de_categorie",
+                    "categorie_interne",
+                    "famille_article",
+                    "unite_mesure",
+                    "sale_ok",
+                    "type_article",
+                    "template_id",
+                    "company_id",
+                    "active",
+                    "product_id")
+
+
+class FilterDistributeur(admin.ModelAdmin):
+    list_display = ("id",
+                    "nom",
+                    "adress",
+                    "tel",
+                    "rcn",
+                    "ifn",
+                    "nbr_facture")
+
+
+class FilterCommande(admin.ModelAdmin):
+    list_display = ("id",
+                    "reference_description",
+                    "destributeur",
+                    "societe",
+                    "totaleHT",
+                    "totaleTTC",
+                    "date")
+
+
+class FilterListArticleCommande(admin.ModelAdmin):
+    list_display = ("id",
+                    "id_commande",
+                    "code_article",
+                    "description",
+                    "qte",
+                    "montant")
+
+
+admin.site.register(Article, FilterAricle)
+admin.site.register(Distributeur, FilterDistributeur)
+admin.site.register(Commande, FilterCommande)
+admin.site.register(ListArticleCommande, FilterListArticleCommande)

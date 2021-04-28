@@ -9,16 +9,52 @@ import pandas as pd
 # Create your views here.
 
 
-def list_distrib():
-    # eleme = json.loads(requests.post(
-    #     "http://10.10.10.64:8585/diststru/").text)
-    # print(eleme)
-    eleme = (requests.request('POST', "http://10.10.10.64:8585/diststru/"))
-    data = []
-    for row in eleme:
-        print(row)
-    # print(data)
-    return eleme
+def getProduct(request):
+    pass
+
+
+def list_article():
+    try:
+        article = Article.objects.all()
+    except:
+        data = []
+
+        eleme = requests.post(
+            "http://10.10.10.64:8585/diststru/prod/", data='pload').json()
+
+        for key in eleme.keys():
+            data.append(eleme[key])
+            id_article = data[0]
+            nom_article = data[1]
+            type_de_categorie = data[2]
+            categorie_interne = data[3]
+            famille_article = data[4]
+            unite_mesure = data[5]
+            sale_ok = data[6]
+            type_article = data[7]
+            template_id = data[8]
+            company_id = data[9]
+            active = data[10]
+            product_id = data[11]
+
+            article = Article(id_article=id_article,
+                              nom_article=nom_article,
+                              type_de_categorie=type_de_categorie,
+                              categorie_interne=categorie_interne,
+                              famille_article=famille_article,
+                              unite_mesure=unite_mesure,
+                              sale_ok=sale_ok,
+                              type_article=type_article,
+                              template_id=template_id,
+                              company_id=company_id,
+                              active=active,
+                              product_id=product_id
+                              )
+            article.save()
+
+        print(data)
+        # print(data)
+        return data
 
 
 def regCommand(request):
@@ -67,11 +103,10 @@ def regCommand(request):
 
 
 def commande(request):
-    print('test')
-    print(list_distrib())
+    elem = list_article()
     return render(
         request, "distributeur/commande.html", {
-
+            "elem": elem
         })
 
 
