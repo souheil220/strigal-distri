@@ -3,27 +3,15 @@ $('#add-one-more').click(function () {
   $('#ourTable tr:last').after(`<tr id='td_num-` + ((parseInt(len) + 1).toString()) +
     `'>
   <td>
-    <select onChange = "selectChange('#demo-category-` + ((parseInt(len) + 1).toString()) + `')" name="demo-category-` + ((parseInt(len) + 1).toString()) +
-    `" id="demo-category-` + ((parseInt(len) + 1).toString()) +
-    `">
-      <option value="">- Article -</option>
-      <option value="1">Manufacturing</option>
-      <option value="1">Shipping</option>
-      <option value="1">Administration</option>
-      <option value="1">Human Resources</option>
-    </select>
-  </td>
-  <td>
-    <input
-      type="text"
-      name="description-` + ((parseInt(len) + 1).toString()) +
-    `"
-      id="description-` + ((parseInt(len) + 1).toString()) +
-    `"
-      value=""
-      placeholder="..."
-      disabled
-    />
+  <div class="div-filter">
+  <div class="filer-ids">
+      <input autocomplete="off" id="filtrer-` + ((parseInt(len) + 1).toString()) + `" name="ids" class="chosen-value chosen-value-` + ((parseInt(len) + 1).toString()) + `" type="text" placeholder="Type to filter">
+      <div style="position:relative">
+          <ul class="value-list test-` + ((parseInt(len) + 1).toString()) + `">
+          </ul>
+      </div>
+  </div>
+</div>
   </td>
   <td>
     <input
@@ -32,6 +20,7 @@ $('#add-one-more').click(function () {
     `"
       id="quantite-` + ((parseInt(len) + 1).toString()) +
     `"
+    class='qte'
       value=""
       placeholder=""
     />
@@ -55,20 +44,8 @@ $('#add-one-more').click(function () {
     `"
       id="prixunitaire-` + ((parseInt(len) + 1).toString()) +
     `"
-      value=""
-      placeholder="..."
-      disabled
-    />
-  </td>
-  <td>
-    <input
-      type="text"
-      name="tax-` + ((parseInt(len) + 1).toString()) +
-    `"
-      id="tax-` + ((parseInt(len) + 1).toString()) +
-    `"
-      value=""
-      placeholder="..."
+      value="19000"
+      placeholder="19000"
       disabled
     />
   </td>

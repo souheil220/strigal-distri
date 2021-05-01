@@ -4807,7 +4807,7 @@ body.is-preload #intro:not(.hidden) + #header + #nav {
   }
 }
 
-.value-list ,{
+.value-list {
   position: absolute;
   top: 0;
   z-index: 9999;
@@ -4949,4 +4949,11 @@ li:hover > a {
 .filer-ids {
   display: flex;
   flex-direction: column;
+}
+
+#art {
+  text-align: center;
+}
+.selectjs {
+  padding: 200px;
 }

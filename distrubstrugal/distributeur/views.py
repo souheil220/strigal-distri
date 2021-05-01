@@ -2,59 +2,84 @@ from django.shortcuts import render, redirect
 from .models import *
 from django.contrib.auth.models import User
 from datetime import datetime
-import psycopg2
 import json
 import requests
-import pandas as pd
+from django.http import Http404, HttpResponse
 # Create your views here.
 
 
-def getProduct(request):
-    pass
+def loadMore(request, name):
+    if request.is_ajax and request.method == "GET":
+        result = Article.objects.filter(nom_article__contains=name)[:5]
+        data = {}
+        i = 0
+        for product in result:
+            data[i] = {}
+            data[i]['id_article'] = product.id_article
+            data[i]['nom_article'] = product.nom_article
+            data[i]['unite_mesure'] = product.unite_mesure
+            i = i+1
+
+        return HttpResponse(json.dumps(data, indent=4, default=str), content_type="application/json")
+    else:
+        raise Http404
 
 
 def list_article():
     try:
-        article = Article.objects.all()
+        article = Article.objects.all().values_list('product_id')
+
+        if not article:
+            print('lol')
+            data = []
+            pload = {'data': {}}
+            print(pload)
+            eleme = requests.post(
+                "http://10.10.10.64:8585/diststru/prod/", json=pload).json()
+
+            for key in eleme.keys():
+                id_article = eleme[key][0]
+                nom_article = eleme[key][1]
+                type_de_categorie = eleme[key][2]
+                categorie_interne = eleme[key][3]
+                famille_article = eleme[key][4]
+                unite_mesure = eleme[key][5]
+                sale_ok = eleme[key][6]
+                type_article = eleme[key][7]
+                template_id = eleme[key][8]
+                company_id = eleme[key][9]
+                active = eleme[key][10]
+                product_id = eleme[key][11]
+
+                article = Article(id_article=id_article,
+                                  nom_article=nom_article,
+                                  type_de_categorie=type_de_categorie,
+                                  categorie_interne=categorie_interne,
+                                  famille_article=famille_article,
+                                  unite_mesure=unite_mesure,
+                                  sale_ok=sale_ok,
+                                  type_article=type_article,
+                                  template_id=template_id,
+                                  company_id=company_id,
+                                  active=active,
+                                  product_id=product_id
+                                  )
+                article.save()
+
+        else:
+            data2 = {}
+            i = 0
+            for ids in article:
+                print(ids[0])
+                data2[i] = ids[0]
+                i = i + 1
+            data = {"data": data2
+                    }
+            eleme = requests.post(
+                "http://10.10.10.64:8585/diststru/prod/", json=data).json()
+
     except:
-        data = []
-
-        eleme = requests.post(
-            "http://10.10.10.64:8585/diststru/prod/", data='pload').json()
-
-        for key in eleme.keys():
-            data.append(eleme[key])
-            id_article = data[0]
-            nom_article = data[1]
-            type_de_categorie = data[2]
-            categorie_interne = data[3]
-            famille_article = data[4]
-            unite_mesure = data[5]
-            sale_ok = data[6]
-            type_article = data[7]
-            template_id = data[8]
-            company_id = data[9]
-            active = data[10]
-            product_id = data[11]
-
-            article = Article(id_article=id_article,
-                              nom_article=nom_article,
-                              type_de_categorie=type_de_categorie,
-                              categorie_interne=categorie_interne,
-                              famille_article=famille_article,
-                              unite_mesure=unite_mesure,
-                              sale_ok=sale_ok,
-                              type_article=type_article,
-                              template_id=template_id,
-                              company_id=company_id,
-                              active=active,
-                              product_id=product_id
-                              )
-            article.save()
-
-        print(data)
-        # print(data)
-        return data
+        print('error')
 
 
 def regCommand(request):
@@ -103,10 +128,11 @@ def regCommand(request):
 
 
 def commande(request):
-    elem = list_article()
+    # list_article()
+    # elem = list_article()
     return render(
         request, "distributeur/commande.html", {
-            "elem": elem
+            # "elem": elem
         })
 
 

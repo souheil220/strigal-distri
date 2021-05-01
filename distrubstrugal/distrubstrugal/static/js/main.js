@@ -257,77 +257,90 @@
 		});
 
 	}
-	const inputField = document.querySelector('.chosen-value');
-	const dropdown = document.querySelector('.value-list');
-	const dropdownArray = [...document.querySelectorAll('.nomFournisseur')];
-	let valueArray = [];
-	dropdownArray.forEach(item => {
-		valueArray.push(item.textContent);
-	});
 
 
-	inputField.addEventListener('input', () => {
-		dropdown.classList.add('open');
-		let inputValue = inputField.value;
-		if (inputValue.length > 0) {
-			for (let j = 0; j < valueArray.length; j++) {
-				if (!(inputValue.substring(0, inputValue.length) === valueArray[j].substring(0, inputValue.length))) {
-					dropdownArray[j].classList.add('closed');
-				} else {
-					dropdownArray[j].classList.remove('closed');
-				}
-			}
+
+
+	$("#ourTable").on("keyup", '.qte', function () {
+		var num = ($(this)[0].id).substr(($(this)[0].id).length - 1)
+		var montant_init = $('#mantant-' + num).val()
+		var mat_init = parseInt($('#mat').val())
+
+		console.log($('#quantite-' + num).val().length)
+		if ($('#quantite-' + num).val().length > 0 && $('#quantite-' + num).val() !== '0') {
+			var montant = (parseInt($('#quantite-' + num).val()) * parseInt($('#prixunitaire-' + num).val())).toString()
+			$('#mantant-' + num).val(montant)
+			var mat = (mat_init + parseInt(montant)).toString()
+
+			$('#mat').val(mat)
+			$('#MHT').val(mat)
 		} else {
-			for (let i = 0; i < dropdownArray.length; i++) {
-				dropdownArray[i].classList.remove('closed');
-			}
+			$('#mantant-' + num).val('0')
+			var mat = (parseInt($('#mat').val()) - parseInt(montant_init)).toString()
+
+			$('#mat').val(mat)
+			$('#MHT').val($('#mat').val())
 		}
-	});
 
-	dropdownArray.forEach(item => {
-		item.addEventListener('click', (evt) => {
-			inputField.value = item.textContent;
-			$('#filtrer').val(inputField.value)
-			if (null == null) {
-				data = JSON.parse($("#data").val());
-			}
-			if (target === '#changeId') {
-				content = ` <div id="codes" class='lignes'>
-                        <div id="` + $(target).val() + `"  class="grid-item code" 
-                        onclick="divClicked('` + $(target).val() + `')">` +
-					$(target).val() + `
-                        </div></div>`
-				$(id).replaceWith(content)
-			} else {
-				$(id).val(data[field1][data[filed2].indexOf($(target).val())])
-			}
 
-			dropdownArray.forEach(dropdown => {
-				dropdown.classList.add('closed');
-			});
-		});
+	})
+	var lista = []
+
+	var $eventSelect = $(".selectjs")
+	$eventSelect.select2({
+		placeholder: "Type",
+		ajax: {
+			type: "GET",
+
+			dataType: 'json',
+			url: function (params) {
+				return 'loadMore/' + params.term;
+			},
+
+			processResults: function (data) {
+				console.log(data)
+				lista = []
+				for (d in data) {
+					lista.push(data[d])
+				}
+				console.log(lista)
+				var fin = []
+				fin = data
+
+				return {
+
+
+					results: $.map(fin, function (item) {
+						console.log(item.nom_article)
+						return {
+							text: item.nom_article,
+							id: item.id_article
+
+						}
+					})
+				}
+
+
+			},
+			cache: true,
+
+
+		}
 	})
 
-	inputField.addEventListener('focus', () => {
-		inputField.placeholder = 'Type to filter';
-		inputField.value = ""
-		dropdown.classList.add('open');
-		dropdownArray.forEach(dropdown => {
-			dropdown.classList.remove('closed');
-		});
-	});
 
-	inputField.addEventListener('blur', () => {
-		inputField.placeholder = 'Select state';
-		dropdown.classList.remove('open');
-	});
 
-	document.addEventListener('click', (evt) => {
-		const isDropdown = dropdown.contains(evt.target);
-		const isInput = inputField.contains(evt.target);
-		if (!isDropdown && !isInput) {
-			dropdown.classList.remove('open');
-		}
-	});
+
+	$eventSelect.on("select2:close", function (e) {
+		var num = ($(this).parents()[2].id)
+		var pos = lista.map(function (e) {
+			return e.nom_article;
+		}).indexOf($("#select2--container").text());
+		$('#unitedemeusur-' + num).val(lista[pos]['unite_mesure'])
+		console.log(pos);
+		console.log("select2:close", e);
+	})
+
+
 
 })(jQuery);

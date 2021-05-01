@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     path("commande", views.commande, name="commande"),
-    path("listCommandesD", views.listCommandes, name="listCommandesD"), 
-    path("getProduct", views.getProduct, name="getProduct"), 
-    
-    ]
+    path("listCommandesD", views.listCommandes, name="listCommandesD"),
+    path("loadMore/<str:name>", views.loadMore, name="loadMore"),
+
+]
