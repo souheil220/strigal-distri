@@ -61,7 +61,7 @@
       />
     </div>
     <input value="{{data}}" hidden />
-    <form method="post" action="#">
+    <form method="post" action="{% url 'regCommand' %}">
       <input name="datalength" id="lenData" hidden value="1" />
       <input name="mat" id="mat" hidden value="0" />
       <input name="ttc" id="ttc" hidden value="0" />
@@ -80,7 +80,7 @@
           <tr id="1">
             <td>
               <div class="form-groupe">
-                <select name="" class="selectjs" id="">
+                <select name="" class="selectjs" id="selectjs-1">
                   <option value=""></option>
                 </select>
               </div>

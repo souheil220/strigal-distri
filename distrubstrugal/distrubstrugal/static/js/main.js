@@ -262,31 +262,34 @@
 
 
 	$("#ourTable").on("keyup", '.qte', function () {
+		var lenData = parseInt($('#lenData').val())
+		var mht = 0
 		var num = ($(this)[0].id).substr(($(this)[0].id).length - 1)
-		var montant_init = $('#mantant-' + num).val()
-		var mat_init = parseInt($('#mat').val())
-
-		console.log($('#quantite-' + num).val().length)
 		if ($('#quantite-' + num).val().length > 0 && $('#quantite-' + num).val() !== '0') {
+
 			var montant = (parseInt($('#quantite-' + num).val()) * parseInt($('#prixunitaire-' + num).val())).toString()
 			$('#mantant-' + num).val(montant)
-			var mat = (mat_init + parseInt(montant)).toString()
-
-			$('#mat').val(mat)
-			$('#MHT').val(mat)
 		} else {
 			$('#mantant-' + num).val('0')
-			var mat = (parseInt($('#mat').val()) - parseInt(montant_init)).toString()
-
-			$('#mat').val(mat)
-			$('#MHT').val($('#mat').val())
 		}
+
+		for (var i = 1; i <= lenData; i++) {
+			console.log(i)
+			console.log($('#mantant-' + i).val())
+			mht = mht + parseInt($('#mantant-' + i).val())
+			console.log(mht)
+
+		}
+		$('#MHT').val(mht.toString())
+
+
+
 
 
 	})
 	var lista = []
 
-	var $eventSelect = $(".selectjs")
+	var $eventSelect = $("#selectjs-1")
 	$eventSelect.select2({
 		placeholder: "Type",
 		ajax: {
@@ -332,10 +335,14 @@
 
 
 	$eventSelect.on("select2:close", function (e) {
+		console.log($(this))
+		// console.log(lista)
 		var num = ($(this).parents()[2].id)
 		var pos = lista.map(function (e) {
+			console.log(e)
 			return e.nom_article;
-		}).indexOf($("#select2--container").text());
+		}).indexOf($("#select2-selectjs-1-container").text());
+		console.log(pos)
 		$('#unitedemeusur-' + num).val(lista[pos]['unite_mesure'])
 		console.log(pos);
 		console.log("select2:close", e);

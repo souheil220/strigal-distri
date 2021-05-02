@@ -87,7 +87,7 @@ def regCommand(request):
         try:
             nbr_facture = Distributeur.objects().last().values_list('nbr_facture', flat=True)
         except:
-            nbr_facture = 1
+            nbr_facture = 0
         ditributeur = Distributeur(nom='xxx',
                                    adress='xxx',
                                    tel='xxx',
@@ -99,7 +99,7 @@ def regCommand(request):
         print(zero_filled_number)
 
         reference_description = 'DC03' + \
-            str(nbr_facture).zfill(4) + datetime.now().strftime("%y")
+            str(nbr_facture).zfill(4) + "/" + datetime.now().strftime("%y")
         commande = Commande(reference_description=reference_description,
                             destributeur=User,
                             societe='strugal',
