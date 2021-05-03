@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 
 class Distributeur(models.Model):
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     id = models.AutoField(primary_key=True)
     typeProfile = models.CharField(max_length=255, default="Distributeur")
     nom = models.CharField(max_length=255)
@@ -51,6 +51,5 @@ class ListArticleCommande(models.Model):
     id = models.AutoField(primary_key=True)
     id_commande = models.ForeignKey(Commande, on_delete=models.CASCADE)
     code_article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    description = models.CharField(max_length=255)
     qte = models.IntegerField()
     montant = models.FloatField()

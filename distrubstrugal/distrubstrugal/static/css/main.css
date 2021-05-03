@@ -96,6 +96,11 @@ video {
   vertical-align: baseline;
 }
 
+html {
+  height: 100%;
+  width: 100%;
+}
+
 article,
 aside,
 details,
@@ -4956,4 +4961,21 @@ li:hover > a {
 }
 .selectjs {
   padding: 0 200px 0 200px;
+  height: 3rem;
+}
+.select2-selection__arrow b {
+  margin-top: 4px;
+}
+.select2-container .select2-selection--single {
+  height: 2.7rem;
+}
+.motherDiv {
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
 }

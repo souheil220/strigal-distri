@@ -19,6 +19,7 @@ class FilterAricle(admin.ModelAdmin):
 
 class FilterDistributeur(admin.ModelAdmin):
     list_display = ("id",
+                    "user",
                     "nom",
                     "adress",
                     "tel",
@@ -41,7 +42,6 @@ class FilterListArticleCommande(admin.ModelAdmin):
     list_display = ("id",
                     "id_commande",
                     "code_article",
-                    "description",
                     "qte",
                     "montant")
 

@@ -264,6 +264,8 @@
 	$("#ourTable").on("keyup", '.qte', function () {
 		var lenData = parseInt($('#lenData').val())
 		var mht = 0
+		var tva = 0
+		var ttc = 0
 		var num = ($(this)[0].id).substr(($(this)[0].id).length - 1)
 		if ($('#quantite-' + num).val().length > 0 && $('#quantite-' + num).val() !== '0') {
 
@@ -282,8 +284,10 @@
 		}
 		$('#MHT').val(mht.toString())
 
-
-
+		tva = (mht * 19) / 100
+		$('#TVA').val(tva.toString())
+		ttc = tva + mht
+		$('#TTC').val(ttc.toString())
 
 
 	})

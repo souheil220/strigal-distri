@@ -5,6 +5,7 @@ from datetime import datetime
 import json
 import requests
 from django.http import Http404, HttpResponse
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
@@ -83,50 +84,49 @@ def list_article():
 
 
 def regCommand(request):
+
     if request.method == "POST":
+        current_user = request.user
         try:
-            nbr_facture = Distributeur.objects().last().values_list('nbr_facture', flat=True)
+            nbr_facture = Distributeur.objects.get(
+                user=current_user).nbr_facture
+            nbr_facture = nbr_facture+1
+            Distributeur.objects.filter(user=current_user).update(
+                nbr_facture=nbr_facture)
         except:
             nbr_facture = 0
-        ditributeur = Distributeur(nom='xxx',
-                                   adress='xxx',
-                                   tel='xxx',
-                                   rcn='xxx',
-                                   ifn='xxx',
-                                   nbr_facture=nbr_facture+1)
-        ditributeur.save()
-
-        print(zero_filled_number)
-
-        reference_description = 'DC03' + \
+        distributeur = Distributeur.objects.get(
+            user=current_user)
+        reference_description = 'DC' + (str(current_user.id).zfill(2)) + \
             str(nbr_facture).zfill(4) + "/" + datetime.now().strftime("%y")
         commande = Commande(reference_description=reference_description,
-                            destributeur=User,
+                            destributeur=distributeur,
                             societe='strugal',
-                            totaleHT=request.POST['MHT'],
-                            totaleTTC=request.POST['TTC'],
+                            totaleHT=request.POST.get('MHT'),
+                            totaleTTC=request.POST.get('TTC'),
                             )
         commande.save()
-
-        request.POST['datalength']
+        datalength = request.POST['datalength']
         for i in range(1, int(datalength) + 1):
-            id_commande = Commande.objects().last().values_list('id', flat=True),
-            code_article = '',
-            description = request.POST['description-{}'.format(i)],
-            qte = request.POST['quantite-{}'.format(i)],
-            montant = request.POST['mantant-{}'.format(i)],
+            id_commande = Commande.objects.all().last()
+            article = request.POST.get('article-{}'.format(i))
+            code_article = Article.objects.get(id_article=article)
+            qte = request.POST['quantite-{}'.format(i)]
+
+            montant = request.POST.get('mantant-{}'.format(i))
+            print(montant)
 
             list_article_commande = ListArticleCommande(id_commande=id_commande,
                                                         code_article=code_article,
-                                                        description=description,
                                                         qte=int(qte),
-                                                        montant=montant,)
+                                                        montant=int(montant),)
 
             list_article_commande.save()
 
-            return redirect('/distributeur/listCommandesD/')
+        return redirect('/distributeur/listCommandesD')
 
 
+@ login_required(login_url='login')
 def commande(request):
     # list_article()
     # elem = list_article()
@@ -137,14 +137,38 @@ def commande(request):
 
 
 def listCommandes(request):
+    current_user = request.user
+    destributeur = Distributeur.objects.get(user=current_user)
+    commande = Commande.objects.filter(destributeur=destributeur)
+    # test = []
+    # for i in commande:
+    #     print(i.id)
+    #     list_commande = ListArticleCommande.objects.filter(id_commande=i.id)
+    #     print(list_commande)
+    #     test.append(list_commande)
+    print(commande)
+    context = {
+        "commande": commande
+    }
     return render(
-        request, "distributeur/listCommandes.html", {
-
-        })
+        request, "distributeur/listCommandes.html", context)
 
 
-def index(request):
-    return render(
-        request, "distributeur/index.html", {
+def detailCommande(request, id):
+    if request.is_ajax and request.method == "GET":
+        list_commande = ListArticleCommande.objects.filter(id_commande=id).values(
+            'code_article__id_article', 'code_article__nom_article', 'qte', 'id_commande__totaleTTC')
+        print(list_commande[0]['id_commande__totaleTTC'])
+        # data = {}
+        # i = 0
+        # for p in list_commande:
 
-        })
+        #     print(p.code_article.nom_article)
+        #     data[i]['id_article'] = p.code_article.id_article
+        #     data[i]['nom_article'] = p.code_article.nom_article
+        #     data[i]['qte'] = p.qte
+        # return HttpResponse(json.dumps(data, indent=4, default=str), content_type="application/json")
+        # return HttpResponse(list_commande)
+        return render(request, "distributeur/detail.html", {'list_commande': list_commande, 'totalTTC': list_commande[0]['id_commande__totaleTTC']})
+    else:
+        raise Http404

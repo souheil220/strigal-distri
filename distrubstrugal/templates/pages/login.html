@@ -1,0 +1,26 @@
+{%extends 'base.html'%} {% block title %} Welcome {% endblock %} 
+{% block content %}
+<form method="POST" action="{% url 'login' %}">
+  {% csrf_token %}
+  <input
+    type="text"
+    name="username"
+    placeholder="Username"
+    class="form-control"
+    style="color: white"
+  />
+  <input
+    type="password"
+    name="password"
+    placeholder="Password"
+    class="form-control"
+    style="color: white"
+  />
+  <input
+    class="btn btn-primary"
+    type="submit"
+    value="Login"
+    style="color: white"
+  />
+</form>
+{% endblock %}

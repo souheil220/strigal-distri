@@ -26,23 +26,11 @@
     </ul>
     <ul class="icons">
       <li>
-        <a href="#" class="icon brands fa-twitter"
-          ><span class="label">Twitter</span></a
-        >
-      </li>
-      <li>
-        <a href="#" class="icon brands fa-facebook-f"
-          ><span class="label">Facebook</span></a
-        >
-      </li>
-      <li>
-        <a href="#" class="icon brands fa-instagram"
-          ><span class="label">Instagram</span></a
-        >
-      </li>
-      <li>
-        <a href="#" class="icon brands fa-github"
-          ><span class="label">GitHub</span></a
+        <span class="label">Hello,{{request.user}} </span>
+        <span class="label"
+          ><a href="{% url 'logout' %}" class="icon brands fa-sign-out"
+            >logout</a
+          ></span
         >
       </li>
     </ul>
@@ -61,7 +49,11 @@
       />
     </div>
     <input value="{{data}}" hidden />
-    <form method="post" action="{% url 'regCommand' %}">
+    <form
+      method="post"
+      action="{% url 'regCommand' %}"
+      enctype="multipart/form-data"
+    >
       <input name="datalength" id="lenData" hidden value="1" />
       <input name="mat" id="mat" hidden value="0" />
       <input name="ttc" id="ttc" hidden value="0" />
@@ -80,7 +72,7 @@
           <tr id="1">
             <td>
               <div class="form-groupe">
-                <select name="" class="selectjs" id="selectjs-1">
+                <select name="article-1" class="selectjs" id="selectjs-1">
                   <option value=""></option>
                 </select>
               </div>
@@ -123,40 +115,45 @@
                 id="mantant-1"
                 value="0"
                 placeholder="0"
-                disabled
+                readonly
               />
             </td>
           </tr>
         </tbody>
       </table>
       <div style="display: flex; justify-content: center">
-        <svg
+        <button
           id="add-one-more"
-          xmlns="http://www.w3.org/2000/svg"
-          width="40"
-          height="40"
-          fill="currentColor"
-          class="bi bi-plus-circle"
-          viewBox="0 0 16 16"
-        >
-          <path
-            d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
-          />
-          <path
-            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
-          />
-        </svg>
+          type="button"
+          class="btn btn-primary icon solid fa-plus"
+        ></button>
       </div>
       <div style="display: flex; justify-content: flex-end">
         <div style="display: flex; flex-direction: column; width: 25%">
           <div style="display: flex; justify-content: space-between">
-            MHT<input name="MHT" id="MHT" type="text" disabled />
+            MHT<input name="MHT" id="MHT" type="text" readonly />
           </div>
           <div style="display: flex; justify-content: space-between">
-            TVA <input type="text" disabled placeholder="19%" />
+            TVA
+            <input
+              type="text"
+              id='TVA'
+              value="2000"
+              placeholder="2000"
+              readonly
+              placeholder="19%"
+            />
           </div>
           <div style="display: flex; justify-content: space-between">
-            TTC <input name="TTC" id="TTC" type="text" disabled />
+            TTC
+            <input
+              name="TTC"
+              id="TTC"
+              type="text"
+              value="2000"
+              placeholder="2000"
+              readonly
+            />
           </div>
         </div>
       </div>

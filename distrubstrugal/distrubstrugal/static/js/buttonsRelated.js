@@ -4,7 +4,8 @@ $('#add-one-more').click(function () {
     `'>
     <td>
     <div class="form-groupe">
-      <select name="" class="selectjs" id="selectjs-` + ((parseInt(len) + 1).toString()) +
+      <select name="article-` + ((parseInt(len) + 1).toString()) +
+    `" class="selectjs" id="selectjs-` + ((parseInt(len) + 1).toString()) +
     `">
         <option value=""></option>
       </select>
@@ -55,10 +56,11 @@ $('#add-one-more').click(function () {
     `"
       value="0"
       placeholder="0"
-      disabled
+      readonly
     />
   </td>
-  <td class='removeit'style='color:red'>X</td>
+  
+  <td class='removeit button icon solid fa-trash' style="color:#af1010 !important; margin-right:15px; box-shadow: inset 0 0 0 2px #eeeeee !important"></td>
 </tr>`);
   var lista = []
 
@@ -128,6 +130,8 @@ $('#ourTable').on('click', '.removeit', function () {
   var lenData = parseInt($('#lenData').val())
 
   var mht = 0
+  var tva = 0
+  var ttc = 0
 
   console.log($('#lenData').val())
 
@@ -139,7 +143,10 @@ $('#ourTable').on('click', '.removeit', function () {
 
   }
   $('#MHT').val(mht.toString())
-
+  tva = (mht * 19) / 100
+  $('#TVA').val(tva.toString())
+  ttc = tva + mht
+  $('#TTC').val(ttc.toString())
 
 
 

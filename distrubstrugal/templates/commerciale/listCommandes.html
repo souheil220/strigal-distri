@@ -15,25 +15,12 @@
     </ul>
     <ul class="icons">
       <li>
-        <a href="#" class="icon brands fa-twitter"
-          ><span class="label">Twitter</span></a
-        >
+        <span class="label">Hello,{{request.user}} </span>
+        <span class="label"
+          ><a href="{% url 'logout' %}" class="icon brands fa-sign-out">logout</a
+        ></span>
       </li>
-      <li>
-        <a href="#" class="icon brands fa-facebook-f"
-          ><span class="label">Facebook</span></a
-        >
-      </li>
-      <li>
-        <a href="#" class="icon brands fa-instagram"
-          ><span class="label">Instagram</span></a
-        >
-      </li>
-      <li>
-        <a href="#" class="icon brands fa-github"
-          ><span class="label">GitHub</span></a
-        >
-      </li>
+      
     </ul>
   </nav>
 
