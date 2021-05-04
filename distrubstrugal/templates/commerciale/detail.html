@@ -1,0 +1,61 @@
+<h3>Bon de Commande {{bon_commande}}</h3>
+<div style="display: flex; justify-content: space-around; margin-bottom: 5%">
+  <div
+    style="display: flex; justify-content: space-around; flex-direction: column"
+  >
+    <h5>Societe</h5>
+    <h6>{{societe}}</h6>
+
+    <h5>Client</h5>
+    <h6>{{client}}</h6>
+  </div>
+  <div
+    style="display: flex; justify-content: space-around; flex-direction: column"
+  >
+    <h5>Date</h5>
+    <h6>{{date}}</h6>
+    <h5>Réference Description</h5>
+    <h6>{{reference_description}}</h6>
+  </div>
+</div>
+<table class="alt">
+  <thead>
+    <tr>
+      <th>Code Article</th>
+      <th>Nom Article</th>
+      <th>Quantité</th>
+      <th>Unité de mesure</th>
+      <th>Prix Unitaire</th>
+      <th>Tax</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for prod in list_commande %}
+    <tr>
+      <td>{{prod.code_article__id_article}}</td>
+      <td>{{prod.code_article__nom_article}}</td>
+      <td>{{prod.qte}}</td>
+      <td>{{prod.code_article__unite_mesure}}</td>
+      <td>19000</td>
+      <td>TVA sur vente à 19%</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="4"></td>
+      <td>MHT</td>
+      <td>{{totaleHT}}</td>
+    </tr>
+    <tr>
+      <td colspan="4"></td>
+      <td>TVA</td>
+      <td>{{tva}}</td>
+    </tr>
+    <tr>
+      <td colspan="4"></td>
+      <td>TTC</td>
+      <td>{{totalTTC}}</td>
+    </tr>
+  </tfoot>
+</table>

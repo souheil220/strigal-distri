@@ -5,6 +5,12 @@
 <div id="wrapper">
   <!-- Header -->
   <header id="header">
+    <script
+      src="https://code.jquery.com/jquery-2.2.4.js"
+      integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <a href="#" class="logo">Massively</a>
   </header>
 
@@ -29,65 +35,70 @@
     <h2>Listes de toutes les commandes</h2>
 
     <div class="table-wrapper">
-        <table class="alt">
-            <thead>
-                <tr>
-                    <th>clien</th>
-                    <th>article</th>
-                    <th>Description</th>
-                    <th>quantite</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Client 1</td>
-                    <td>Item 1</td>
-                    <td>Ante turpis integer aliquet porttitor.</td>
-                    <td>Ante turpis integer aliquet porttitor.</td>
-                    <td>29.99</td>
-                    <td>voir</td>
-                </tr>
-                <tr>
-                    <td>Client 2</td>
-                    <td>Item 2</td>
-                    <td>Vis ac commodo adipiscing arcu aliquet.</td>
-                    <td>Vis ac commodo adipiscing arcu aliquet.</td>
-                    <td>19.99</td>
-                    <td>voir</td>
-                </tr>
-                <tr>
-                    <td>Client 3</td>
-                    <td>Item 3</td>
-                    <td> Morbi faucibus arcu accumsan lorem.</td>
-                    <td> Morbi faucibus arcu accumsan lorem.</td>
-                    <td>29.99</td>
-                    <td>voir</td>
-                </tr>
-                <tr>
-                    <td>Client 4</td>
-                    <td>Item 4</td>
-                    <td>Vitae integer tempus condimentum.</td>
-                    <td>Vitae integer tempus condimentum.</td>
-                    <td>19.99</td>
-                    <td>voir</td>
-                </tr>
-                <tr>
-                    <td>Client 5</td>
-                    <td>Item 5</td>
-                    <td>Ante turpis integer aliquet porttitor.</td>
-                    <td>Ante turpis integer aliquet porttitor.</td>
-                    <td>29.99</td>
-                    <td>voir</td>
-                </tr>
-            </tbody>
-            <tfoot>
-               
-            </tfoot>
-        </table>
-    </div>
-
+      <table class="alt">
+          <thead>
+              <tr>
+                  <th>N=° Commande</th>
+                  <th>Date</th>
+                  <th>Client</th>
+                  <th>Ref Description</th>
+                  <th>THT</th>
+                  <th>TTC</th>
+                  <th>Etat</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for com in commande %}
+              <tr>
+                
+                  <td>{{com.reference_description}}</td>
+                  <td>{{com.date}}</td>
+                  <td>{{com.destributeur}}</td>
+                  <td>{{com.reference_description}}</td>
+                  <td>{{com.totaleHT}}</td>
+                  <td>{{com.totaleTTC}}</td>
+                  <td>Attente Validation</td>
+                  <td><button
+                    id="{{com.id}}"
+                    onClick=showDetail(this.id)
+                    type="button"
+                    class="btn "
+                    data-toggle="modal" data-target="#exampleModal"
+                  >Detail</button></td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+  </div>
     <hr />
   </div>
 </div>
+<div class="modal fade" id="exampleModal" >
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="exemple">
+        ...
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $exemple = $('#exemple');
+  function showDetail(id){
+
+    $exemple.load('detailCommande/'+id)    
+
+
+  }
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </div>
 {% endblock %}

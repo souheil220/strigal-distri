@@ -29,7 +29,7 @@ def loginPage(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect("distributeur/commande")
+            return redirect("index")
         else:
             messages.info(request, 'username or password is invalid')
 
