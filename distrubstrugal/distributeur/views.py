@@ -9,9 +9,14 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
-def loadMore(request, name):
+def loadMore(request, name, whiche):
     if request.is_ajax and request.method == "GET":
-        result = Article.objects.filter(nom_article__contains=name)[:5]
+        if(whiche == "1"):
+            result = Article.objects.filter(nom_article__contains=name)[:5]
+        else:
+            result = Article.objects.filter(id_article__contains=name)[:5]
+
+        print(result)
         data = {}
         i = 0
         for product in result:
@@ -22,6 +27,7 @@ def loadMore(request, name):
             i = i+1
 
         return HttpResponse(json.dumps(data, indent=4, default=str), content_type="application/json")
+
     else:
         raise Http404
 

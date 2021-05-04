@@ -293,24 +293,26 @@
 	})
 	var lista = []
 
-	var $eventSelect = $("#selectjs-1")
-	$eventSelect.select2({
+	var $eventSelect2 = $("#selectjs-1-2")
+	$eventSelect2.select2({
 		placeholder: "Type",
 		ajax: {
 			type: "GET",
 
 			dataType: 'json',
 			url: function (params) {
-				return 'loadMore/' + params.term;
+				var num = $(this)["context"].id
+				var whiche = num.substring(num.length - 1)
+				return 'loadMore/' + params.term + "/" + whiche;
 			},
 
 			processResults: function (data) {
-				console.log(data)
+				// console.log(data)
 				lista = []
 				for (d in data) {
 					lista.push(data[d])
 				}
-				console.log(lista)
+				// console.log(lista)
 				var fin = []
 				fin = data
 
@@ -318,14 +320,27 @@
 
 
 					results: $.map(fin, function (item) {
-						console.log(item.nom_article)
-						return {
-							text: item.nom_article,
-							id: item.id_article
+							// console.log(item)
+
+							$eventSelect2.on("select2:select", function (e) {
+								nom = e.params.data.id
+								var $newOption = $("<option selected='selected'></option>").val(nom).text(nom)
+
+								$("#selectjs-1-1").append($newOption).trigger('change');
+							})
+
+							return {
+								text: item.id_article,
+								id: item.nom_article
+
+							}
 
 						}
-					})
+
+					)
+
 				}
+
 
 
 			},
@@ -337,19 +352,89 @@
 
 
 
+	var $eventSelect = $("#selectjs-1-1")
+	$eventSelect.select2({
+		placeholder: "Type",
+		ajax: {
+			type: "GET",
+
+			dataType: 'json',
+			url: function (params) {
+				var num = $(this)["context"].id
+				var whiche = num.substring(num.length - 1)
+				return 'loadMore/' + params.term + "/" + whiche;
+			},
+
+			processResults: function (data) {
+				// console.log(data)
+				lista = []
+				for (d in data) {
+					lista.push(data[d])
+				}
+				// console.log(lista)
+				var fin = []
+				fin = data
+
+
+
+
+
+				return {
+
+
+					results: $.map(fin, function (item) {
+						$eventSelect.on("select2:select", function (e) {
+							id = e.params.data.id
+							var $newOption = $("<option selected='selected'></option>").val(id).text(id)
+
+							$("#selectjs-1-2").append($newOption).trigger('change');
+						})
+						// console.log(item.nom_article)
+
+
+						return {
+							text: item.nom_article,
+							id: item.id_article
+
+						}
+					})
+
+				}
+
+
+
+			},
+			cache: true,
+
+
+		}
+	})
+
+	function closeSelect(idContainer, e, that) {
+		var num = (that.parents()[2].id)
+		var pos = lista.map(function (event) {
+			console.log(event)
+			if (idContainer === "#select2-selectjs-1-1-container") {
+				return event.nom_article
+			} else {
+				return event.id_article
+			}
+
+
+
+		}).indexOf($(idContainer).text());
+
+		$('#unitedemeusur-' + num).val(lista[pos]['unite_mesure'])
+
+		console.log("select2:close", e);
+	}
+
 
 	$eventSelect.on("select2:close", function (e) {
-		console.log($(this))
-		// console.log(lista)
-		var num = ($(this).parents()[2].id)
-		var pos = lista.map(function (e) {
-			console.log(e)
-			return e.nom_article;
-		}).indexOf($("#select2-selectjs-1-container").text());
-		console.log(pos)
-		$('#unitedemeusur-' + num).val(lista[pos]['unite_mesure'])
-		console.log(pos);
-		console.log("select2:close", e);
+		closeSelect("#select2-selectjs-1-1-container", e, $(this))
+	})
+	$eventSelect2.on("select2:close", function (e) {
+		closeSelect("#select2-selectjs-1-2-container", e, $(this))
 	})
 
 
