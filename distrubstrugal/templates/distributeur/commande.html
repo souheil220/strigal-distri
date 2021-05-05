@@ -4,20 +4,14 @@
 <!-- Wrapper -->
 <div id="wrapper">
   <!-- Header -->
-  <header id="header">
-    <script
-      src="https://code.jquery.com/jquery-2.2.4.js"
-      integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
-      crossorigin="anonymous"
-    ></script>
-    <link
-      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <a href="#" class="logo">Massively</a>
-  </header>
+ 
+  {% include 'partials/_header.html'%}
+  <link
+    href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+    rel="stylesheet"
+  />
 
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <!-- Nav -->
   <nav id="nav">
     <ul class="links">
@@ -26,7 +20,6 @@
     </ul>
     <ul class="icons">
       <li>
-        <span class="label">Hello,{{request.user}} </span>
         <span class="label"
           ><a href="{% url 'logout' %}" class="icon brands fa-sign-out"
             >logout</a
@@ -80,7 +73,7 @@
             </td>
             <td>
               <div class="form-groupe">
-                <select class="selectjs" id="selectjs-1-2">
+                <select class="selectjsC" id="selectjs-1-2">
                   <option value=""></option>
                 </select>
               </div>

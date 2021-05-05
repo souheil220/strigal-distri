@@ -2200,13 +2200,13 @@ button,
   white-space: nowrap;
 }
 
-input[type="submit"].icon:before,
+/* input[type="submit"].icon:before,
 input[type="reset"].icon:before,
 input[type="button"].icon:before,
 button.icon:before,
 .button.icon:before {
   margin-right: 0.5rem;
-}
+} */
 
 input[type="submit"].icon.solo,
 input[type="reset"].icon.solo,
@@ -4817,6 +4817,12 @@ body.is-preload #intro:not(.hidden) + #header + #nav {
 }
 .selectjs {
   padding: 0 200px 0 200px;
+  /* max-width: 100%; */
+  height: 3rem;
+}
+
+.selectjsC {
+  padding: 150%;
   height: 3rem;
 }
 .select2-selection__arrow b {

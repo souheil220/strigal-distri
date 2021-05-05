@@ -4,6 +4,8 @@ from django.contrib.auth.models import User, Group
 from django.contrib import messages, auth
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import Group
+from .sql import connexion_ad2000, connexion_email
+import re
 
 
 def index(request):
@@ -39,3 +41,28 @@ def loginPage(request):
 def logoutUser(request):
     logout(request)
     return redirect('login')
+
+
+def test(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        pass_django = 'Azerty@22'
+        if not re.match(r"^[A-Za-z0-9\.\+-]+@[A-Za-z0-9\.-]+\.[a-zA-Z]*$", username):
+            email_util = 'GROUPE-HASNAOUI\\' + username
+            connexion = connexion_ad2000(email_util, password)
+        else:
+            connexion = connexion_email(username, password)
+        if connexion == 'deco':
+            return render(request, 'pages/login.html', {'msg': 'Accès non autorisé'})
+        else:
+            print(connexion['ad_2000'])
+            user = authenticate(
+                request, username=connexion['ad_2000'], password=pass_django)
+            if user is not None:
+                login(request, user)
+                return redirect("index")
+                # return affectation_societe(int(request.user.first_name))
+            else:
+                messages.info(request, 'username or password is invalid')
+    return render(request, 'pages/login.html')

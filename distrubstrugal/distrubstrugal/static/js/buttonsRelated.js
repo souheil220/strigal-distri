@@ -13,7 +13,7 @@ $('#add-one-more').click(function () {
   </td>
     <td>
     <div class="form-groupe">
-      <select name="" class="selectjs" id="selectjs-` + ((parseInt(len) + 1).toString()) +
+      <select class="selectjsC" id="selectjs-` + ((parseInt(len) + 1).toString()) +
     `-2">
         <option value=""></option>
       </select>
