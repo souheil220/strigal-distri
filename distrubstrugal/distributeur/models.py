@@ -55,6 +55,7 @@ class Article(models.Model):
     company_id = models.IntegerField()
     active = models.BooleanField()
     product_id = models.IntegerField(primary_key=True)
+    prix_unitaire = models.IntegerField(default=0)
 
     def __str__(self):
         return "{}".format(self.id_article)
@@ -65,4 +66,5 @@ class ListArticleCommande(models.Model):
     id_commande = models.ForeignKey(Commande, on_delete=models.CASCADE)
     code_article = models.ForeignKey(Article, on_delete=models.CASCADE)
     qte = models.IntegerField()
+    prix_unitaire = models.IntegerField(default=0)
     montant = models.FloatField()

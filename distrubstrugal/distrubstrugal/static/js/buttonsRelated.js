@@ -3,11 +3,11 @@ $('#add-one-more').click(function () {
   console.log(len)
 
   $('#myRow-' + len).after(`
-    <div id='myRow-` + ((parseInt(len) + 1).toString()) + `' class="row align-items-end col-sm-12" style="margin-bottom: 3%;">
+    <div id='myRow-` + ((parseInt(len) + 1).toString()) + `' class="row align-items-end col-sm-12 test" style="margin-bottom: 3%;">
       <div class="col col-12 col-lg-4 col-xl-4">
           <div class="text-center d-lg-none">Article</div>
           <div class="">
-            <select name="article-` + ((parseInt(len) + 1).toString()) + `" class="form-control" id="selectjs-` + ((parseInt(len) + 1).toString()) + `-1">
+            <select class="form-control" id="selectjs-` + ((parseInt(len) + 1).toString()) + `-1">
               <option value=""></option>
             </select>
           </div>
@@ -16,7 +16,7 @@ $('#add-one-more').click(function () {
       <div class="col col-12 col-lg-3 col-xl-3 ">
         <div class="text-center d-lg-none">ref Article</div>
         <div class="">
-            <select class="form-control" id="selectjs-` + ((parseInt(len) + 1).toString()) + `-2">
+            <select  name="article-` + ((parseInt(len) + 1).toString()) + `"  class="form-control" id="selectjs-` + ((parseInt(len) + 1).toString()) + `-2">
               <option value=""></option>
             </select>
         </div>
@@ -56,10 +56,10 @@ $('#add-one-more').click(function () {
           <div class="">
             <input
               type="text"
-              name="prixunitaire-` + ((parseInt(len) + 1).toString()) + `"
-              id="prixunitaire-` + ((parseInt(len) + 1).toString()) + `"
-              value="19000"
-              placeholder="19000"
+              name="prix_unitaire-` + ((parseInt(len) + 1).toString()) + `"
+              id="prix_unitaire-` + ((parseInt(len) + 1).toString()) + `"
+              value=""
+              placeholder=""
               disabled
             />
           </div>
@@ -199,8 +199,9 @@ $('#add-one-more').click(function () {
 
   function closeSelect(idContainer, e, that) {
     var num = (that.parents()[2].id)
+    num = (num.substr(num.length - 1))
+    console.log(num)
     var pos = lista.map(function (event) {
-      console.log(event)
       if (idContainer === "#select2-selectjs-" + num + "-1-container") {
         return event.nom_article
       } else {
@@ -210,8 +211,10 @@ $('#add-one-more').click(function () {
 
 
     }).indexOf($(idContainer).text());
+    console.log(pos)
 
     $('#unitedemeusur-' + num).val(lista[pos]['unite_mesure'])
+    $('#prix_unitaire-' + num).val(lista[pos]['prix_unitaire'])
 
     console.log("select2:close", e);
   }
@@ -220,11 +223,13 @@ $('#add-one-more').click(function () {
 
   $eventSelect.on("select2:close", function (e) {
     var num = ($(this).parents()[2].id)
+    num = (num.substr(num.length - 1))
     closeSelect("#select2-selectjs-" + num + "-1-container", e, $(this))
   })
 
   $eventSelect2.on("select2:close", function (e) {
     var num = ($(this).parents()[2].id)
+    num = (num.substr(num.length - 1))
     closeSelect("#select2-selectjs-" + num + "-2-container", e, $(this))
   })
 

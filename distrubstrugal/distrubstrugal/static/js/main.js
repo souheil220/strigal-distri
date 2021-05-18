@@ -267,11 +267,13 @@
 		var tva = 0
 		var ttc = 0
 		var num = ($(this)[0].id).substr(($(this)[0].id).length - 1)
-		if ($('#quantite-' + num).val().length > 0 && $('#quantite-' + num).val() !== '0') {
 
-			var montant = (parseInt($('#quantite-' + num).val()) * parseInt($('#prixunitaire-' + num).val())).toString()
+		if ($('#quantite-' + num).val().length > 0 && $('#quantite-' + num).val() !== '0') {
+			console.log("sheeesh")
+			var montant = (parseInt($('#quantite-' + num).val()) * parseInt($('#prix_unitaire-' + num).val())).toString()
 			$('#mantant-' + num).val(montant)
 		} else {
+			console.log("not sheees")
 			$('#mantant-' + num).val('0')
 		}
 
@@ -474,6 +476,7 @@
 
 	function closeSelect(idContainer, e, that) {
 		var num = (that.parents()[2].id)
+		num = (num.substr(num.length - 1))
 		var pos = lista.map(function (event) {
 			console.log(event)
 			if (idContainer === "#select2-selectjs-1-1-container") {
@@ -487,6 +490,9 @@
 		}).indexOf($(idContainer).text());
 
 		$('#unitedemeusur-' + num).val(lista[pos]['unite_mesure'])
+		console.log(lista[pos]['prix_unitaire'])
+		console.log('#prix_unitaire-' + num)
+		$('#prix_unitaire-' + num).val(lista[pos]['prix_unitaire'])
 
 		console.log("select2:close", e);
 	}

@@ -62,19 +62,20 @@
       <input name="mat" id="mat" hidden value="0" />
       <input name="ttc" id="ttc" hidden value="0" />
       {% csrf_token %}
-      <div id="myRow-1" class="row align-items-end col-sm-12" style="margin-bottom: 1%">
+      <div id="myRow-1" class="row align-items-end col-sm-12 test">
+        <!-- la somme des colonne est < 12 pk ? ajout un ligne et tu comprendra -->
         <div class="col col-12 col-lg-4 col-xl-4">
           <div class="text-center">Article</div>
           <div class="">
-            <select name="article-1" class="form-control" id="selectjs-1-1">
+            <select class="form-control" id="selectjs-1-1">
               <option value=""></option>
             </select>
           </div>
         </div>
-        <div class="col col-12 col-lg-3 col-xl-3 ">
+        <div class="col col-12 col-lg-3 col-xl-3">
           <div class="text-center">ref Article</div>
           <div class="">
-            <select class="form-control" id="selectjs-1-2">
+            <select name="article-1" class="form-control" id="selectjs-1-2">
               <option value=""></option>
             </select>
           </div>
@@ -101,7 +102,7 @@
               id="unitedemeusur-1"
               value=""
               placeholder="..."
-              disabled
+              readonly
             />
           </div>
         </div>
@@ -110,11 +111,11 @@
           <div class="">
             <input
               type="text"
-              name="prixunitaire-1"
-              id="prixunitaire-1"
-              value="19000"
-              placeholder="19000"
-              disabled
+              name="prix_unitaire-1"
+              id="prix_unitaire-1"
+              value=""
+              placeholder=""
+              readonly
             />
           </div>
         </div>

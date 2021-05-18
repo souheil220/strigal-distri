@@ -189,7 +189,7 @@ html {
 *,
 *:before,
 *:after {
-  box-sizing: inherit;
+  /* box-sizing: inherit; */
 }
 
 body {
@@ -2517,7 +2517,7 @@ input[type="radio"] + label {
   font-family: "Merriweather", Georgia, serif;
   text-transform: none;
   font-weight: 300;
-  padding-left: 2.8rem;
+  /* padding-left: 2.8rem; */
   padding-right: 1rem;
   position: relative;
 }
@@ -4853,4 +4853,19 @@ html {
   background-image: url("../images/overlay.png"),
     linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
     url("../images/bg.jpg");
+}
+
+div.col.col-12.col-lg-3.col-xl-3 {
+  padding-left: 0.5%;
+}
+div.col.col-12.col-lg-4.col-xl-4 {
+  padding-left: 0.5%;
+}
+div.col.col-12.col-lg-1.col-xl-1 {
+  padding-left: 0.5%;
+}
+.test {
+  padding-right: 0;
+  padding-left: 0;
+  margin-bottom: 1%;
 }

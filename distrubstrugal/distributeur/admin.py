@@ -14,7 +14,8 @@ class FilterAricle(admin.ModelAdmin):
                     "template_id",
                     "company_id",
                     "active",
-                    "product_id")
+                    "product_id",
+                    "prix_unitaire")
 
 
 class FilterDistributeur(admin.ModelAdmin):

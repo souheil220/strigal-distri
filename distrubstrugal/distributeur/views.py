@@ -27,6 +27,7 @@ def loadMore(request, name, whiche):
             data[i]['id_article'] = product.id_article
             data[i]['nom_article'] = product.nom_article
             data[i]['unite_mesure'] = product.unite_mesure
+            data[i]['prix_unitaire'] = product.prix_unitaire
             i = i+1
 
         return HttpResponse(json.dumps(data, indent=4, default=str), content_type="application/json")
@@ -35,61 +36,62 @@ def loadMore(request, name, whiche):
         raise Http404
 
 
-# def list_article():
-#     try:
-#         article = Article.objects.all().values_list('product_id')
+def list_article():
+    try:
+        article = Article.objects.all().values_list('product_id')
+        if not article:
+            print('no article')
+            data = []
+            pload = {'data': {}}
+            eleme = requests.post(
+                "http://10.10.10.64:8585/diststru/prod/", json=pload).json()
+            print(eleme)
 
-#         if not article:
-#             print('lol')
-#             data = []
-#             pload = {'data': {}}
-#             print(pload)
-#             eleme = requests.post(
-#                 "http://10.10.10.64:8585/diststru/prod/", json=pload).json()
+            for key in eleme.keys():
+                id_article = eleme[key][0]
+                nom_article = eleme[key][1]
+                type_de_categorie = eleme[key][2]
+                categorie_interne = eleme[key][3]
+                famille_article = eleme[key][4]
+                unite_mesure = eleme[key][5]
+                sale_ok = eleme[key][6]
+                type_article = eleme[key][7]
+                template_id = eleme[key][8]
+                company_id = eleme[key][9]
+                active = eleme[key][10]
+                product_id = eleme[key][11]
+                prix_unitaire = eleme[key][17]
 
-#             for key in eleme.keys():
-#                 id_article = eleme[key][0]
-#                 nom_article = eleme[key][1]
-#                 type_de_categorie = eleme[key][2]
-#                 categorie_interne = eleme[key][3]
-#                 famille_article = eleme[key][4]
-#                 unite_mesure = eleme[key][5]
-#                 sale_ok = eleme[key][6]
-#                 type_article = eleme[key][7]
-#                 template_id = eleme[key][8]
-#                 company_id = eleme[key][9]
-#                 active = eleme[key][10]
-#                 product_id = eleme[key][11]
+                article = Article(id_article=id_article,
+                                  nom_article=nom_article,
+                                  type_de_categorie=type_de_categorie,
+                                  categorie_interne=categorie_interne,
+                                  famille_article=famille_article,
+                                  unite_mesure=unite_mesure,
+                                  sale_ok=sale_ok,
+                                  type_article=type_article,
+                                  template_id=template_id,
+                                  company_id=company_id,
+                                  active=active,
+                                  product_id=product_id,
+                                  prix_unitaire=prix_unitaire
+                                  )
+                article.save()
 
-#                 article = Article(id_article=id_article,
-#                                   nom_article=nom_article,
-#                                   type_de_categorie=type_de_categorie,
-#                                   categorie_interne=categorie_interne,
-#                                   famille_article=famille_article,
-#                                   unite_mesure=unite_mesure,
-#                                   sale_ok=sale_ok,
-#                                   type_article=type_article,
-#                                   template_id=template_id,
-#                                   company_id=company_id,
-#                                   active=active,
-#                                   product_id=product_id
-#                                   )
-#                 article.save()
+        else:
+            data2 = {}
+            i = 0
+            for ids in article:
+                print(ids[0])
+                data2[i] = ids[0]
+                i = i + 1
+            data = {"data": data2
+                    }
+            eleme = requests.post(
+                "http://10.10.10.64:8585/diststru/prod/", json=data).json()
 
-#         else:
-#             data2 = {}
-#             i = 0
-#             for ids in article:
-#                 print(ids[0])
-#                 data2[i] = ids[0]
-#                 i = i + 1
-#             data = {"data": data2
-#                     }
-#             eleme = requests.post(
-#                 "http://10.10.10.64:8585/diststru/prod/", json=data).json()
-
-#     except:
-#         print('error')
+    except:
+        print('error')
 
 
 def list_destri():
@@ -180,18 +182,22 @@ def regCommand(request):
         for i in range(1, int(datalength) + 1):
             id_commande = Commande.objects.all().last()
             article = request.POST.get('article-{}'.format(i))
+            print('test ', article)
             code_article = Article.objects.get(id_article=article)
             qte = request.POST['quantite-{}'.format(i)]
+            prix_unitaire = request.POST.get('prix_unitaire-{}'.format(i))
 
             montant = request.POST.get('mantant-{}'.format(i))
             print(montant)
 
-            list_article_commande = ListArticleCommande(id_commande=id_commande,
-                                                        code_article=code_article,
-                                                        qte=int(qte),
-                                                        montant=int(montant),)
+            # list_article_commande = ListArticleCommande(id_commande=id_commande,
+            #                                             code_article=code_article,
+            #                                             qte=int(qte),
+            #                                             prix_unitaire=int(
+            #                                                 prix_unitaire),
+            #                                             montant=int(montant),)
 
-            list_article_commande.save()
+            # list_article_commande.save()
 
         return redirect('/distributeur/listCommandesD')
 
@@ -199,12 +205,9 @@ def regCommand(request):
 @ login_required(login_url='login')
 def commande(request):
     # list_article()
-    # elem = list_article()
-    # list_destri()
+
     return render(
-        request, "distributeur/commande.html", {
-            # "elem": elem
-        })
+        request, "distributeur/commande.html")
 
 
 @ login_required(login_url='login')
