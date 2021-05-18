@@ -1,0 +1,150 @@
+<head>
+    <style>
+        @page {
+            size: a4 portrait;
+            @frame header_frame {           /* Static Frame */
+                -pdf-frame-content: header_content;
+                left: 50pt; width: 512pt; top: 50pt; height: 40pt;
+            }
+            @frame content_frame {          /* Content Frame */
+                left: 50pt; width: 512pt; top: 90pt; height: 632pt;
+            }
+            @frame footer_frame {           /* Another static Frame */
+                -pdf-frame-content: footer_content;
+                left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+            }
+        }
+    </style>
+    </head>
+    
+    <body>
+        <!-- Content for Static Frame 'header_frame' -->
+        <!-- <div id="header_content">
+            <h3>Dennnis Ivanov Company</h3>
+        </div>-->
+    
+        <!-- Content for Static Frame 'footer_frame' -->
+        <!--  <div id="footer_content">(c) - page <pdf:pagenumber>
+            of <pdf:pagecount>
+        </div>-->
+    
+        <!-- HTML Content -->
+        <!-- <table>
+                <tr>
+                    <td>{{address}}</td>
+                    <td>{{phone}}</td>
+                </tr>
+                <tr>
+                    <td>{{city}} {{state}},</td>
+                    <td>{{email}}</td>
+                </tr>
+                <tr>
+                    <td>{{zipcode}}</td>
+                    <td>{{website}}</td>
+                </tr>
+        </table> -->
+    
+        <div style="display: flex; justify-content:space-between">
+            <div style="display:flex; flex-direction:column">
+                <h1>Souheil Hadj-Habib</h1>
+                <div style="border-width:5px; border-radius: 5px;">Devivs N°: DC_22_0111</div>
+                <table style="border-radius: 5px;">
+                    <tr>
+                        <td>
+                            
+                            date
+                        </td>
+                        <td>
+                            Client
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            06/05/2021    
+                        </td>
+                        <td>
+                            007937
+                        </td>
+                    </tr>
+                </table>
+                <table style="border-radius: 5px;">
+                    <tr>
+                        <td>
+                            Reference Client
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <P style="font-weight:bold">ETS Bekkar Rachid</P>
+                            <br>
+                            <P>Zone 32+50 CITE SORECORE LOCAL N° 27 SIDI BEL ABBES 22 22000 Algerie</P>    
+                            <br>
+                            <p style="font-weight:bold">R.C.N°:</p><p>12 A 0151604</p>
+                            <br>
+                            <p style="font-weight:bold">IFN°:</p><p>179220106044131</p>
+                            <br>
+                        </td>    
+                    </tr>
+                </table>
+                <table style="border-radius: 5px;">
+                    <tr>
+                        <td>
+                            Date de Validité    
+                        </td>    
+                        <td>
+                            22/03/2022    
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="display:flex; flex-direction:column">
+                <h3>STRUGAL ALGERIE</h3><br>
+                <h1>ADRESSE:</h1><p>B.P 245 Zone industrielle SIDI BEL ABBES Algerie</p><br>
+                <h1>Capital social:</h1> <p>90 000 000,00 DA</p><br><br>
+                <h1>R.C.N° :</h1><p>11B0023733-01/22</p>
+                <h1>A.I N° :</h1><p>22648699011</p>
+                <h1>I.F N° :</h1><p>001122002373342</p><br><br>
+                <h1>Téléphone :</h1><p>+213 (0) 48 70 66 19 / +213 (0) 48 70 66 20</p>
+                <h1>Télécopie :</h1><p>+213 (0) 48 77 60 18</p>
+                <h1>Email :</h1><p>info@strugal-dz.com</p>
+                <h1>Web : </h1><p>http://www.strugal-dz.com</p>
+            </div>
+        </div>
+        <hr>
+    
+       <!-- <table>
+            <tr>
+     
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+            <tr>
+     
+                <td>Hosting Plan</td>
+                <td>$7.99</td>
+                <td>2</td>
+                <td>$15.98</td>
+            </tr>
+            <tr>
+     
+                <td>consultation </td>
+                <td>$225</td>
+                <td>1</td>
+                <td>$225</td>
+            </tr>
+            <tr>
+     
+                <td>Service Hours</td>
+                <td>$189</td>
+                <td>45.7</td>
+                <td>$8637.30</td>
+            </tr>
+        </table>-->
+    
+        <hr>
+    
+        <p><strong>Total: $8878.28</strong></p>
+    </body>
+    </html>

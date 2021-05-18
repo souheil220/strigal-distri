@@ -2437,6 +2437,7 @@ label {
 input[type="text"],
 input[type="password"],
 input[type="email"],
+input[type="date"],
 select,
 textarea {
   -moz-appearance: none;
@@ -2457,6 +2458,7 @@ textarea {
 input[type="text"]:invalid,
 input[type="password"]:invalid,
 input[type="email"]:invalid,
+input[type="date"]:invalid,
 select:invalid,
 textarea:invalid {
   box-shadow: none;
@@ -2481,6 +2483,7 @@ select::-ms-expand {
 
 input[type="text"],
 input[type="password"],
+input[type="date"],
 input[type="email"],
 select {
   height: 3rem;
@@ -2584,6 +2587,7 @@ label {
 
 input[type="text"],
 input[type="password"],
+input[type="date"],
 input[type="email"],
 select,
 textarea {
@@ -2592,6 +2596,7 @@ textarea {
 
 input[type="text"]:focus,
 input[type="password"]:focus,
+input[type="date"]:focus,
 input[type="email"]:focus,
 select:focus,
 textarea:focus {
@@ -4175,6 +4180,7 @@ body.is-preload #intro:not(.hidden) + #header + #nav {
 
 #footer input[type="text"],
 #footer input[type="password"],
+#footer input[type="date"],
 #footer input[type="email"],
 #footer select,
 #footer textarea {
@@ -4183,6 +4189,7 @@ body.is-preload #intro:not(.hidden) + #header + #nav {
 
 #footer input[type="text"]:focus,
 #footer input[type="password"]:focus,
+#footer input[type="date"]:focus,
 #footer input[type="email"]:focus,
 #footer select:focus,
 #footer textarea:focus {
@@ -4836,4 +4843,14 @@ body.is-preload #intro:not(.hidden) + #header + #nav {
   display: flex;
   justify-content: space-around;
   text-align: center;
+}
+.select2-container .select2-selection--single {
+  height: 2.7rem;
+}
+
+html {
+  background-color: #212931;
+  background-image: url("../images/overlay.png"),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+    url("../images/bg.jpg");
 }

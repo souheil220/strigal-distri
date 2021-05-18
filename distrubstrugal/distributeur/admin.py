@@ -22,9 +22,12 @@ class FilterDistributeur(admin.ModelAdmin):
                     "user",
                     "nom",
                     "adress",
-                    "tel",
-                    "rcn",
-                    "ifn",
+                    "tel_fix",
+                    "tel_portable",
+                    "couriel",
+                    "date_effet",
+                    "date_echeance",
+                    "status",
                     "nbr_facture")
 
 

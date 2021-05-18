@@ -261,7 +261,7 @@
 
 
 
-	$("#ourTable").on("keyup", '.qte', function () {
+	$("body").on("keyup", '.qte', function () {
 		var lenData = parseInt($('#lenData').val())
 		var mht = 0
 		var tva = 0
@@ -293,122 +293,184 @@
 	})
 	var lista = []
 
-	var $eventSelect2 = $("#selectjs-1-2")
-	$eventSelect2.select2({
-		placeholder: "Type",
-		ajax: {
-			type: "GET",
+	try {
+		var $eventSelect2 = $("#selectjs-1-2")
+		$eventSelect2.select2({
+			placeholder: "Type",
+			ajax: {
+				type: "GET",
 
-			dataType: 'json',
-			url: function (params) {
-				var num = $(this)["context"].id
-				var whiche = num.substring(num.length - 1)
-				return 'loadMore/' + params.term + "/" + whiche;
-			},
+				dataType: 'json',
+				url: function (params) {
+					var num = $(this)["context"].id
+					var whiche = num.substring(num.length - 1)
+					return 'loadMore/' + params.term + "/" + whiche;
+				},
 
-			processResults: function (data) {
-				// console.log(data)
-				lista = []
-				for (d in data) {
-					lista.push(data[d])
-				}
-				// console.log(lista)
-				var fin = []
-				fin = data
+				processResults: function (data) {
+					// console.log(data)
+					lista = []
+					for (d in data) {
+						lista.push(data[d])
+					}
+					// console.log(lista)
+					var fin = []
+					fin = data
 
-				return {
+					return {
 
 
-					results: $.map(fin, function (item) {
-							// console.log(item)
+						results: $.map(fin, function (item) {
+								// console.log(item)
 
-							$eventSelect2.on("select2:select", function (e) {
-								nom = e.params.data.id
-								var $newOption = $("<option selected='selected'></option>").val(nom).text(nom)
+								$eventSelect2.on("select2:select", function (e) {
+									nom = e.params.data.id
+									var $newOption = $("<option selected='selected'></option>").val(nom).text(nom)
 
-								$("#selectjs-1-1").append($newOption).trigger('change');
-							})
+									$("#selectjs-1-1").append($newOption).trigger('change');
+								})
 
-							return {
-								text: item.id_article,
-								id: item.nom_article
+								return {
+									text: item.id_article,
+									id: item.nom_article
+
+								}
 
 							}
 
-						}
+						)
 
-					)
-
-				}
+					}
 
 
 
-			},
-			cache: true,
+				},
+				cache: true,
 
 
-		}
-	})
+			}
+		})
+	} catch (error) {
+		console.log('not here')
+	}
+
+
+	try {
+		var $eventSelect = $("#selectjs-1-1")
+		$eventSelect.select2({
+			placeholder: "Type",
+			ajax: {
+				type: "GET",
+
+				dataType: 'json',
+				url: function (params) {
+					var num = $(this)["context"].id
+					var whiche = num.substring(num.length - 1)
+					return 'loadMore/' + params.term + "/" + whiche;
+				},
+
+				processResults: function (data) {
+					// console.log(data)
+					lista = []
+					for (d in data) {
+						lista.push(data[d])
+					}
+					// console.log(lista)
+					var fin = []
+					fin = data
 
 
 
-	var $eventSelect = $("#selectjs-1-1")
-	$eventSelect.select2({
-		placeholder: "Type",
-		ajax: {
-			type: "GET",
-
-			dataType: 'json',
-			url: function (params) {
-				var num = $(this)["context"].id
-				var whiche = num.substring(num.length - 1)
-				return 'loadMore/' + params.term + "/" + whiche;
-			},
-
-			processResults: function (data) {
-				// console.log(data)
-				lista = []
-				for (d in data) {
-					lista.push(data[d])
-				}
-				// console.log(lista)
-				var fin = []
-				fin = data
 
 
+					return {
 
 
+						results: $.map(fin, function (item) {
+							$eventSelect.on("select2:select", function (e) {
+								id = e.params.data.id
+								var $newOption = $("<option selected='selected'></option>").val(id).text(id)
 
-				return {
+								$("#selectjs-1-2").append($newOption).trigger('change');
+							})
+							// console.log(item.nom_article)
 
 
-					results: $.map(fin, function (item) {
-						$eventSelect.on("select2:select", function (e) {
-							id = e.params.data.id
-							var $newOption = $("<option selected='selected'></option>").val(id).text(id)
+							return {
+								text: item.nom_article,
+								id: item.id_article
 
-							$("#selectjs-1-2").append($newOption).trigger('change');
+							}
 						})
-						// console.log(item.nom_article)
 
-
-						return {
-							text: item.nom_article,
-							id: item.id_article
-
-						}
-					})
-
-				}
+					}
 
 
 
-			},
-			cache: true,
+				},
+				cache: true,
 
 
-		}
-	})
+			}
+		})
+
+	} catch (error) {
+		console.log('not here')
+	}
+
+	try {
+		var $selectDistri = $("#selectDistri")
+		$selectDistri.select2({
+			placeholder: "Type",
+			ajax: {
+				type: "GET",
+				dataType: 'json',
+				url: function (params) {
+
+					return 'loadMore/' + params.term
+				},
+
+				processResults: function (data) {
+					// console.log(data)
+					lista = []
+					for (d in data) {
+						lista.push(data[d])
+					}
+					// console.log(lista)
+					var fin = []
+					fin = data
+
+
+
+
+
+					return {
+
+
+						results: $.map(fin, function (item) {
+
+							return {
+								text: item.nom_ditributeur,
+								id: item.id_ditributeur
+
+							}
+						})
+
+					}
+
+
+
+				},
+				cache: true,
+
+
+			}
+		})
+	} catch (error) {
+		console.log('not here')
+	}
+
+
 
 	function closeSelect(idContainer, e, that) {
 		var num = (that.parents()[2].id)

@@ -6,12 +6,23 @@ from django.contrib.auth.models import User
 class Distributeur(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     id = models.AutoField(primary_key=True)
-    typeProfile = models.CharField(max_length=255, default="Distributeur")
     nom = models.CharField(max_length=255)
     adress = models.CharField(max_length=255)
-    tel = models.CharField(max_length=255)
+    tel_fix = models.CharField(null=True, blank=True, max_length=255)
+    tel_portable = models.CharField(null=True, blank=True, max_length=255)
+    couriel = models.CharField(null=True, blank=True, max_length=255)
+    civilite = models.IntegerField(null=True, blank=True)
+    site_web = models.CharField(null=True, blank=True, max_length=255)
     rcn = models.CharField(max_length=255)
+    date_enregistrement_rc = models.CharField(max_length=255)
+    nis = models.CharField(null=True, blank=True, max_length=255)
     ifn = models.CharField(max_length=255)
+    art = models.CharField(max_length=255)
+    date_debut_activité = models.CharField(
+        null=True, blank=True, max_length=255)
+    date_effet = models.CharField(null=True, blank=True, max_length=255)
+    date_echeance = models.CharField(null=True, blank=True, max_length=255)
+    status = models.CharField(max_length=255)
     nbr_facture = models.IntegerField(default=0)
 
     def __str__(self):
@@ -20,11 +31,13 @@ class Distributeur(models.Model):
 
 class Commande(models.Model):
     id = models.AutoField(primary_key=True)
+    n_commande_odoo = models.CharField(null=True, blank=True, max_length=255)
     reference_description = models.CharField(max_length=255)
     destributeur = models.ForeignKey(Distributeur, on_delete=models.CASCADE)
     societe = models.CharField(default='Strugal', max_length=255)
     totaleHT = models.FloatField()
     totaleTTC = models.FloatField()
+    etat = models.CharField(default='Brouillon ', max_length=255)
     date = models.CharField(
         default=date.today().strftime("%d/%m/%Y"), max_length=255)
 

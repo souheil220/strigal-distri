@@ -1,75 +1,90 @@
 $('#add-one-more').click(function () {
   var len = $('#lenData').val()
-  $('#ourTable tr:last').after(`<tr id='` + ((parseInt(len) + 1).toString()) +
-    `'>
-    <td>
-    <div class="form-groupe">
-      <select name="article-` + ((parseInt(len) + 1).toString()) +
-    `" class="selectjs" id="selectjs-` + ((parseInt(len) + 1).toString()) +
-    `-1">
-        <option value=""></option>
-      </select>
-    </div>
-  </td>
-    <td>
-    <div class="form-groupe">
-      <select class="selectjsC" id="selectjs-` + ((parseInt(len) + 1).toString()) +
-    `-2">
-        <option value=""></option>
-      </select>
-    </div>
-  </td>
-  <td>
-    <input
-      type="text"
-      name="quantite-` + ((parseInt(len) + 1).toString()) +
-    `"
-      id="quantite-` + ((parseInt(len) + 1).toString()) +
-    `"
-    class='qte'
-      value=""
-      placeholder=""
-    />
-  </td>
-  <td>
-    <input
-      type="text"
-      name="unitedemeusur-` + ((parseInt(len) + 1).toString()) +
-    `"
-      id="unitedemeusur-` + ((parseInt(len) + 1).toString()) +
-    `"
-      value=""
-      placeholder="..."
-      disabled
-    />
-  </td>
-  <td>
-    <input
-      type="text"
-      name="prixunitaire-` + ((parseInt(len) + 1).toString()) +
-    `"
-      id="prixunitaire-` + ((parseInt(len) + 1).toString()) +
-    `"
-      value="19000"
-      placeholder="19000"
-      disabled
-    />
-  </td>
-  <td>
-    <input
-      type="text"
-      name="mantant-` + ((parseInt(len) + 1).toString()) +
-    `"
-      id="mantant-` + ((parseInt(len) + 1).toString()) +
-    `"
-      value="0"
-      placeholder="0"
-      readonly
-    />
-  </td>
-  
-  <td class='removeit button icon solid fa-trash' style="color:#af1010 !important; margin-right:15px; box-shadow: inset 0 0 0 2px #eeeeee !important"></td>
-</tr>`);
+  console.log(len)
+
+  $('#myRow-' + len).after(`
+    <div id='myRow-` + ((parseInt(len) + 1).toString()) + `' class="row align-items-end col-sm-12" style="margin-bottom: 3%;">
+      <div class="col col-12 col-lg-4 col-xl-4">
+          <div class="text-center d-lg-none">Article</div>
+          <div class="">
+            <select name="article-` + ((parseInt(len) + 1).toString()) + `" class="form-control" id="selectjs-` + ((parseInt(len) + 1).toString()) + `-1">
+              <option value=""></option>
+            </select>
+          </div>
+      </div>
+      
+      <div class="col col-12 col-lg-3 col-xl-3 ">
+        <div class="text-center d-lg-none">ref Article</div>
+        <div class="">
+            <select class="form-control" id="selectjs-` + ((parseInt(len) + 1).toString()) + `-2">
+              <option value=""></option>
+            </select>
+        </div>
+      </div>
+
+      <div class="col col-12 col-lg-1 col-xl-1">
+        <div class="text-center d-lg-none">Quantité</div>
+          <div class="">
+            <input
+              type="text"
+              name="quantite-` + ((parseInt(len) + 1).toString()) + `"
+              id="quantite-` + ((parseInt(len) + 1).toString()) + `"
+              value="0"
+              class="qte"
+              placeholder="0"
+            />
+          </div>
+      </div>
+
+      <div class="col col-12 col-lg-1 col-xl-1">
+          <div class="text-center d-lg-none">Unité de mesure</div>
+          <div class="">
+            <input
+              type="text"
+              name="unitedemeusur-` + ((parseInt(len) + 1).toString()) + `"
+              id="unitedemeusur-` + ((parseInt(len) + 1).toString()) + `"
+              value=""
+              placeholder="..."
+              disabled
+            />
+          </div>
+      </div>
+
+
+      <div class="col col-12 col-lg-1 col-xl-1">
+          <div class="text-center d-lg-none">Prix Unitaire</div>
+          <div class="">
+            <input
+              type="text"
+              name="prixunitaire-` + ((parseInt(len) + 1).toString()) + `"
+              id="prixunitaire-` + ((parseInt(len) + 1).toString()) + `"
+              value="19000"
+              placeholder="19000"
+              disabled
+            />
+          </div>
+      </div>
+
+      <div class="col col-12 col-lg-1 col-xl-1" >
+          <div class="text-center d-lg-none">Montant</div>
+          <div class="">
+              <input
+                type="text"
+                name="mantant-` + ((parseInt(len) + 1).toString()) + `"
+                id="mantant-` + ((parseInt(len) + 1).toString()) + `"
+                value="0"
+                placeholder="0"
+                readonly
+              />
+          </div>
+      </div>
+
+      <div class="col col-12 col-lg-1 col-xl-1 text-center">
+        <p class='removeit button icon solid fa-trash' 
+          style=" margin:0;color:#af1010 !important; margin-right:15px; box-shadow: inset 0 0 0 2px #eeeeee !important">
+        </p>
+      </div>
+    </div>`)
   var lista = []
 
   var $eventSelect = $("#selectjs-" + ((parseInt(len) + 1).toString()) + "-1")
@@ -80,7 +95,8 @@ $('#add-one-more').click(function () {
 
       dataType: 'json',
       url: function (params) {
-        var num = $(this)["context"].id
+        console.log($(this)[0].id)
+        var num = $(this)[0].id
         var whiche = num.substring(num.length - 1)
         return 'loadMore/' + params.term + "/" + whiche;
       },
@@ -215,8 +231,12 @@ $('#add-one-more').click(function () {
   $('#lenData').val((parseInt(len) + 1).toString())
 })
 
-$('#ourTable').on('click', '.removeit', function () {
-  $(this).parent().remove();
+
+
+$("body").on('click', '.removeit', function () {
+
+  console.log($(this).parent().parent())
+  $(this).parent().parent().remove();
   var len = $('#lenData').val()
   $('#lenData').val((parseInt(len) - 1).toString())
   var lenData = parseInt($('#lenData').val())

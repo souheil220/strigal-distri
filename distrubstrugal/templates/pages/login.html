@@ -60,9 +60,12 @@
             <button class="login100-form-btn">Login</button>
           </div>
 
+          {% for message in messages %}
          
+          <p style="text-align:center;color:red">{{message}}</p>
+        {% endfor %}
         </form>
-
+        
         <div
           class="login100-more"
           style="background-image: url('{% static "images/bg-01.jpg" %}')"

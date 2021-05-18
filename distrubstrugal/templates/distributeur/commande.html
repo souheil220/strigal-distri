@@ -4,12 +4,23 @@
 <!-- Wrapper -->
 <div id="wrapper">
   <!-- Header -->
- 
+
   {% include 'partials/_header.html'%}
-  <link
-    href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
-    rel="stylesheet"
-  />
+  <!-- <script
+    src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"
+  ></script> -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"
+  ></script>
 
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <!-- Nav -->
@@ -51,82 +62,81 @@
       <input name="mat" id="mat" hidden value="0" />
       <input name="ttc" id="ttc" hidden value="0" />
       {% csrf_token %}
-      <table class="table table-bordered" id="ourTable">
-        <thead>
-          <tr>
-            <th scope="col" id="art">Article</th>
-            <th scope="col" id="art">ref Article</th>
-            <th scope="col">Quantité</th>
-            <th scope="col">Unité de mesure</th>
-            <th scope="col">Prix Unitaire</th>
-            <th scope="col">Montant</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr id="1">
-            <td>
-              <div class="form-groupe">
-                <select name="article-1" class="selectjs" id="selectjs-1-1">
-                  <option value=""></option>
-                </select>
-              </div>
-            </td>
-            <td>
-              <div class="form-groupe">
-                <select class="selectjsC" id="selectjs-1-2">
-                  <option value=""></option>
-                </select>
-              </div>
-            </td>
-
-            <td>
-              <input
-                type="text"
-                name="quantite-1"
-                id="quantite-1"
-                value="0"
-                class="qte"
-                placeholder="0"
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                name="unitedemeusur-1"
-                id="unitedemeusur-1"
-                value=""
-                placeholder="..."
-                disabled
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                name="prixunitaire-1"
-                id="prixunitaire-1"
-                value="19000"
-                placeholder="19000"
-                disabled
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                name="mantant-1"
-                id="mantant-1"
-                value="0"
-                placeholder="0"
-                readonly
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div id="myRow-1" class="row align-items-end col-sm-12" style="margin-bottom: 1%">
+        <div class="col col-12 col-lg-4 col-xl-4">
+          <div class="text-center">Article</div>
+          <div class="">
+            <select name="article-1" class="form-control" id="selectjs-1-1">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="col col-12 col-lg-3 col-xl-3 ">
+          <div class="text-center">ref Article</div>
+          <div class="">
+            <select class="form-control" id="selectjs-1-2">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="col col-12 col-lg-1 col-xl-1">
+          <div class="text-center">Quantité</div>
+          <div class="">
+            <input
+              type="text"
+              name="quantite-1"
+              id="quantite-1"
+              value="0"
+              class="qte"
+              placeholder="0"
+            />
+          </div>
+        </div>
+        <div class="col col-12 col-lg-1 col-xl-1">
+          <div class="text-center">Unité de mesure</div>
+          <div class="">
+            <input
+              type="text"
+              name="unitedemeusur-1"
+              id="unitedemeusur-1"
+              value=""
+              placeholder="..."
+              disabled
+            />
+          </div>
+        </div>
+        <div class="col col-12 col-lg-1 col-xl-1">
+          <div class="text-center">Prix Unitaire</div>
+          <div class="">
+            <input
+              type="text"
+              name="prixunitaire-1"
+              id="prixunitaire-1"
+              value="19000"
+              placeholder="19000"
+              disabled
+            />
+          </div>
+        </div>
+        <div class="col col-12 col-lg-1 col-xl-1">
+          <div class="text-center">Montant</div>
+          <div class="">
+            <input
+              type="text"
+              name="mantant-1"
+              id="mantant-1"
+              value="0"
+              placeholder="0"
+              readonly
+            />
+          </div>
+        </div>
+      </div>
       <div style="display: flex; justify-content: center">
         <button
           id="add-one-more"
           type="button"
-          class="btn btn-primary icon solid fa-plus"
+          class="icon solid fa-plus"
         ></button>
       </div>
       <div style="display: flex; justify-content: flex-end">
@@ -139,10 +149,10 @@
             <input
               type="text"
               id="TVA"
-              value="2000"
-              placeholder="2000"
+              value=""
+              placeholder=""
               readonly
-              placeholder="19%"
+              placeholder=""
             />
           </div>
           <div style="display: flex; justify-content: space-between">
@@ -151,15 +161,15 @@
               name="TTC"
               id="TTC"
               type="text"
-              value="2000"
-              placeholder="2000"
+              value=""
+              placeholder=""
               readonly
             />
           </div>
         </div>
       </div>
       <div style="display: flex; justify-content: flex-end; margin-top: 2%">
-        <button class="btn btn-primary">Enregistrer</button>
+        <button class="">Enregistrer</button>
       </div>
     </form>
     <hr />

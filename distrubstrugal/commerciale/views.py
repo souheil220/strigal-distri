@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from distributeur.models import Commande, ListArticleCommande
-
+from distributeur.models import Commande, ListArticleCommande, Distributeur
+import json
+from django.http import Http404, HttpResponse
 # Create your views here.
 
 
@@ -50,3 +51,39 @@ def detailCommande(request, id):
                                                            "reference_description": list_commande[0]["id_commande__reference_description"], })
     else:
         raise Http404
+
+
+def renew(request):
+    if request.method == "POST":
+        id = request.POST.get('distributeur')
+        new_date = request.POST.get('demo-date')
+
+        distributeur = Distributeur.objects.get(id=int(id))
+        print(new_date)
+        distributeur.date_echeance = new_date
+        distributeur.save()
+        return render('commerciale/renouveler_contrat.html')
+
+
+def loadMore(request, name):
+    if request.is_ajax and request.method == "GET":
+
+        result = Distributeur.objects.filter(nom__contains=name)[:5]
+
+        print(result)
+        data = {}
+        i = 0
+        for user in result:
+            data[i] = {}
+            data[i]['id_ditributeur'] = user.id
+            data[i]['nom_ditributeur'] = user.nom
+            i = i+1
+
+        return HttpResponse(json.dumps(data, indent=4, default=str), content_type="application/json")
+
+    else:
+        raise Http404
+
+
+def renouveler_contrat(request):
+    return render(request, "commerciale/renouveler_contrat.html")

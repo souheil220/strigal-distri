@@ -67,6 +67,18 @@
                     >Detail</button></td>
                 </tr>
                 {% endfor %}
+                <tr>
+                  <td>
+                    <a
+                    id="{{com.id}}"
+                    onClick=showDetail(this.id)
+                    type="button"
+                    class="btn "
+                    href="{% url 'pdf_view' %}"
+                    target="_blank"
+                  >Imprimer</a>
+                  </td>
+                </tr>
             </tbody>
         </table>
     </div>
