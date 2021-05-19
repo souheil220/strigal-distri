@@ -7,7 +7,7 @@ $('#add-one-more').click(function () {
       <div class="col col-12 col-lg-4 col-xl-4">
           <div class="text-center d-lg-none">Article</div>
           <div class="">
-            <select class="form-control" id="selectjs-` + ((parseInt(len) + 1).toString()) + `-1">
+            <select name="article-` + ((parseInt(len) + 1).toString()) + `" class="form-control" id="selectjs-` + ((parseInt(len) + 1).toString()) + `-1">
               <option value=""></option>
             </select>
           </div>
@@ -16,7 +16,7 @@ $('#add-one-more').click(function () {
       <div class="col col-12 col-lg-3 col-xl-3 ">
         <div class="text-center d-lg-none">ref Article</div>
         <div class="">
-            <select  name="article-` + ((parseInt(len) + 1).toString()) + `"  class="form-control" id="selectjs-` + ((parseInt(len) + 1).toString()) + `-2">
+            <select class="form-control" id="selectjs-` + ((parseInt(len) + 1).toString()) + `-2">
               <option value=""></option>
             </select>
         </div>
@@ -45,7 +45,7 @@ $('#add-one-more').click(function () {
               id="unitedemeusur-` + ((parseInt(len) + 1).toString()) + `"
               value=""
               placeholder="..."
-              disabled
+              readonly
             />
           </div>
       </div>
@@ -60,7 +60,7 @@ $('#add-one-more').click(function () {
               id="prix_unitaire-` + ((parseInt(len) + 1).toString()) + `"
               value=""
               placeholder=""
-              disabled
+              readonly
             />
           </div>
       </div>
@@ -171,7 +171,8 @@ $('#add-one-more').click(function () {
 
               $eventSelect2.on("select2:select", function (e) {
                 nom = e.params.data.id
-                var $newOption = $("<option selected='selected'></option>").val(nom).text(nom)
+                valeur = e.params.data.text
+                var $newOption = $("<option selected='selected'></option>").val(valeur).text(nom)
 
                 $("#selectjs-" + ((parseInt(len) + 1).toString()) + "-1").append($newOption).trigger('change');
               })

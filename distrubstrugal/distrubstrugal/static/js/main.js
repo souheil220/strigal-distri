@@ -327,7 +327,8 @@
 
 								$eventSelect2.on("select2:select", function (e) {
 									nom = e.params.data.id
-									var $newOption = $("<option selected='selected'></option>").val(nom).text(nom)
+									valeur = e.params.data.text
+									var $newOption = $("<option selected='selected'></option>").val(valeur).text(nom)
 
 									$("#selectjs-1-1").append($newOption).trigger('change');
 								})

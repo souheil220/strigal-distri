@@ -169,7 +169,7 @@ def regCommand(request):
             nbr_facture = 0
         distributeur = Distributeur.objects.get(
             user=current_user)
-        reference_description = 'DC' + (str(current_user.id).zfill(2)) + \
+        reference_description = 'DC' + (str((current_user.id)-1).zfill(2)) + \
             str(nbr_facture).zfill(4) + "/" + datetime.now().strftime("%y")
         commande = Commande(reference_description=reference_description,
                             destributeur=distributeur,
@@ -190,14 +190,14 @@ def regCommand(request):
             montant = request.POST.get('mantant-{}'.format(i))
             print(montant)
 
-            # list_article_commande = ListArticleCommande(id_commande=id_commande,
-            #                                             code_article=code_article,
-            #                                             qte=int(qte),
-            #                                             prix_unitaire=int(
-            #                                                 prix_unitaire),
-            #                                             montant=int(montant),)
+            list_article_commande = ListArticleCommande(id_commande=id_commande,
+                                                        code_article=code_article,
+                                                        qte=int(qte),
+                                                        prix_unitaire=int(
+                                                            prix_unitaire),
+                                                        montant=int(montant),)
 
-            # list_article_commande.save()
+            list_article_commande.save()
 
         return redirect('/distributeur/listCommandesD')
 
@@ -249,7 +249,7 @@ def detailCommande(request, id):
         raise Http404
 
 
-def numberToLetter():
+def numberToLetter(total):
     muz = (' ', 'ONZE', 'DOUZE', 'TREIZE',
            'QUATORZE', 'QUINZE', 'SEIZE', 'DIX-SEPT', 'DIX-HUIT', 'DIX-NEUF')
 
@@ -338,7 +338,7 @@ def numberToLetter():
             muzamil2 = (french_number(abs(int(list[1]))))
             end_word = muzamil2
             final_result = final_result + " ET "+end_word+" CENTS"
-            print(final_result)
+            return final_result
         else:
             return french_number + " ET "+"ZERO"+" CENTS"
 
@@ -348,9 +348,67 @@ def numberToLetter():
         # cents_name = (cents_number > 1) and 'Francs' or 'Franc'
         # final_result = start_word +units_name+' '+ end_word +cents_name
         # return final_result
+    print(total)
+    return amount_to_text_fr(float(total))
 
-    print(amount_to_text_fr(426753.00))
 
+def render_to_pdf(request, id):
+    list_commande = ListArticleCommande.objects.filter(id_commande=id).values(
+        'id_commande__reference_description',
+        'id_commande__date',
+        'id_commande__totaleTTC',
+        'id_commande__destributeur__id',
+        'id_commande__destributeur__nom',
+        'id_commande__destributeur__adress',
+        'id_commande__destributeur__rcn',
+        'id_commande__destributeur__ifn',
+        'code_article__id_article',
+        'code_article__nom_article',
+        'code_article__unite_mesure',
+        'code_article__prix_unitaire',
+        'qte',
+        'montant',
+        'id_commande__totaleHT')
+    article = {}
+    commande = []
+    for i in range(0, len(list_commande)):
+        article[i] = {
+            'ref': list_commande[i]['code_article__id_article'],
+            'designation': list_commande[i]['code_article__nom_article'],
+            'um': list_commande[i]['code_article__unite_mesure'],
+            'qte': list_commande[i]['qte'],
+            'pu': list_commande[i]['code_article__prix_unitaire'],
+            'montant': list_commande[i]['montant'],
+        }
+    i = 0
+    for key in article.keys():
+        commande.append(article[key])
+        i += 1
 
-def render_to_pdf(request):
-    return redirect("https://invoice.strugal-dz.com/stru-invoice-api/PDF/DownloadInvoice?name=DEVIS_STRUGAL_DC_22_01159-22")
+    total = numberToLetter((list_commande[0]['id_commande__totaleTTC']))
+    # print(total)
+
+    data = {"ref": list_commande[0]['id_commande__reference_description'],
+            "date": list_commande[0]['id_commande__date'],
+            "date_validite": "07/05/2021",
+            "somme_txt": str(total),
+            "client": {
+                "ref": list_commande[0]["id_commande__destributeur__id"],
+                "name": list_commande[0]["id_commande__destributeur__nom"],
+                "address": list_commande[0]["id_commande__destributeur__adress"],
+                "RC": list_commande[0]["id_commande__destributeur__rcn"],
+                "AI": "",
+                "IF": list_commande[0]["id_commande__destributeur__ifn"]
+    },
+        "commandes": commande,
+        "total": {
+                "total_ht": list_commande[0]['id_commande__totaleHT'],
+                "montant_tva": 0,
+                "total_ttc": list_commande[0]['id_commande__totaleTTC']
+    }
+    }
+    # return HttpResponse(json.dumps(data))
+    eleme = requests.post(
+        "https://invoice.strugal-dz.com/stru-invoice-api/PDF/generateInvoice", json=data).json()
+    name = list_commande[0]['id_commande__reference_description']
+    return redirect("https://invoice.strugal-dz.com/stru-invoice-api/PDF/DownloadInvoice?name=DEVIS_STRUGAL_"+name.replace('/', '-'))

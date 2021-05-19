@@ -9,5 +9,5 @@ urlpatterns = [
     path("loadMore/<str:name>/<str:whiche>", views.loadMore, name="loadMore"),
     path("regCommand", views.regCommand, name="regCommand"),
     # path('pdf_view/', views.ViewPDF.as_view(), name='pdf_view'),
-    path('pdf_view/', views.render_to_pdf, name='pdf_view'),
+    path('pdf_view/<int:id>', views.render_to_pdf, name='pdf_view'),
 ]
