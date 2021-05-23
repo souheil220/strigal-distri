@@ -21,6 +21,7 @@ def detailCommande(request, id):
         list_commande = ListArticleCommande.objects.filter(id_commande=id).values(
             'code_article__id_article',
             'code_article__nom_article',
+            'code_article__prix_unitaire',
             'qte',
             'id_commande__totaleTTC',
             'id_commande__date',
@@ -29,6 +30,7 @@ def detailCommande(request, id):
             'id_commande__destributeur__nom',
             "code_article__unite_mesure",
             "id_commande__totaleHT",
+            "id_commande__n_commande_odoo",
             "montant")
         print(list_commande[0]['id_commande__totaleTTC'])
         # data = {}
@@ -43,7 +45,10 @@ def detailCommande(request, id):
 
         # return HttpResponse(list_commande)
         tva = int(list_commande[0]["id_commande__totaleHT"]) * 19 / 100
-        return render(request, "commerciale/detail.html", {'list_commande': list_commande, 'totalTTC': list_commande[0]['id_commande__totaleTTC'], "societe": list_commande[0]["id_commande__societe"],
+        return render(request, "commerciale/detail.html", {'list_commande': list_commande,
+                                                           'totalTTC': list_commande[0]['id_commande__totaleTTC'],
+                                                           "n_commande_odoo": list_commande[0]['id_commande__n_commande_odoo'],
+                                                           "societe": list_commande[0]["id_commande__societe"],
                                                            "client": list_commande[0]["id_commande__destributeur__nom"],
                                                            "totaleHT": list_commande[0]["id_commande__totaleHT"],
                                                            "tva": tva,

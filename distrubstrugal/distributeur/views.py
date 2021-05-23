@@ -3,7 +3,6 @@ from .models import *
 from django.contrib.auth.models import User
 from datetime import datetime
 import json
-
 import requests
 from django.http import Http404, HttpResponse
 from django.contrib.auth.decorators import login_required

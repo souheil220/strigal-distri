@@ -45,13 +45,13 @@
               {% for com in commande %}
               <tr>
                 
-                  <td>{{com.reference_description}}</td>
+                  <td>{{com.n_commande_odoo}}</td>
                   <td>{{com.date}}</td>
                   <td>{{com.destributeur}}</td>
                   <td>{{com.reference_description}}</td>
                   <td>{{com.totaleHT}}</td>
                   <td>{{com.totaleTTC}}</td>
-                  <td>Attente Validation</td>
+                  <td>{{com.etat}}</td>
                   <td><button
                     id="{{com.id}}"
                     onClick=showDetail(this.id)
@@ -59,21 +59,18 @@
                     class="btn "
                     data-toggle="modal" data-target="#exampleModal"
                   >Detail</button></td>
-                  
+                  <td>
+                    <a
+                    id="{{com.id}}"
+                    onClick=showDetail(this.id)
+                    type="button"
+                    class="btn "
+                    href="{% url 'pdf_view' com.id %}"
+                    target="_blank"
+                  >Imprimer</a>
+                  </td>
               </tr>
               {% endfor %}
-              <tr>
-                <td>
-                  <a
-                  id="{{com.id}}"
-                  onClick=showDetail(this.id)
-                  type="button"
-                  class="btn "
-                  href="{% url 'pdf_view' %}"
-                  target="_blank"
-                >Imprimer</a>
-                </td>
-              </tr>
           </tbody>
       </table>
     </div>
