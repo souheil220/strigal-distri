@@ -35,123 +35,66 @@ def loadMore(request, name, whiche):
         raise Http404
 
 
-def list_article():
-    try:
-        article = Article.objects.all().values_list('product_id')
-        if not article:
-            print('no article')
-            data = []
-            pload = {'data': {}}
-            eleme = requests.post(
-                "http://10.10.10.64:8585/diststru/prod/", json=pload).json()
-            print(eleme)
 
-            for key in eleme.keys():
-                id_article = eleme[key][0]
-                nom_article = eleme[key][1]
-                type_de_categorie = eleme[key][2]
-                categorie_interne = eleme[key][3]
-                famille_article = eleme[key][4]
-                unite_mesure = eleme[key][5]
-                sale_ok = eleme[key][6]
-                type_article = eleme[key][7]
-                template_id = eleme[key][8]
-                company_id = eleme[key][9]
-                active = eleme[key][10]
-                product_id = eleme[key][11]
-                prix_unitaire = eleme[key][17]
+# def list_destri():
+#     try:
 
-                article = Article(id_article=id_article,
-                                  nom_article=nom_article,
-                                  type_de_categorie=type_de_categorie,
-                                  categorie_interne=categorie_interne,
-                                  famille_article=famille_article,
-                                  unite_mesure=unite_mesure,
-                                  sale_ok=sale_ok,
-                                  type_article=type_article,
-                                  template_id=template_id,
-                                  company_id=company_id,
-                                  active=active,
-                                  product_id=product_id,
-                                  prix_unitaire=prix_unitaire
-                                  )
-                article.save()
+#         print('lol')
+#         data = []
+#         pload = {'data': {}}
+#         print(pload)
+#         eleme = requests.post(
+#             "http://10.10.10.64:8585/diststru/", json=pload).json()
+#         s = "_"
+#         for key in eleme.keys():
+#             try:
+#                 x = eleme[key][7].split('@')
+#                 s = x[0]
+#             except:
+#                 x = eleme[key][3].split()
+#                 if '-' in x[0]:
+#                     x[0] = x[0].replace('-', '_')
+#                 s = "_"
+#                 s = s.join(x)
 
-        else:
-            data2 = {}
-            i = 0
-            for ids in article:
-                print(ids[0])
-                data2[i] = ids[0]
-                i = i + 1
-            data = {"data": data2
-                    }
-            eleme = requests.post(
-                "http://10.10.10.64:8585/diststru/prod/", json=data).json()
+#             print(s)
 
-    except:
-        print('error')
+#             utilisateur = User.objects.create_user(s, None, 'Azerty@22')
 
+#             user = utilisateur
+#             nom = eleme[key][3]
+#             adress = eleme[key][4]
+#             tel_fix = eleme[key][5]
+#             tel_portable = eleme[key][6]
+#             couriel = eleme[key][7]
+#             civilite = eleme[key][8]
+#             site_web = eleme[key][9]
+#             rcn = eleme[key][10]
+#             date_enregistrement_rc = eleme[key][11]
+#             nis = eleme[key][12]
+#             ifn = eleme[key][13]
+#             art = eleme[key][14]
+#             status = eleme[key][16]
 
-def list_destri():
-    try:
+#             distributeur = Distributeur(user=user,
+#                                         nom=nom,
+#                                         adress=adress,
+#                                         tel_fix=tel_fix,
+#                                         tel_portable=tel_portable,
+#                                         couriel=couriel,
+#                                         civilite=civilite,
+#                                         site_web=site_web,
+#                                         rcn=rcn,
+#                                         date_enregistrement_rc=date_enregistrement_rc,
+#                                         nis=nis,
+#                                         ifn=ifn,
+#                                         art=art,
+#                                         status=status
+#                                         )
+#             distributeur.save()
 
-        print('lol')
-        data = []
-        pload = {'data': {}}
-        print(pload)
-        eleme = requests.post(
-            "http://10.10.10.64:8585/diststru/", json=pload).json()
-        s = "_"
-        for key in eleme.keys():
-            try:
-                x = eleme[key][7].split('@')
-                s = x[0]
-            except:
-                x = eleme[key][3].split()
-                if '-' in x[0]:
-                    x[0] = x[0].replace('-', '_')
-                s = "_"
-                s = s.join(x)
-
-            print(s)
-
-            utilisateur = User.objects.create_user(s, None, 'Azerty@22')
-
-            user = utilisateur
-            nom = eleme[key][3]
-            adress = eleme[key][4]
-            tel_fix = eleme[key][5]
-            tel_portable = eleme[key][6]
-            couriel = eleme[key][7]
-            civilite = eleme[key][8]
-            site_web = eleme[key][9]
-            rcn = eleme[key][10]
-            date_enregistrement_rc = eleme[key][11]
-            nis = eleme[key][12]
-            ifn = eleme[key][13]
-            art = eleme[key][14]
-            status = eleme[key][16]
-
-            distributeur = Distributeur(user=user,
-                                        nom=nom,
-                                        adress=adress,
-                                        tel_fix=tel_fix,
-                                        tel_portable=tel_portable,
-                                        couriel=couriel,
-                                        civilite=civilite,
-                                        site_web=site_web,
-                                        rcn=rcn,
-                                        date_enregistrement_rc=date_enregistrement_rc,
-                                        nis=nis,
-                                        ifn=ifn,
-                                        art=art,
-                                        status=status
-                                        )
-            distributeur.save()
-
-    except:
-        print('error')
+#     except:
+#         print('error')
 
 
 def regCommand(request):
@@ -203,8 +146,6 @@ def regCommand(request):
 
 @ login_required(login_url='login')
 def commande(request):
-    # list_article()
-
     return render(
         request, "distributeur/commande.html")
 

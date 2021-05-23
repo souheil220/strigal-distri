@@ -1,7 +1,9 @@
 
-from distributeur.models import Commande
+from distributeur.models import Commande, Article
 import json
 import requests
+
+# to bring ids of bon de commande from odoo
 
 
 def schedule_api():
@@ -29,4 +31,27 @@ def schedule_api():
                 la_commande.save()
             print('success')
     except:
-        print('error')
+        print('Error bringing n° odoo')
+
+# to bring new products from odoo
+
+
+def schedule_api2():
+    try:
+        article = Article.objects.all().values_list('product_id')
+        data2 = {}
+        i = 0
+        for ids in article:
+            print(ids[0])
+            data2[i] = ids[0]
+            i = i + 1
+        data = {"data": data2
+                }
+        eleme = requests.post(
+            "http://10.10.10.64:8585/diststru/prod/", json=data).json()
+    except:
+        print('Error with bringing new articles')
+
+
+def schedule_api3():
+    print('yo')

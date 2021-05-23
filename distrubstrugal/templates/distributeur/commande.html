@@ -39,7 +39,13 @@
       </li>
     </ul>
   </nav>
-
+  {% if rest <= 15 %}
+  <script type="text/javascript">
+    $(window).on("load", function () {
+      $("#myModal").modal("show");
+    });
+  </script>
+  {% endif %}
   <div id="main">
     <!-- Form -->
     <h2>Faire une commande</h2>
@@ -176,5 +182,37 @@
     <hr />
   </div>
 </div>
-
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Expiration</h4>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5>Contrat en route d'expiration</h5>
+        <p>
+          Votre contrat vas s'expirer dans {{rest}} jour si vous voulez le
+          renouvlez veillez contacter votre fournisseur le plus tot possible.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary mx-auto"
+          data-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

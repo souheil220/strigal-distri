@@ -10,19 +10,31 @@ import re
 from datetime import datetime, date
 
 
+rest = None
+
+
 def index(request):
     if request.user.is_authenticated:
         # print("user",request.user)
         query_set = Group.objects.filter(user=request.user)
         print(query_set)
         profile = ""
+        distri = Distributeur.objects.get(user=request.user).date_echeance
         for g in query_set:
             profile = g
         print(type(profile.name))
         if profile.name == 'commercial':
             return redirect("commerciale/listCommandesC")
         else:
-            return redirect("distributeur/commande")
+            distri = Distributeur.objects.get(user=request.user)
+            dateFinC = distri.date_echeance
+            today = date.today()
+            date_fin_contrat = datetime.strptime(dateFinC, '%Y-%m-%d')
+            d1 = today.strftime("%Y-%m-%d")
+            date_aujourdui = datetime.strptime(d1, '%Y-%m-%d')
+            rest = date_fin_contrat - date_aujourdui
+            print(rest)
+            return render(request, "distributeur/commande.html", {'rest': rest.days})
 
     return render(request, 'pages/login.html')
 
@@ -87,7 +99,6 @@ def list_destri():
 
 
 def loginPage(request):
-
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -104,7 +115,8 @@ def loginPage(request):
             d1 = today.strftime("%Y-%m-%d")
             date_aujourdui = datetime.strptime(d1, '%Y-%m-%d')
             if(date_aujourdui < date_fin_contrat):
-
+                rest = date_fin_contrat - date_aujourdui
+                print(rest.days)
                 login(request, user)
                 return redirect("index")
             else:
