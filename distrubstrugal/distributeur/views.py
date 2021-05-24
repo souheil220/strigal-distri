@@ -35,7 +35,6 @@ def loadMore(request, name, whiche):
         raise Http404
 
 
-
 # def list_destri():
 #     try:
 
@@ -111,8 +110,12 @@ def regCommand(request):
             nbr_facture = 0
         distributeur = Distributeur.objects.get(
             user=current_user)
+        last_commande = (Commande.objects.last().reference_description)[-2:]
+        two_dig_of_y = datetime.now().strftime("%y")
+        if last_commande > two_dig_of_y:
+            nbr_facture = 1
         reference_description = 'DC' + (str((current_user.id)-1).zfill(2)) + \
-            str(nbr_facture).zfill(4) + "/" + datetime.now().strftime("%y")
+            str(nbr_facture).zfill(4) + "/" + two_dig_of_y
         commande = Commande(reference_description=reference_description,
                             destributeur=distributeur,
                             societe='strugal',
