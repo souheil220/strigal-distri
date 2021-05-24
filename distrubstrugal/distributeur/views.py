@@ -372,6 +372,7 @@ def modifierMP(request):
             if mot_pass == conf_pass:
                 user.set_password(mot_pass)
                 user.save()
+                user = authenticate(username=current_user, password=mot_pass)
                 login(request, user)
                 messages.success(request, 'Mot de passe modifier avec succées')
                 return render(
