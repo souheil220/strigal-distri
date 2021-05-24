@@ -1,37 +1,27 @@
-
-  {% for prod in list_commande %}
-  <h2>Article- {{forloop.counter}}</h2>
-  <div class="container">
-    <label class="col-sm-3 control-label" for="card-holder-name"
-      >Id Article</label
-    >
-    <div class="col-sm-9">
-      <p>{{prod.code_article__id_article}}</p>
-    </div>
-  </div>
-  <div class="container">
-    <label class="col-sm-3 control-label" for="card-holder-name"
-      >Nom Article</label
-    >
-    <div class="col-sm-9">
-      <p>{{prod.code_article__nom_article}}</p>
-    </div>
-  </div>
-  <div class="container">
-    <label class="col-sm-3 control-label" for="card-holder-name"
-      >Quantité</label
-    >
-    <div class="col-sm-9">
-      <p>{{prod.qte}}</p>
-    </div>
-  </div>
-</div>
-{% endfor %}
-<div style="display: flex; justify-content: flex-end; margin-top: 2%"">
-    <label class="col-sm-3 control-label" for="card-holder-name"
-    >Montant</label
-  >
-  <div class="col-sm-9">
-    <p>{{totalTTC}}</p>
-  </div>
+<div class="table-wrapper">
+  <table class="alt">
+    <thead>
+      <tr>
+        <th>Code Article</th>
+        <th>Nom Article</th>
+        <th>Quantité</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for prod in list_commande %}
+      <tr>
+        <td>{{prod.code_article__id_article}}</td>
+        <td>{{prod.code_article__nom_article}}</td>
+        <td>{{prod.qte}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="1"></td>
+        <td>Montant</td>
+        <td>{{totalTTC}}</td>
+      </tr>
+    </tfoot>
+  </table>
 </div>

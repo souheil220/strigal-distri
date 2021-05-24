@@ -6,11 +6,6 @@
   <!-- Header -->
 
   {% include 'partials/_header.html'%}
-  <!-- <script
-    src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"
-  ></script> -->
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -147,32 +142,37 @@
           class="icon solid fa-plus"
         ></button>
       </div>
-      <div style="display: flex; justify-content: flex-end">
-        <div style="display: flex; flex-direction: column; width: 25%">
-          <div style="display: flex; justify-content: space-between">
-            MHT<input name="MHT" id="MHT" type="text" readonly />
+      <div style="display: flex; justify-content: flex-end; height: 25vh">
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: space-around;
+            padding-right: 1%;
+          "
+        >
+          <div>MHT</div>
+          <div>TVA</div>
+          <div>TTC</div>
+        </div>
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            width: 25%;
+            height: 100%;
+            justify-content: space-around;
+          "
+        >
+          <div>
+            <input name="MHT" id="MHT" type="text" readonly />
           </div>
-          <div style="display: flex; justify-content: space-between">
-            TVA
-            <input
-              type="text"
-              id="TVA"
-              value=""
-              placeholder=""
-              readonly
-              placeholder=""
-            />
+          <div>
+            <input type="text" id="TVA" value="" readonly />
           </div>
-          <div style="display: flex; justify-content: space-between">
-            TTC
-            <input
-              name="TTC"
-              id="TTC"
-              type="text"
-              value=""
-              placeholder=""
-              readonly
-            />
+          <div>
+            <input name="TTC" id="TTC" type="text" value="" readonly />
           </div>
         </div>
       </div>
