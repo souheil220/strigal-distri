@@ -1,0 +1,62 @@
+{%extends 'base.html'%} {% block title %} Welcome {% endblock %} 
+{% block content %}
+
+<!-- Wrapper -->
+<div id="wrapper">
+  <!-- Header -->
+  <header id="header">
+    <script
+      src="https://code.jquery.com/jquery-2.2.4.js"
+      integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+      crossorigin="anonymous"
+    ></script>
+    
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+   
+<a href="#" class="logo">Massively</a>
+<br><br>
+<!-- Alerts -->
+{% include 'partials/_alerts.html' %}
+  </header>
+  <!-- Nav -->
+  <nav id="nav">
+    <ul class="links">
+      <li><a href="{% url 'listCommandesD' %}">Liste des commande</a></li>
+      <li><a href="{% url 'commande' %}">Commande</a></li>
+      <li class="active"><a >Modifier Mot de passe</a></li>
+    </ul>
+    <ul class="icons">
+        <li>
+          <span class="label"
+            ><a href="{% url 'logout' %}" class="icon brands fa-sign-out"
+              >logout</a
+            ></span
+          >
+        </li>
+      </ul>
+  </nav>
+
+  <div id="main">
+    <!-- Table -->
+    <h2>Modifier Mot de passe</h2>
+    <form method="POST" action="{% url 'modifierMP' %}">
+        {% csrf_token %}
+        <div class="text-center">
+            <input class="form-group" type="password" name="actual-pass" placeholder="Mot de passe actuel">
+            <input class="form-group" type="password" name="pass" placeholder="Nouveau mot de passe">
+            <input class="form-group" type="password" name="conf-pass" placeholder="Confirmer mot de passe">
+            <button class ="btn">Modifier</button>
+        </div>
+    </form>
+    <hr />
+  </div>
+</div>
+
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha512-3P8rXCuGJdNZOnUx/03c1jOTnMn3rP63nBip5gOP2qmUh5YAdVAvFZ1E+QLZZbC1rtMrQb+mah3AfYW11RUrWA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</div>
+{% endblock %}

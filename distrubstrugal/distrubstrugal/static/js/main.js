@@ -294,7 +294,13 @@
 
 	})
 	var lista = []
-
+	try {
+		setTimeout(function () {
+			jQuery("#message").fadeOut("slow");
+		}, 3000);
+	} catch (error) {
+		return;
+	}
 	try {
 		var $eventSelect2 = $("#selectjs-1-2")
 		$eventSelect2.select2({

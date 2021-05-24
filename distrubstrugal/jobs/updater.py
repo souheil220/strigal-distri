@@ -7,5 +7,5 @@ def start():
     scheduler = BackgroundScheduler()
     scheduler.add_job(schedule_api, 'interval', hours=24)
     scheduler.add_job(schedule_api2, 'interval', hours=24)
-    scheduler.add_job(schedule_api3, 'interval', seconds=5)
+    scheduler.add_job(schedule_api3, 'interval', hours=24)
     scheduler.start()

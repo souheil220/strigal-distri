@@ -6,6 +6,8 @@ import json
 import requests
 from django.http import Http404, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
 
 
 # Create your views here.
@@ -355,3 +357,34 @@ def render_to_pdf(request, id):
         "https://invoice.strugal-dz.com/stru-invoice-api/PDF/generateInvoice", json=data).json()
     name = list_commande[0]['id_commande__reference_description']
     return redirect("https://invoice.strugal-dz.com/stru-invoice-api/PDF/DownloadInvoice?name=DEVIS_STRUGAL_"+name.replace('/', '-'))
+
+
+@ login_required(login_url='login')
+def modifierMP(request):
+    if request.method == "POST":
+        actual_pass = request.POST['actual-pass']
+        current_user = request.user
+        user = authenticate(username=current_user, password=actual_pass)
+        if user is not None:
+            print("user ", user)
+            mot_pass = request.POST['pass']
+            conf_pass = request.POST['conf-pass']
+            if mot_pass == conf_pass:
+                user.set_password(mot_pass)
+                user.save()
+                login(request, user)
+                messages.success(request, 'Mot de passe modifier avec succées')
+                return render(
+                    request, "distributeur/listCommandes.html")
+            else:
+                messages.error(
+                    request, 'Nouveau mot de passe est différent de Confirmer mot de passe')
+                return render(
+                    request, "distributeur/modifier_mp.html")
+        else:
+            messages.error(
+                request, 'Mot de passe actuel erroné')
+            return render(
+                request, "distributeur/modifier_mp.html")
+    return render(
+        request, "distributeur/modifier_mp.html")
