@@ -2438,6 +2438,7 @@ input[type="text"],
 input[type="password"],
 input[type="email"],
 input[type="date"],
+input[type="number"],
 select,
 textarea {
   -moz-appearance: none;
@@ -2459,6 +2460,7 @@ input[type="text"]:invalid,
 input[type="password"]:invalid,
 input[type="email"]:invalid,
 input[type="date"]:invalid,
+input[type="number"]:invalid,
 select:invalid,
 textarea:invalid {
   box-shadow: none;
@@ -2485,6 +2487,7 @@ input[type="text"],
 input[type="password"],
 input[type="date"],
 input[type="email"],
+input[type="number"],
 select {
   height: 3rem;
 }
@@ -2589,6 +2592,7 @@ input[type="text"],
 input[type="password"],
 input[type="date"],
 input[type="email"],
+input[type="number"],
 select,
 textarea {
   border-color: #eeeeee;
@@ -2598,6 +2602,7 @@ input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="date"]:focus,
 input[type="email"]:focus,
+input[type="number"]:focus,
 select:focus,
 textarea:focus {
   border-color: #18bfef;
@@ -4182,6 +4187,7 @@ body.is-preload #intro:not(.hidden) + #header + #nav {
 #footer input[type="password"],
 #footer input[type="date"],
 #footer input[type="email"],
+#footer input[type="number"],
 #footer select,
 #footer textarea {
   border-color: #e2e2e2;
@@ -4191,6 +4197,7 @@ body.is-preload #intro:not(.hidden) + #header + #nav {
 #footer input[type="password"]:focus,
 #footer input[type="date"]:focus,
 #footer input[type="email"]:focus,
+#footer input[type="number"]:focus,
 #footer select:focus,
 #footer textarea:focus {
   border-color: #18bfef;
@@ -4869,3 +4876,5 @@ div.col.col-12.col-lg-1.col-xl-1 {
   padding-left: 0;
   margin-bottom: 1%;
 }
+
+

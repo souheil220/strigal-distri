@@ -7,4 +7,6 @@ urlpatterns = [
     path("detailCommande/<str:id>", views.detailCommande, name="detailCommande"),
     path("loadMore/<str:name>", views.loadMore, name="loadMore"),
     path("renew", views.renew, name="renew"),
-    path("renouvelerContrat", views.renouveler_contrat, name="renouveler_contrat"), ]
+    path("renouvelerContrat", views.renouveler_contrat, name="renouveler_contrat"),
+    path("annulerCommande/<str:id>", views.annulerCommande, name="annulerCommande"), 
+    path("ajouterDis", views.ajouterDis, name="ajouterDis"), ]

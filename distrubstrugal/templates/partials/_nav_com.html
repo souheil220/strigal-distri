@@ -1,0 +1,17 @@
+ <!-- Nav -->
+ <nav id="nav">
+    {% with request.resolver_match.url_name as url_name %}
+    <ul class="links">
+      <li {% if url_name == 'listCommandes' %}class="active"{% endif %}><a {% if url_name != 'listCommandes' %}href="{% url 'listCommandes' %}"{% endif %}>Liste des commande</a></li>
+      <li {% if url_name == 'renouveler_contrat' %}class="active"{% endif %}><a {% if url_name != 'renouveler_contrat' %}href="{% url 'renouveler_contrat' %}"{% endif %} >Renouveler Contrat</a></li>
+      <li {% if url_name == 'ajouterDis' %}class="active"{% endif %}><a {% if url_name != 'ajouterDis' %}href="{% url 'ajouterDis' %}"{% endif %} >Ajouter Distributeur</a></li>
+    </ul>
+    <ul class="icons">
+      <li>
+        <span class="label"
+          ><a href="{% url 'logout' %}"class="icon brands fa-github" aria-hidden="true"></a>
+        </span>
+      </li>
+    </ul>
+    {% endwith %}
+  </nav>

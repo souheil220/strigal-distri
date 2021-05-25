@@ -1,0 +1,89 @@
+{% extends 'base.html' %} {% block title %} Welcome {% endblock %} 
+{% block content %}
+<div id="wrapper">
+  {% include 'partials/_header.html'%} {% include 'partials/_nav_com.html'%}
+   
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>   
+  <div id="main">
+    <h2>Ajouter un nouveau distributeur</h2>
+    <form method="post" action="{% url 'ajouterDis' %}">
+      {% csrf_token %}
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+        "
+      >
+        <div class="text-center col col-12 col-lg-6 col-xl-6">
+          <label>nom</label>
+          <input name="nom" type="text" required />
+        </div>
+        <div class="text-center col col-12 col-lg-6 col-xl-6">
+          <label>adress</label>
+          <input name="adress" type="text" required />
+        </div>
+        <div class="text-center col col-12 col-lg-6 col-xl-6">
+          <label>tel_fix</label>
+          <input name="tel_fix" type="text" />
+        </div>
+        <div class="text-center col col-12 col-lg-6 col-xl-6">
+          <label>tel_portable</label>
+          <input name="tel_portable" type="text" />
+        </div>
+        <div class="text-center col col-12 col-lg-6 col-xl-6">
+          <label>couriel</label>
+          <input name="couriel" type="text" />
+        </div>
+        <div class="text-center col col-12 col-lg-6 col-xl-6">
+          <label>civilite</label>
+          <input name="civilite" type="number" />
+        </div>
+        <div class="text-center col col-12 col-lg-6 col-xl-6">
+          <label>site_web</label>
+          <input name="site_web" type="text" />
+        </div>
+        <div class="text-center col col-12 col-lg-6 col-xl-6">
+          <label>rcn</label>
+          <input name="rcn" type="text" required />
+        </div>
+        <div class="text-center col col-12 col-lg-6 col-xl-6 testing" required>
+          <label>date_enregistrement_rc</label>
+          <input pattern="([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))" type="text" name="date_enregistrement_rc" required placeholder="Entrer la date sous form AAAA-MM-JJ">
+        </div>
+        <div class="text-center col col-12 col-lg-6 col-xl-6">
+          <label>nis</label>
+          <input name="nis" type="text" />
+        </div>
+        <div class="text-center col col-12 col-lg-6 col-xl-6">
+          <label>ifn</label>
+          <input name="ifn" type="text" required />
+        </div>
+        <div class="text-center col col-12 col-lg-6 col-xl-6">
+          <label>art</label>
+          <input name="art" type="text" required />
+        </div>
+        <div class="text-center col col-12 col-lg-6 col-xl-6">
+          <label>date_debut_activité</label>
+          <input pattern="([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))"  type="text" name="date_debut_activité" required placeholder="Entrer la date sous form AAAA-MM-JJ"/>
+        </div>
+        <div class="text-center col col-12 col-lg-6 col-xl-6">
+          <label>date_effet</label>
+          <input pattern="([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))"  name="date_effet" type="text" required placeholder="Entrer la date sous form AAAA-MM-JJ"/>
+        </div>
+        <div class="text-center col col-12 col-lg-6 col-xl-6">
+          <label>date_echeance</label>
+          <input pattern="^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$" name="date_echeance" type="text" required placeholder="Entrer la date sous form AAAA-MM-JJ">
+        </div>
+        <div class="text-center col col-12 col-lg-6 col-xl-6">
+          <label>status</label>
+          <input name="status" type="text" value="validate" required/>
+        </div>
+        <button class="btn" style="margin-top: 1%;">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

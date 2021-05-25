@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User, Group
 from distributeur.models import Commande, ListArticleCommande, Distributeur
 import json
 from django.http import Http404, HttpResponse
@@ -14,6 +15,68 @@ def listCommandes(request):
 
     return render(
         request, "commerciale/listCommandes.html", context)
+
+
+def annulerCommande(request, id):
+    commande = Commande.objects.get(id=id)
+    commande.etat = 'Annuler'
+    commande.save()
+    return redirect('listCommandes')
+
+
+def ajouterDis(request):
+    if request.method == 'POST':
+        nom = request.POST['nom']
+        adress = request.POST['adress']
+        tel_fix = request.POST['tel_fix']
+        tel_portable = request.POST['tel_portable']
+        couriel = request.POST['couriel']
+        civilite = request.POST['civilite']
+        site_web = request.POST['site_web']
+        rcn = request.POST['rcn']
+        date_enregistrement_rc = request.POST['date_enregistrement_rc']
+        nis = request.POST['nis']
+        ifn = request.POST['ifn']
+        art = request.POST['art']
+        date_debut_activité = request.POST['date_debut_activité']
+        date_effet = request.POST['date_effet']
+        date_echeance = request.POST['date_echeance']
+        status = request.POST['status']
+        s = "_"
+        try:
+            x = couriel.split('@')
+            s = x[0]
+        except:
+            x = nom.split()
+            if '-' in x[0]:
+                x[0] = x[0].replace('-', '_')
+            s = "_"
+            s = s.join(x)
+        utilisateur = User.objects.create_user(s, None, 'Azerty@22')
+        user = utilisateur
+        group = Group.objects.get(name='distributeur')
+        user.groups.add(group)
+        distributeur = Distributeur(user=user,
+                                    nom=nom,
+                                    adress=adress,
+                                    tel_fix=tel_fix,
+                                    tel_portable=tel_portable,
+                                    couriel=couriel,
+                                    civilite=civilite,
+                                    site_web=site_web,
+                                    rcn=rcn,
+                                    date_enregistrement_rc=date_enregistrement_rc,
+                                    nis=nis,
+                                    ifn=ifn,
+                                    art=art,
+                                    date_debut_activité=date_debut_activité,
+                                    date_effet=date_effet,
+                                    date_echeance=date_echeance,
+                                    status=status
+                                    )
+        distributeur.save()
+        return redirect('listCommandes')
+    return render(request, 'commerciale/ajouter_dis.html')
 
 
 def detailCommande(request, id):

@@ -359,6 +359,7 @@ def render_to_pdf(request, id):
     return redirect("https://invoice.strugal-dz.com/stru-invoice-api/PDF/DownloadInvoice?name=DEVIS_STRUGAL_"+name.replace('/', '-'))
 
 
+
 @ login_required(login_url='login')
 def modifierMP(request):
     if request.method == "POST":

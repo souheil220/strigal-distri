@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.contrib.auth.models import User, Group
-from django.contrib import messages, auth
+from django.contrib.auth.models import  Group
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import Group
 from .sql import connexion_ad2000, connexion_email
@@ -19,7 +18,6 @@ def index(request):
         query_set = Group.objects.filter(user=request.user)
         print(query_set)
         profile = ""
-        distri = Distributeur.objects.get(user=request.user).date_echeance
         for g in query_set:
             profile = g
         print(type(profile.name))
