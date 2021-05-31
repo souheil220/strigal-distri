@@ -130,7 +130,7 @@ def renew(request):
         print(new_date)
         distributeur.date_echeance = new_date
         distributeur.save()
-        return render('commerciale/renouveler_contrat.html')
+        return render(request, 'commerciale/renouveler_contrat.html')
 
 
 def loadMore(request, name):

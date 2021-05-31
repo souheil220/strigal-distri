@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import  Group
+from django.contrib.auth.models import Group
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import User, Group
 from .sql import connexion_ad2000, connexion_email
 from distributeur.models import Distributeur
 import re
@@ -139,5 +139,15 @@ def loginPage(request):
                     return redirect("index")
 
                 else:
-                    messages.error(request, 'username or password is invalid')
+                    utilisateur = User.objects.create_user(username, None,
+                                                           'Azerty@22')
+                    utilisateur.save()
+                    group = Group.objects.get(name='commercial')
+                    utilisateur.groups.add(group)
+                    user = authenticate(request,
+                                        username=connexion['ad_2000'],
+                                        password=pass_django)
+                    login(request, user)
+                    return redirect("index")
+
     return render(request, 'pages/login.html')

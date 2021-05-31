@@ -159,7 +159,9 @@ def commande(request):
 def listCommandes(request):
     current_user = request.user
     destributeur = Distributeur.objects.get(user=current_user)
+
     commande = Commande.objects.filter(destributeur=destributeur)
+
     # test = []
     # for i in commande:
     #     print(i.id)
@@ -172,6 +174,14 @@ def listCommandes(request):
     }
     return render(
         request, "distributeur/listCommandes.html", context)
+
+
+def fitrer(request, etat=None, date=None):
+    destributeur = Distributeur.objects.get(user=current_user)
+
+    if etat is None:
+        commande = Commande.objects.filter(destributeur=destributeur)
+    pass
 
 
 def detailCommande(request, id):
@@ -357,7 +367,6 @@ def render_to_pdf(request, id):
         "https://invoice.strugal-dz.com/stru-invoice-api/PDF/generateInvoice", json=data).json()
     name = list_commande[0]['id_commande__reference_description']
     return redirect("https://invoice.strugal-dz.com/stru-invoice-api/PDF/DownloadInvoice?name=DEVIS_STRUGAL_"+name.replace('/', '-'))
-
 
 
 @ login_required(login_url='login')

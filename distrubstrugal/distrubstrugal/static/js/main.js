@@ -294,6 +294,7 @@
 
 	})
 	var lista = []
+	//Message fade out
 	try {
 		setTimeout(function () {
 			jQuery("#message").fadeOut("slow");
@@ -301,6 +302,7 @@
 	} catch (error) {
 		return;
 	}
+	//eventSelect2
 	try {
 		var $eventSelect2 = $("#selectjs-1-2")
 		$eventSelect2.select2({
@@ -312,7 +314,10 @@
 				url: function (params) {
 					var num = $(this)["context"].id
 					var whiche = num.substring(num.length - 1)
-					return 'loadMore/' + params.term + "/" + whiche;
+					var pathname = window.location.pathname;
+					pathname === '/' ? loca = 'distributeur/loadMore/' + params.term + "/" + whiche :
+						loca = 'loadMore/' + params.term + "/" + whiche
+					return loca
 				},
 
 				processResults: function (data) {
@@ -363,7 +368,7 @@
 		console.log('not here')
 	}
 
-
+	// eventSelect
 	try {
 		var $eventSelect = $("#selectjs-1-1")
 		$eventSelect.select2({
@@ -375,7 +380,10 @@
 				url: function (params) {
 					var num = $(this)["context"].id
 					var whiche = num.substring(num.length - 1)
-					return 'loadMore/' + params.term + "/" + whiche;
+					var pathname = window.location.pathname;
+					pathname === '/' ? loca = 'distributeur/loadMore/' + params.term + "/" + whiche :
+						loca = 'loadMore/' + params.term + "/" + whiche
+					return loca
 				},
 
 				processResults: function (data) {
@@ -426,7 +434,7 @@
 	} catch (error) {
 		console.log('not here')
 	}
-
+	//selectDistri
 	try {
 		var $selectDistri = $("#selectDistri")
 		$selectDistri.select2({
@@ -479,7 +487,11 @@
 		console.log('not here')
 	}
 
-
+	$('select').on('change', function (e) {
+		var valueSelected = this.value;
+		console.log('valueSelected ' + valueSelected)
+		
+	});
 
 	function closeSelect(idContainer, e, that) {
 		var num = (that.parents()[2].id)

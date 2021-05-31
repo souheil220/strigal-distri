@@ -98,7 +98,10 @@ $('#add-one-more').click(function () {
         console.log($(this)[0].id)
         var num = $(this)[0].id
         var whiche = num.substring(num.length - 1)
-        return 'loadMore/' + params.term + "/" + whiche;
+        var pathname = window.location.pathname;
+        pathname === '/' ? loca = 'distributeur/loadMore/' + params.term + "/" + whiche :
+          loca = 'loadMore/' + params.term + "/" + whiche
+        return loca
       },
 
       processResults: function (data) {
@@ -150,7 +153,10 @@ $('#add-one-more').click(function () {
         var num = $(this)["context"].id
         console.log(num)
         var whiche = num.substring(num.length - 1)
-        return 'loadMore/' + params.term + "/" + whiche;
+        var pathname = window.location.pathname;
+        pathname === '/' ? loca = 'distributeur/loadMore/' + params.term + "/" + whiche :
+          loca = 'loadMore/' + params.term + "/" + whiche
+        return loca
       },
 
       processResults: function (data) {

@@ -37,7 +37,7 @@ class Commande(models.Model):
     societe = models.CharField(default='Strugal', max_length=255)
     totaleHT = models.FloatField()
     totaleTTC = models.FloatField()
-    etat = models.CharField(default='Brouillon ', max_length=255)
+    etat = models.CharField(default='Brouillon', max_length=255)
     date = models.CharField(
         default=date.today().strftime("%d/%m/%Y"), max_length=255)
 

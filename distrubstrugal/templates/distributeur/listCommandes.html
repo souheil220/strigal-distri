@@ -26,6 +26,20 @@
   <div id="main">
     <!-- Table -->
     <h2>Listes de toutes mes commandes</h2>
+    <div style="display: flex;">
+      <h4 class="col-4">Filtrer :</h4>
+    <div class="col-4">
+      <select name="etat" id="etat">
+        <option value="">- Etat -</option>
+        <option value="Brouillon">Brouillon</option>
+        <option value="Annuler">Annuler</option>
+        <option value="Done">Done</option>
+      </select>
+    </div>
+    <div class="col-4">
+      <input type="date" name="date-commande" id="date-commande">
+    </div>
+  </div>
     <div class="table-wrapper">
         <table class="alt">
             <thead>

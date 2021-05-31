@@ -11,7 +11,7 @@
   <div id="main">
     <!-- Table -->
     <h2>Listes de toutes les commandes</h2>
-
+    
     <div class="table-wrapper">
       <table class="alt">
           <thead>
@@ -68,7 +68,7 @@
                         ...
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" disabled>
-                        <a class="text-danger dropdown-item" href="{% url 'annulerCommande' com.id %}"  onclick="return false;" style="cursor: default;">Annuler</a>
+                        <a class="text-danger dropdown-item" href="{% url 'annulerCommande' com.id %}"  style="cursor: default;">Annuler</a>
                       </div>
                     </div>
                   </td>
@@ -105,15 +105,7 @@
   }
 </script>
 
-<script>
-  $exemple = $('#exemple');
-  function showDetail(id){
 
-    $exemple.load('annulerCommande/'+id)    
-
-
-  }
-</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
