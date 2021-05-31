@@ -30,8 +30,7 @@ def schedule_api():
                 la_commande.n_commande_odoo = eleme[key][2]
                 la_commande.etat = eleme[key][4]
                 la_commande.save()
-                print("lem", eleme[key][3])
-            print("n.commande odoo", la_commande.n_commande_odoo)
+
             print('success')
     except:
         print('Error bringing n° odoo')
