@@ -153,5 +153,32 @@ def loadMore(request, name):
         raise Http404
 
 
+def suiviContrat(request):
+    distributeur = Distributeur.objects.all().values(
+        'nom', 'date_effet', 'date_echeance')
+    print(distributeur)
+    context = {
+        'distributeur': distributeur
+    }
+    return render(request, 'commerciale/suivi_contrat.html', context)
+
+
+def filterer(request, dist=None, date=None):
+    if request.is_ajax and request.method == "GET":
+        print(date == 'None')
+        if date == 'None':
+            print('rani fel if')
+            distributeur = Distributeur.objects.filter(nom=dist).values(
+                'id', 'nom', 'date_effet', 'date_echeance')
+            print(distributeur)
+            return HttpResponse(json.dumps(distributeur[0], indent=4, default=str), content_type="application/json")
+        else:
+            print('rani fel else')
+            distributeur = Distributeur.objects.filter(date_echeance=date).values(
+                'nom', 'date_effet', 'date_echeance')
+            print(distributeur)
+            return HttpResponse(json.dumps(distributeur[0], indent=4, default=str), content_type="application/json")
+
+
 def renouveler_contrat(request):
     return render(request, "commerciale/renouveler_contrat.html")

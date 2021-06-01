@@ -1,0 +1,82 @@
+{%extends 'base.html'%} {% block title %} Welcome {% endblock %} 
+{% block content %}
+
+<!-- Wrapper -->
+<div id="wrapper">
+  <!-- Header -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  {% include 'partials/_header.html'%} 
+  {% include 'partials/_nav_com.html'%} 
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <div id="main">
+    <!-- Table -->
+    <h2>Suivis des contrats</h2>
+    <div class="col-lg-12 col-sm-12 " style="display:flex">
+        <select name="distributeur" class="form-control" id="selectDistri">
+          <option value=""></option>
+        </select>
+        <div></div>
+        <input type="date" id="dateE">
+    </div>
+
+    <div id='table-div' class="table-wrapper">
+      <table class="alt">
+          <thead>
+              <tr>
+                  <th>Client</th>
+                  <th>Date Effet</th>
+                  <th>Date Fin de Contrat</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for dis in distributeur %}
+              <tr>
+                
+                  <td>{{dis.nom}}</td>
+                  <td>{{dis.date_effet}}</td>
+                  <td>{{dis.date_echeance}}</td>
+                  <td><button
+                    id="{{com.id}}"
+                    onClick=showDetail(this.id)
+                    type="button"
+                    class="btn "
+                    data-toggle="modal" data-target="#exampleModal"
+                  >Detail</button></td>
+                  
+                  
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+    </div>
+    <hr />
+  </div>
+</div>
+<div class="modal fade" id="exampleModal" >
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><h3>Bon de commande</h3></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="exemple">
+        ...
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $exemple = $('#exemple');
+  function showDetail(id){
+
+    $exemple.load('detailCommande/'+id)    
+
+
+  }
+</script>
+
+</div>
+{% endblock %}

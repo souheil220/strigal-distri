@@ -259,7 +259,51 @@
 	}
 
 
+	$('body').on('change', '#dateE', function () {
+		var dateE = $('#dateE').val()
+		dateE.length <= 0 ? dateE = 'None' : dateE = dateE
+		$.ajax({
+			type: 'GET',
+			url: `filterer/None/${dateE}`,
+			success: function (data) {
+				console.log(data)
+				var table = $('#table-div').children()
+				new_content = `<div id='suivi_des_contrat' class="table-wrapper">
+				<table class="alt">
+					<thead>
+						<tr>
+							<th>Client</th>
+							<th>Date Effet</th>
+							<th>Date Fin de Contrat</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td id = ` + data['id'] + ` hidden></td>
+							<td>` + data['nom'] + `</td>
+							<td>` + data['date_effet'] + `</td>
+							<td>` + data['date_echeance'] + `</td>
+							<td><button
+							  id="{{com.id}}"
+							  onClick=showDetail(this.id)
+							  type="button"
+							  class="btn "
+							  data-toggle="modal" data-target="#exampleModal"
+							>Detail</button></td>
+							
+							
+						</tr>
+					</tbody>
+				</table>
+			  </div>`
+				table.replaceWith(new_content)
 
+			},
+			error: function (response) {
+				console.log(response)
+			}
+		})
+	})
 
 	$("body").on("keyup", '.qte', function () {
 		var lenData = parseInt($('#lenData').val())
@@ -490,7 +534,7 @@
 	$('select').on('change', function (e) {
 		var valueSelected = this.value;
 		console.log('valueSelected ' + valueSelected)
-		
+
 	});
 
 	function closeSelect(idContainer, e, that) {
@@ -523,6 +567,55 @@
 	$eventSelect2.on("select2:close", function (e) {
 		closeSelect("#select2-selectjs-1-2-container", e, $(this))
 	})
+
+	$selectDistri.on("select2:close", function (e) {
+		var nom_distri = e.currentTarget.innerText
+		var dateE = $('#dateE').val()
+		dateE.length <= 0 ? dateE = 'None' : dateE = dateE
+		$.ajax({
+			type: 'GET',
+			url: `filterer/${nom_distri}/${dateE}`,
+			success: function (data) {
+				console.log(data)
+				var table = $('#table-div').children()
+				new_content = `<div id='suivi_des_contrat' class="table-wrapper">
+				<table class="alt">
+					<thead>
+						<tr>
+							<th>Client</th>
+							<th>Date Effet</th>
+							<th>Date Fin de Contrat</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td id = ` + data['id'] + ` hidden></td>
+							<td>` + data['nom'] + `</td>
+							<td>` + data['date_effet'] + `</td>
+							<td>` + data['date_echeance'] + `</td>
+							<td><button
+							  id="{{com.id}}"
+							  onClick=showDetail(this.id)
+							  type="button"
+							  class="btn "
+							  data-toggle="modal" data-target="#exampleModal"
+							>Detail</button></td>
+							
+							
+						</tr>
+					</tbody>
+				</table>
+			  </div>`
+				table.replaceWith(new_content)
+
+			},
+			error: function (response) {
+				console.log(response)
+			}
+
+		})
+	})
+
 
 
 

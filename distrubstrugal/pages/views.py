@@ -139,15 +139,18 @@ def loginPage(request):
                     return redirect("index")
 
                 else:
-                    utilisateur = User.objects.create_user(username, None,
-                                                           'Azerty@22')
-                    utilisateur.save()
-                    group = Group.objects.get(name='commercial')
-                    utilisateur.groups.add(group)
-                    user = authenticate(request,
-                                        username=connexion['ad_2000'],
-                                        password=pass_django)
-                    login(request, user)
-                    return redirect("index")
+                    try:
+                        utilisateur = User.objects.create_user(username, None,
+                                                               'Azerty@22')
+                        utilisateur.save()
+                        group = Group.objects.get(name='commercial')
+                        utilisateur.groups.add(group)
+                        user = authenticate(request,
+                                            username=connexion['ad_2000'],
+                                            password=pass_django)
+                        login(request, user)
+                        return redirect("index")
+                    except Exception as e:
+                        print(e)
 
     return render(request, 'pages/login.html')
