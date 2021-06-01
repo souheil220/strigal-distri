@@ -9,7 +9,6 @@ COPY . .
 
 RUN apk --update add --no-cache g++
 
-RUN pip install pandas
 
 # Install postgres client
 RUN apk add --update --no-cache postgresql-client
