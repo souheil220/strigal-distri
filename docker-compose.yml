@@ -8,7 +8,7 @@ services:
       - "8000:8000"
     volumes:
       - ./distrubstrugal:/distrubstrugal
-    container_name: distrubstrugalproject
+    container_name: DISTRU_APP
     command: >
       sh -c " python manage.py makemigrations &&
               python manage.py migrate &&
@@ -23,6 +23,7 @@ services:
 
   db:
     image: postgres:13-alpine
+    container_name: DISTRU_DB
     volumes:
       - ./data/db:/var/lib/postgresql/data
     environment:
