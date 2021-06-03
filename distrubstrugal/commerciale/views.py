@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, Group
 from distributeur.models import Commande, ListArticleCommande, Distributeur
 import json
+from django.db.models import Q
 from django.http import Http404, HttpResponse
 # Create your views here.
 
@@ -133,19 +134,32 @@ def renew(request):
         return render(request, 'commerciale/renouveler_contrat.html')
 
 
-def loadMore(request, name):
+def loadMore(request, argum, whicheone):
     if request.is_ajax and request.method == "GET":
+        if (whicheone == 'dist'):
+            result = Distributeur.objects.filter(nom__contains=argum)[:5]
 
-        result = Distributeur.objects.filter(nom__contains=name)[:5]
+            print(result)
+            data = {}
+            i = 0
+            for user in result:
+                data[i] = {}
+                data[i]['id_ditributeur'] = user.id
+                data[i]['nom_ditributeur'] = user.nom
+                i = i+1
 
-        print(result)
-        data = {}
-        i = 0
-        for user in result:
-            data[i] = {}
-            data[i]['id_ditributeur'] = user.id
-            data[i]['nom_ditributeur'] = user.nom
-            i = i+1
+        else:
+            result = Commande.objects.filter(
+                reference_description__contains=argum)[:5]
+
+            print(result)
+            data = {}
+            i = 0
+            for commande in result:
+                data[i] = {}
+                data[i]['id_commande'] = commande.id
+                data[i]['reference_description'] = commande.reference_description
+                i = i+1
 
         return HttpResponse(json.dumps(data, indent=4, default=str), content_type="application/json")
 
@@ -153,9 +167,24 @@ def loadMore(request, name):
         raise Http404
 
 
+def detailDisti(request, id):
+    if request.is_ajax and request.method == "GET":
+        distributeur = Distributeur.objects.get(id=id)
+        context = {"nom": distributeur.nom,
+                   "adress": distributeur.adress,
+                   "tel_portable": distributeur.tel_portable,
+                   "couriel": distributeur.couriel,
+                   "date_effet": distributeur.date_effet,
+                   "date_echeance": distributeur.date_echeance,
+                   "nbr_facture": distributeur.nbr_facture, }
+        return render(request, "commerciale/detailD.html", context)
+    else:
+        raise Http404
+
+
 def suiviContrat(request):
-    distributeur = Distributeur.objects.all().values(
-        'nom', 'date_effet', 'date_echeance')
+    distributeur = Distributeur.objects.all()[:5].values(
+        'id', 'nom', 'date_effet', 'date_echeance')
     print(distributeur)
     context = {
         'distributeur': distributeur
@@ -163,21 +192,95 @@ def suiviContrat(request):
     return render(request, 'commerciale/suivi_contrat.html', context)
 
 
+def get_filter_data(distributeur):
+    i = 0
+    final_data = {}
+    for dist in distributeur:
+        final_data[i] = {}
+        final_data[i]['id'] = dist['id']
+        final_data[i]['nom'] = dist['nom']
+        final_data[i]['date_effet'] = dist['date_effet']
+        final_data[i]['date_echeance'] = dist['date_echeance']
+        i += 1
+    return final_data
+
+
 def filterer(request, dist=None, date=None):
     if request.is_ajax and request.method == "GET":
-        print(date == 'None')
         if date == 'None':
-            print('rani fel if')
             distributeur = Distributeur.objects.filter(nom=dist).values(
                 'id', 'nom', 'date_effet', 'date_echeance')
-            print(distributeur)
+            print(distributeur[0]['id'])
+
             return HttpResponse(json.dumps(distributeur[0], indent=4, default=str), content_type="application/json")
         else:
-            print('rani fel else')
-            distributeur = Distributeur.objects.filter(date_echeance=date).values(
-                'nom', 'date_effet', 'date_echeance')
-            print(distributeur)
-            return HttpResponse(json.dumps(distributeur[0], indent=4, default=str), content_type="application/json")
+            if dist == 'None':
+                distributeur = Distributeur.objects.filter(date_echeance=date).values(
+                    'id', 'nom', 'date_effet', 'date_echeance')
+            else:
+                distributeur = Distributeur.objects.filter(date_echeance=date, nom=dist).values(
+                    'id', 'nom', 'date_effet', 'date_echeance')
+            final_data = get_filter_data(distributeur)
+            print('final_data ', final_data)
+
+            context = {"result": final_data}
+            return HttpResponse(json.dumps(context, indent=4, default=str), content_type="application/json")
+
+
+def search(**kwargs):
+    kwargs = {k: v for k, v in kwargs.items() if v != 'None'}
+    print("kwargs ", kwargs)
+    queryset = Commande.objects.filter(**kwargs)
+    print('query :', queryset)
+    return queryset
+
+
+def filtererListCommand(request, dist, date, etat, refdes):
+
+    print("refdes : ", refdes == 'Recherche par Ref Des')
+    if request.is_ajax and request.method == 'GET':
+        print(dist == 'Recherche Ditributeur')
+        if dist != 'None' and dist != 'Recherche Ditributeur':
+            dist = Distributeur.objects.filter(nom=dist)[0]
+        else:
+            dist = 'None'
+
+        if refdes != 'None' and refdes != 'Recherche par Ref Des':
+            refdes = refdes.replace('-', '/')
+        else:
+            refdes = 'None'
+        print("refdes : ", refdes)
+        data = search(date=date, destributeur=dist,
+                      etat=etat, reference_description=refdes)
+        print("data : ", data)
+        i = 0
+        final_data = {}
+        for d in data:
+            final_data[i] = {}
+            final_data[i]['id'] = d.id
+            final_data[i]['date'] = d.date
+            final_data[i]['n_commande_odoo'] = d.n_commande_odoo
+            final_data[i]['destributeur'] = d.destributeur.nom
+            final_data[i]['reference_description'] = d.reference_description
+            final_data[i]['totaleHT'] = d.totaleHT
+            final_data[i]['totaleTTC'] = d.totaleTTC
+            final_data[i]['etat'] = d.etat
+            i += 1
+        # option = {}
+        # if etat != 'None':
+        #     result = Commande.objects.filter(date=date,etat=etat)
+        # if refdes != 'None':
+        #     result = Commande.objects.filter(date=date,etat=etat,reference_description=refdes)
+        # if dist != 'None':
+        #     distributeur = Distributeur.objects.filter(nom=dist)
+        #     option['dist'] = distributeur
+        # if option != {}:
+        #     print(("%s" %option).replace("{","").replace("}","").replace(':','=').replace("'",""))
+        #     result = Commande.objects.filter(
+        #     date=date,)
+        print(final_data)
+        context = {"result": final_data}
+        return HttpResponse(json.dumps(context, indent=4, default=str), content_type="application/json")
 
 
 def renouveler_contrat(request):

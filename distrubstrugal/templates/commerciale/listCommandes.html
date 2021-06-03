@@ -1,4 +1,4 @@
-{%extends 'base.html'%} {% block title %} Welcome {% endblock %} 
+{%extends 'base.html'%} {% block title %} LISTE DES COMMANDE {% endblock %} 
 {% block content %}
 
 <!-- Wrapper -->
@@ -7,12 +7,27 @@
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   {% include 'partials/_header.html'%} 
   {% include 'partials/_nav_com.html'%} 
-
+  
   <div id="main">
     <!-- Table -->
     <h2>Listes de toutes les commandes</h2>
-    
-    <div class="table-wrapper">
+    <div id="filtreur">
+      <input type="date" id="dateE" class="margening">
+      <select name="refdes" class="form-control" id="refdes">
+        <option value=""></option>
+      </select>
+      <select name="etat" id="etat" class="margening">
+        <option value="">- Etat -</option>
+        <option value="Brouillon">Brouillon</option>
+        <option value="Annuler">Annuler</option>
+        <option value="Done">Done</option>
+      </select>
+      <select name="distributeur" class="form-control" class="margening" id="selectDistri" >
+        <option value=""></option>
+      </select>
+      <div></div>
+    </div>
+    <div id='table-div-commande' class="table-wrapper">
       <table class="alt">
           <thead>
               <tr>
@@ -104,10 +119,9 @@
 
   }
 </script>
-
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </div>
 {% endblock %}

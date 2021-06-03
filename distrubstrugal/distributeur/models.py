@@ -39,7 +39,7 @@ class Commande(models.Model):
     totaleTTC = models.FloatField()
     etat = models.CharField(default='Brouillon', max_length=255)
     date = models.CharField(
-        default=date.today().strftime("%d/%m/%Y"), max_length=255)
+        default=date.today().strftime("%Y-%m-%d"), max_length=255)
 
 
 class Article(models.Model):

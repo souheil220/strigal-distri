@@ -1,4 +1,4 @@
-{%extends 'base.html'%} {% block title %} Welcome {% endblock %} 
+{%extends 'base.html'%} {% block title %} SUIVIS DES CONTRAT {% endblock %} 
 {% block content %}
 
 <!-- Wrapper -->
@@ -7,17 +7,25 @@
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   {% include 'partials/_header.html'%} 
   {% include 'partials/_nav_com.html'%} 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
   <div id="main">
     <!-- Table -->
     <h2>Suivis des contrats</h2>
-    <div class="col-lg-12 col-sm-12 " style="display:flex">
-        <select name="distributeur" class="form-control" id="selectDistri">
-          <option value=""></option>
-        </select>
-        <div></div>
-        <input type="date" id="dateE">
+    <div id="filtreur">
+        <div class="div-flex">
+            <span id="span-distri">Distributeur</span>
+            <select name="distributeur" class="form-control" id="selectDistri">
+            <option value=""></option>
+            </select>
+        </div>
+        <div class="div-flex">
+            <span id="span-date-FC">Date fin de contrat</span>
+            <input type="date" id="dateE">
+        </div>
     </div>
 
     <div id='table-div' class="table-wrapper">
@@ -37,14 +45,12 @@
                   <td>{{dis.date_effet}}</td>
                   <td>{{dis.date_echeance}}</td>
                   <td><button
-                    id="{{com.id}}"
+                    id="{{dis.id}}"
                     onClick=showDetail(this.id)
                     type="button"
                     class="btn "
                     data-toggle="modal" data-target="#exampleModal"
-                  >Detail</button></td>
-                  
-                  
+                  >Detail</button></td>               
               </tr>
               {% endfor %}
           </tbody>
@@ -57,7 +63,7 @@
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel"><h3>Bon de commande</h3></h5>
+        <h5 class="modal-title" id="exampleModalLabel"><h3>Detail Distributeur</h3></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -72,7 +78,7 @@
   $exemple = $('#exemple');
   function showDetail(id){
 
-    $exemple.load('detailCommande/'+id)    
+    $exemple.load('detailDisti/'+id)    
 
 
   }

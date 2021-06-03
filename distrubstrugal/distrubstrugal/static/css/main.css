@@ -4876,5 +4876,40 @@ div.col.col-12.col-lg-1.col-xl-1 {
   padding-left: 0;
   margin-bottom: 1%;
 }
+.margening {
+  margin-right: 2%;
+  margin-left: 2%;
+}
 
+.div-flex {
+  display: flex;
+  width: 50%;
+}
 
+@media screen and (max-width: 610px) {
+  #filtreur {
+    flex-direction: column;
+  }
+  .div-flex {
+    width: 100%;
+    margin-bottom: 2%;
+  }
+  .margening {
+    margin: 0;
+    width: 100%;
+  }
+  .select2 {
+    width: 100%;
+  }
+}
+
+#filtreur {
+  display: flex;
+}
+
+#span-distri {
+  margin-right: 2%;
+}
+#span-date-FC {
+  margin: 0 2% 0 2%;
+}
