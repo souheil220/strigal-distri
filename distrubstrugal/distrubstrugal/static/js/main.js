@@ -312,6 +312,44 @@
 		})
 	}
 
+	function initiamizeVoutsrapTable(params) {
+		var $table = $('#bootstrap-table');
+		$table.bootstrapTable({
+			toolbar: ".toolbar",
+			clickToSelect: true,
+			showRefresh: false,
+			search: true,
+			showToggle: false,
+			showColumns: false,
+			pagination: true,
+			searchAlign: 'left',
+			pageSize: 8,
+			clickToSelect: false,
+			// pageList: [8,10,25,50,100],
+
+			formatShowingRows: function (pageFrom, pageTo, totalRows) {
+				//do nothing here, we don't want to show the text "showing x of y from..."
+			},
+			formatRecordsPerPage: function (pageNumber) {
+				return pageNumber + " rows visible";
+			},
+			icons: {
+				refresh: 'fa fa-refresh',
+				toggle: 'fa fa-th-list',
+				columns: 'fa fa-columns',
+				detailOpen: 'fa fa-plus-circle',
+				detailClose: 'ti-close'
+			}
+		});
+
+		//activate the tooltips after the data table is initialized
+		$('[rel="tooltip"]').tooltip();
+
+		$(window).resize(function () {
+			$table.bootstrapTable('resetView');
+		});
+	}
+
 	function replaceTableListeCommande() {
 		var dateE = $('#dateE').val()
 		var dist = $('#select2-selectDistri-container').text()
@@ -329,20 +367,214 @@
 			success: function (data) {
 				var origin = window.location.origin;
 				console.log(data)
+				var table = $('#table-div-commande').children(':first-child')
+				new_content = `<div id='table-div-commande' class="table-wrapper">
+				<table id="bootstrap-table" class="table">
+				<thead>
+						<th  data-field="id" data-visible="false"></th>
+						<th  data-field="Commande" data-sortable="true">N° Commande</th>
+						<th  data-field="Date" data-sortable="true">Date</th>
+						<th  data-field="Client" data-sortable="true">Client</th>
+						<th  data-field="Ref" data-sortable="true">Ref Description</th>
+						<th  data-field="THT" data-sortable="true">THT</th>
+						<th  data-field="TTC" data-sortable="true">TTC</th>
+						<th  data-field="Etat" data-sortable="true">Etat</th>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+				</thead>
+					<tbody>`
+				for (d in data['result']) {
+
+					new_content = new_content + `<tr>
+								<td id = ` + data['result'][d]['id'] + ` hidden></td>
+								`
+					if (data['result'][d]['n_commande_odoo'] === null) {
+						new_content = new_content + `<td></td>`
+					} else {
+						new_content = new_content + `<td>` + data['result'][d]['n_commande_odoo'] + `</td>`
+					}
+					new_content = new_content + `
+								
+								<td>` + data['result'][d]['date'] + `</td>
+								<td>` + data['result'][d]['destributeur'] + `</td>
+								<td>` + data['result'][d]['reference_description'] + `</td>
+								<td>` + data['result'][d]['totaleHT'] + `</td>
+								<td>` + data['result'][d]['totaleTTC'] + `</td>
+								<td>` + data['result'][d]['etat'] + `</td>
+								<td><button
+								  id="` + data['result'][d]['id'] + `"
+								  onClick=showDetail(this.id)
+								  type="button"
+								  class="btn "
+								  data-toggle="modal" data-target="#exampleModal"
+								>Detail</button></td>
+
+								<td>
+								<a
+								id="` + data['result'][d]['id'] + `"
+								onClick=showDetail(this.id)
+								type="button"
+								class="btn "
+								href="` + origin + `/distributeur/pdf_view/` + data['result'][d]['id'] + `"
+								target="_blank"
+							  >Imprimer</a>
+							  </td>
+							  <td><button
+							  id="` + data['result'][d]['id'] + `"
+							  onClick=showDetail(this.id)
+							  type="button"
+							  class="btn "
+							  data-toggle="modal" data-target="#exampleModal"
+							>Modifier</button></td>
+							
+							  <td>
+								<div class="dropdown">
+								  <button `
+					if (data['result'][d]['etat'] === 'Annuler' || data['result'][d]['etat'] === 'done') {
+						var classB = "btn disabled"
+					} else {
+						var classB = "btn"
+					}
+					new_content = new_content + `
+								  
+								  class="` +
+						classB +
+
+
+						`
+								  " type="button" 
+								  id="dropdownMenuButton" 
+								  data-toggle="dropdown"  
+								  aria-expanded="false">
+									...
+								  </button>
+								  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" disabled>
+									<a class="text-danger dropdown-item" href="` + origin + `/commerciale/annulerCommande/` + data['result'][d]['id'] + `"  style="cursor: default;">Annuler</a>
+								  </div>
+								</div>
+							  </td>
+							</tr>`
+				}
+				new_content = new_content +
+					`
+						</tbody>
+					</table>
+				  </div>`
+				table.replaceWith(new_content)
+				initiamizeVoutsrapTable()
+
+			},
+			error: function (response) {
+				console.log(response)
+			}
+		})
+	}
+
+	function replaceTablelistCommandesD() {
+		var dateE = $('#dateE').val()
+		var etat = $("#etat").val();
+
+		etat.length <= 0 ? etat = 'None' : etat = etat
+
+		$.ajax({
+			type: 'GET',
+			url: `filterer/${etat}/${dateE}`,
+			success: function (data) {
+				var origin = window.location.origin;
+				console.log(data)
 				var table = $('#table-div-commande').children()
 				new_content = `<div id='table-div-commande' class="table-wrapper">
 				<table class="alt">
 					<thead>
-						<tr>
-						<th>N° Commande</th>
-						<th>Date</th>
-						<th>Client</th>
-						<th>Ref Description</th>
-						<th>THT</th>
-						<th>TTC</th>
-						<th>Etat</th>
-						</tr>
+					<tr>
+                    <th>Ref Description</th>
+                    <th>Date</th>
+                    <th>THT</th>
+                    <th>TTC</th>
+                    <th>Etat</th>
+                	</tr>
 					</thead>
+					<tbody>`
+				for (d in data['result']) {
+
+					new_content = new_content + `<tr>
+								<td id = ` + data['result'][d]['id'] + ` hidden></td>
+								<td>` + data['result'][d]['reference_description'] + `</td>
+								<td>` + data['result'][d]['date'] + `</td>
+								<td>` + data['result'][d]['totaleHT'] + `</td>
+								<td>` + data['result'][d]['totaleTTC'] + `</td>
+								<td>` + data['result'][d]['etat'] + `</td>
+								<td><button
+								  id="` + data['result'][d]['id'] + `"
+								  onClick=showDetail(this.id)
+								  type="button"
+								  class="btn "
+								  data-toggle="modal" data-target="#exampleModal"
+								>Detail</button></td>
+
+								<td>
+								<a
+								id="` + data['result'][d]['id'] + `"
+								onClick=showDetail(this.id)
+								type="button"
+								class="btn "
+								href="` + origin + `/distributeur/pdf_view/` + data['result'][d]['id'] + `"
+								target="_blank"
+							  >Imprimer</a>
+							  </td>
+				
+							</tr>`
+				}
+				new_content = new_content + `
+		
+						</tbody>
+					</table>
+				  </div>`
+				table.replaceWith(new_content)
+
+			},
+			error: function (response) {
+				console.log(response)
+			}
+		})
+	}
+
+	function changeTableListCommandeWithEtat(params) {
+		var dateE = $('#dateE').val()
+		var dist = $('#select2-selectDistri-container').text()
+		var etat = $("#etat").val();
+		var refdes = $('#select2-refdes-container').text()
+		dateE.length <= 0 ? dateE = 'None' : dateE = dateE
+		if (refdes.length > 0) {
+			refdes = refdes.replace('/', '-')
+		}
+		refdes.length <= 0 ? refdes = 'None' : refdes = refdes
+		$.ajax({
+			type: 'GET',
+			url: `filtererListCommand/${dist}/${dateE}/${etat}/${refdes}`,
+			success: function (data) {
+				var origin = window.location.origin;
+				console.log(data)
+				var table = $('#table-div-commande').children(':first-child')
+				new_content = `<div id='table-div-commande' class="table-wrapper">
+				<table id="bootstrap-table" class="table">
+					<thead>
+					<th  data-field="id" data-visible="false"></th>
+					<th  data-field="Commande" data-sortable="true">N° Commande</th>
+					<th  data-field="Date" data-sortable="true">Date</th>
+					<th  data-field="Client" data-sortable="true">Client</th>
+					<th  data-field="Ref" data-sortable="true">Ref Description</th>
+					<th  data-field="THT" data-sortable="true">THT</th>
+					<th  data-field="TTC" data-sortable="true">TTC</th>
+					<th  data-field="Etat" data-sortable="true">Etat</th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+			
+				</thead>
 					<tbody>`
 				for (d in data['result']) {
 
@@ -414,6 +646,77 @@
 					</table>
 				  </div>`
 				table.replaceWith(new_content)
+				initiamizeVoutsrapTable()
+
+			},
+			error: function (response) {
+				console.log(response)
+			}
+		})
+	}
+
+	function changeTableListCommandeDWithEtat(params) {
+		var dateE = $('#dateE').val()
+
+		var etat = $("#etat").val();
+
+		dateE.length <= 0 ? dateE = 'None' : dateE = dateE
+
+
+		$.ajax({
+			type: 'GET',
+			url: `filterer/${etat}/${dateE}`,
+			success: function (data) {
+				var origin = window.location.origin;
+				console.log(data)
+				var table = $('#table-div-commande').children(":first")
+				new_content = `<div id='table-div-commande' class="table-wrapper">
+				<table class="alt">
+					<thead>
+						<tr>
+							<th>Ref Description</th>
+							<th>Date</th>
+							<th>THT</th>
+							<th>TTC</th>
+							<th>Etat</th>
+						</tr>
+					</thead>
+					<tbody>`
+				for (d in data['result']) {
+
+					new_content = new_content + `<tr>
+								<td id = ` + data['result'][d]['id'] + ` hidden></td>
+								<td>` + data['result'][d]['reference_description'] + `</td>
+								<td>` + data['result'][d]['date'] + `</td>
+								<td>` + data['result'][d]['totaleHT'] + `</td>
+								<td>` + data['result'][d]['totaleTTC'] + `</td>
+								<td>` + data['result'][d]['etat'] + `</td>
+								<td><button
+								  id="` + data['result'][d]['id'] + `"
+								  onClick=showDetail(this.id)
+								  type="button"
+								  class="btn "
+								  data-toggle="modal" data-target="#exampleModal"
+								>Detail</button></td>
+
+								<td>
+								<a
+								id="` + data['result'][d]['id'] + `"
+								onClick=showDetail(this.id)
+								type="button"
+								class="btn "
+								href="` + origin + `/distributeur/pdf_view/` + data['result'][d]['id'] + `"
+								target="_blank"
+							  >Imprimer</a>
+							  </td>
+							</tr>`
+				}
+				new_content = new_content +
+					`
+						</tbody>
+					</table>
+				  </div>`
+				table.replaceWith(new_content)
 
 			},
 			error: function (response) {
@@ -425,7 +728,9 @@
 	$('body').on('change', '#dateE', function () {
 		var pathname = window.location.pathname
 
-		if (pathname.includes('suiviContrat')) {
+		if (pathname.includes('distributeur')) {
+			replaceTablelistCommandesD()
+		} else if (pathname.includes('suiviContrat')) {
 			replaveTableSuiviContract()
 		} else {
 			replaceTableListeCommande()
@@ -465,6 +770,21 @@
 
 
 	})
+
+
+	$('#etat').on('change', function () {
+		var pathname = window.location.pathname
+
+		if (pathname.includes('distributeur')) {
+			changeTableListCommandeDWithEtat()
+		} else {
+
+			changeTableListCommandeWithEtat()
+		}
+
+
+	});
+
 	var lista = []
 	//Message fade out
 	try {
@@ -681,116 +1001,6 @@
 		console.log(error)
 	}
 
-	$('#etat').on('change', function (e) {
-
-		var dateE = $('#dateE').val()
-		var dist = $('#select2-selectDistri-container').text()
-		var etat = $("#etat").val();
-		var refdes = $('#select2-refdes-container').text()
-		dateE.length <= 0 ? dateE = 'None' : dateE = dateE
-		if (refdes.length > 0) {
-			refdes = refdes.replace('/', '-')
-		}
-		refdes.length <= 0 ? refdes = 'None' : refdes = refdes
-		$.ajax({
-			type: 'GET',
-			url: `filtererListCommand/${dist}/${dateE}/${etat}/${refdes}`,
-			success: function (data) {
-				var origin = window.location.origin;
-				console.log(data)
-				var table = $('#table-div-commande').children()
-				new_content = `<div id='table-div-commande' class="table-wrapper">
-				<table class="alt">
-					<thead>
-						<tr>
-						<th>N° Commande</th>
-						<th>Date</th>
-						<th>Client</th>
-						<th>Ref Description</th>
-						<th>THT</th>
-						<th>TTC</th>
-						<th>Etat</th>
-						</tr>
-					</thead>
-					<tbody>`
-				for (d in data['result']) {
-
-					new_content = new_content + `<tr>
-								<td id = ` + data['result'][d]['id'] + ` hidden></td>
-								`
-					if (data['result'][d]['n_commande_odoo'] === null) {
-						new_content = new_content + `<td></td>`
-					} else {
-						new_content = new_content + `<td>` + data['result'][d]['n_commande_odoo'] + `</td>`
-					}
-					new_content = new_content + `
-								
-								<td>` + data['result'][d]['date'] + `</td>
-								<td>` + data['result'][d]['destributeur'] + `</td>
-								<td>` + data['result'][d]['reference_description'] + `</td>
-								<td>` + data['result'][d]['totaleHT'] + `</td>
-								<td>` + data['result'][d]['totaleTTC'] + `</td>
-								<td>` + data['result'][d]['etat'] + `</td>
-								<td><button
-								  id="` + data['result'][d]['id'] + `"
-								  onClick=showDetail(this.id)
-								  type="button"
-								  class="btn "
-								  data-toggle="modal" data-target="#exampleModal"
-								>Detail</button></td>
-
-								<td>
-								<a
-								id="` + data['result'][d]['id'] + `"
-								onClick=showDetail(this.id)
-								type="button"
-								class="btn "
-								href="` + origin + `/distributeur/pdf_view/` + data['result'][d]['id'] + `"
-								target="_blank"
-							  >Imprimer</a>
-							  </td>
-							  <td>
-								<div class="dropdown">
-								  <button `
-					if (data['result'][d]['etat'] === 'Annuler' || data['result'][d]['etat'] === 'done') {
-						var classB = "btn disabled"
-					} else {
-						var classB = "btn"
-					}
-					new_content = new_content + `
-								  
-								  class="` +
-						classB +
-
-
-						`
-								  " type="button" 
-								  id="dropdownMenuButton" 
-								  data-toggle="dropdown"  
-								  aria-expanded="false">
-									...
-								  </button>
-								  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" disabled>
-									<a class="text-danger dropdown-item" href="` + origin + `/commerciale/annulerCommande/` + data['result'][d]['id'] + `"  style="cursor: default;">Annuler</a>
-								  </div>
-								</div>
-							  </td>
-							</tr>`
-				}
-				new_content = new_content +
-					`
-						</tbody>
-					</table>
-				  </div>`
-				table.replaceWith(new_content)
-
-			},
-			error: function (response) {
-				console.log(response)
-			}
-		})
-
-	});
 
 	function closeSelect(idContainer, e, that) {
 		var num = (that.parents()[2].id)
@@ -942,20 +1152,24 @@
 			success: function (data) {
 				var origin = window.location.origin;
 				console.log(data)
-				var table = $('#table-div-commande').children()
+				var table = $('#table-div-commande').children(':first-child')
 				new_content = `<div id='table-div-commande' class="table-wrapper">
-				<table class="alt">
+				<table id="bootstrap-table" class="table">
 					<thead>
-						<tr>
-						<th>N° Commande</th>
-						<th>Date</th>
-						<th>Client</th>
-						<th>Ref Description</th>
-						<th>THT</th>
-						<th>TTC</th>
-						<th>Etat</th>
-						</tr>
-					</thead>
+					<th  data-field="id" data-visible="false"></th>
+					<th  data-field="Commande" data-sortable="true">N° Commande</th>
+					<th  data-field="Date" data-sortable="true">Date</th>
+					<th  data-field="Client" data-sortable="true">Client</th>
+					<th  data-field="Ref" data-sortable="true">Ref Description</th>
+					<th  data-field="THT" data-sortable="true">THT</th>
+					<th  data-field="TTC" data-sortable="true">TTC</th>
+					<th  data-field="Etat" data-sortable="true">Etat</th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+			
+				</thead>
 					<tbody>`
 				for (d in data['result']) {
 
@@ -1027,6 +1241,7 @@
 					</table>
 				  </div>`
 				table.replaceWith(new_content)
+				initiamizeVoutsrapTable()
 
 			},
 			error: function (response) {
@@ -1059,20 +1274,24 @@
 			url: `filtererListCommand/None/None/None/${refdes}`,
 			success: function (data) {
 				console.log(data)
-				var table = $('#table-div-commande').children()
+				var table = $('#table-div-commande').children(':first-child')
 				new_content = `<div id='table-div-commande' class="table-wrapper">
-				<table class="alt">
+				<table id="bootstrap-table" class="table">
 					<thead>
-						<tr>
-						<th>N° Commande</th>
-						<th>Date</th>
-						<th>Client</th>
-						<th>Ref Description</th>
-						<th>THT</th>
-						<th>TTC</th>
-						<th>Etat</th>
-						</tr>
-					</thead>
+					<th  data-field="id" data-visible="false"></th>
+					<th  data-field="Commande" data-sortable="true">N° Commande</th>
+					<th  data-field="Date" data-sortable="true">Date</th>
+					<th  data-field="Client" data-sortable="true">Client</th>
+					<th  data-field="Ref" data-sortable="true">Ref Description</th>
+					<th  data-field="THT" data-sortable="true">THT</th>
+					<th  data-field="TTC" data-sortable="true">TTC</th>
+					<th  data-field="Etat" data-sortable="true">Etat</th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+			
+				</thead>
 					<tbody>`
 				for (d in data['result']) {
 
@@ -1110,6 +1329,13 @@
 								target="_blank"
 							  >Imprimer</a>
 							  </td>
+							  <td><button
+							  id="` + data['result'][d]['id'] + `"
+							  onClick=showDetail(this.id)
+							  type="button"
+							  class="btn "
+							  data-toggle="modal" data-target="#exampleModal"
+							>Modifier</button></td>
 							  <td>
 								<div class="dropdown">
 								  <button `
@@ -1144,6 +1370,7 @@
 					</table>
 				  </div>`
 				table.replaceWith(new_content)
+				initiamizeVoutsrapTable()
 
 			},
 			error: function (response) {
@@ -1152,4 +1379,10 @@
 
 		})
 	})
+
+
+
+
+
+
 })(jQuery);

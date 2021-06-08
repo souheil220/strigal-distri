@@ -1,3 +1,4 @@
+from django.core import paginator
 from django.shortcuts import render, redirect
 from .models import *
 from django.contrib.auth.models import User
@@ -8,7 +9,7 @@ from django.http import Http404, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -161,6 +162,12 @@ def listCommandes(request):
     destributeur = Distributeur.objects.get(user=current_user)
 
     commande = Commande.objects.filter(destributeur=destributeur)
+
+    paginator = Paginator(commande, 1)
+
+    page = request.GET.get('page')
+
+    commande = paginator.get_page(page)
 
     # test = []
     # for i in commande:
@@ -367,6 +374,43 @@ def render_to_pdf(request, id):
         "https://invoice.strugal-dz.com/stru-invoice-api/PDF/generateInvoice", json=data).json()
     name = list_commande[0]['id_commande__reference_description']
     return redirect("https://invoice.strugal-dz.com/stru-invoice-api/PDF/DownloadInvoice?name=DEVIS_STRUGAL_"+name.replace('/', '-'))
+
+
+def get_filter_data(commande):
+    i = 0
+    final_data = {}
+    for comm in commande:
+        final_data[i] = {}
+        final_data[i]['id'] = comm['id']
+        final_data[i]['reference_description'] = comm['reference_description']
+        final_data[i]['date'] = comm['date']
+        final_data[i]['totaleHT'] = comm['totaleHT']
+        final_data[i]['totaleTTC'] = comm['totaleTTC']
+        final_data[i]['etat'] = comm['etat']
+        i += 1
+    return final_data
+
+
+def filterer(request, etat=None, date=None):
+    current_user = request.user
+    destributeur = Distributeur.objects.get(user=current_user)
+    if request.is_ajax() and request.method == "GET":
+        if date != 'None':
+            if etat != "None":
+                commande = Commande.objects.filter(destributeur=destributeur, date=date, etat=etat).values(
+                    'id', 'reference_description', 'date', 'totaleHT', 'totaleTTC', 'etat')[:5]
+
+            else:
+                commande = Commande.objects.filter(destributeur=destributeur, date=date).values(
+                    'id', 'reference_description', 'date', 'totaleHT', 'totaleTTC', 'etat')[:5]
+
+        else:
+            commande = Commande.objects.filter(destributeur=destributeur, etat=etat).values(
+                'id', 'reference_description', 'date', 'totaleHT', 'totaleTTC', 'etat')[:5]
+
+        final_data = get_filter_data(commande)
+        context = {"result": final_data}
+        return HttpResponse(json.dumps(context, indent=4, default=str), content_type="application/json")
 
 
 @ login_required(login_url='login')
