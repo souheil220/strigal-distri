@@ -349,10 +349,12 @@ def render_to_pdf(request, id):
 
     total = numberToLetter((list_commande[0]['id_commande__totaleTTC']))
     # print(total)
+    date = datetime.strptime(
+        list_commande[0]['id_commande__date'], "%Y-%m-%d").strftime("%d/%m/%Y")
+    print()
 
     data = {"ref": list_commande[0]['id_commande__reference_description'],
-            "date": list_commande[0]['id_commande__date'],
-            "date_validite": "07/05/2021",
+            "date": date,
             "somme_txt": str(total),
             "client": {
                 "ref": list_commande[0]["id_commande__destributeur__id"],
@@ -365,13 +367,14 @@ def render_to_pdf(request, id):
         "commandes": commande,
         "total": {
                 "total_ht": list_commande[0]['id_commande__totaleHT'],
-                "montant_tva": 0,
+                "montant_tva": list_commande[0]['id_commande__totaleHT']*19/100,
                 "total_ttc": list_commande[0]['id_commande__totaleTTC']
     }
     }
     # return HttpResponse(json.dumps(data))
     eleme = requests.post(
         "https://invoice.strugal-dz.com/stru-invoice-api/PDF/generateInvoice", json=data).json()
+    print(eleme)
     name = list_commande[0]['id_commande__reference_description']
     return redirect("https://invoice.strugal-dz.com/stru-invoice-api/PDF/DownloadInvoice?name=DEVIS_STRUGAL_"+name.replace('/', '-'))
 

@@ -21,7 +21,7 @@ def schedule_api():
                 }
 
         eleme = requests.post(
-            "http://10.10.10.64:8585/diststru/nodoo/", json=data).json()
+            "http://10.10.10.64:8180/diststru/nodoo/", json=data).json()
         print(eleme)
         if eleme is not None:
             for key in eleme.keys():
@@ -29,6 +29,16 @@ def schedule_api():
                     reference_description=eleme[key][3])
                 la_commande.n_commande_odoo = eleme[key][2]
                 la_commande.etat = eleme[key][4]
+                if la_commande.etat == 'drafte':
+                    la_commande.etat = 'Brouillon'
+                elif la_commande.etat == 'progress':
+                    la_commande.etat = 'En cours'
+                elif la_commande.etat == 'confirmed':
+                    la_commande.etat = 'confirmé'
+                elif la_commande.etat == 'done':
+                    la_commande.etat = 'Terminé'
+                else:
+                    la_commande.etat = 'Annuler'
                 la_commande.save()
 
             print('success')
