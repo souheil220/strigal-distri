@@ -1,3 +1,4 @@
+{% load intspace %}
 <div style="display: flex; justify-content: space-around; margin-bottom: 5%">
   <div
     style="display: flex; justify-content: space-around; flex-direction: column"
@@ -37,7 +38,7 @@
         <td>{{prod.code_article__nom_article}}</td>
         <td>{{prod.qte}}</td>
         <td>{{prod.code_article__unite_mesure}}</td>
-        <td>{{prod.code_article__prix_unitaire}}</td>
+        <td>{{prod.code_article__prix_unitaire|intspace}}</td>
         <td>TVA sur vente à 19%</td>
       </tr>
       {% endfor %}
@@ -46,17 +47,17 @@
       <tr>
         <td colspan="4"></td>
         <td>MHT</td>
-        <td>{{totaleHT}}</td>
+        <td>{{totaleHT|intspace}}</td>
       </tr>
       <tr>
         <td colspan="4"></td>
         <td>TVA</td>
-        <td>{{tva}}</td>
+        <td>{{tva|intspace}}</td>
       </tr>
       <tr>
         <td colspan="4"></td>
         <td>TTC</td>
-        <td>{{totalTTC}}</td>
+        <td>{{totalTTC|intspace}}</td>
       </tr>
     </tfoot>
   </table>

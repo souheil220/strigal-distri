@@ -738,6 +738,16 @@
 
 	})
 
+	function intspace(params) {
+		if (params.toString().indexOf('.') === -1) {
+			return params.toLocaleString()
+		} else {
+			
+			params = params.toLocaleString() 
+			return params
+		}
+	}
+
 	$("body").on("keyup", '.qte', function () {
 		var lenData = parseInt($('#lenData').val())
 		var mht = 0
@@ -746,27 +756,37 @@
 		var num = ($(this)[0].id).substr(($(this)[0].id).length - 1)
 
 		if ($('#quantite-' + num).val().length > 0 && $('#quantite-' + num).val() !== '0') {
-			console.log("sheeesh")
-			var montant = (parseInt($('#quantite-' + num).val()) * parseInt($('#prix_unitaire-' + num).val())).toString()
-			$('#mantant-' + num).val(montant)
+
+			var montant = (parseInt($('#quantite-' + num).val()) * parseInt($('#prix_unitaire-' + num).val()))
+			console.log(intspace(montant))
+
+			$('#mantant-' + num).val(montant.toString())
+			$('#mantant-' + num + "-forshow").val(intspace(montant))
 		} else {
-			console.log("not sheees")
+
 			$('#mantant-' + num).val('0')
 		}
 
+
 		for (var i = 1; i <= lenData; i++) {
-			console.log(i)
-			console.log($('#mantant-' + i).val())
+
 			mht = mht + parseInt($('#mantant-' + i).val())
-			console.log(mht)
 
 		}
-		$('#MHT').val(mht.toString())
+
+
+
+		$('#MHT').val(mht)
+		$('#MHT-forshow').val(intspace(mht))
 
 		tva = (mht * 19) / 100
-		$('#TVA').val(tva.toString())
+
+		$('#TVA').val(tva)
+		$('#TVA-forshow').val(intspace(tva))
 		ttc = tva + mht
-		$('#TTC').val(ttc.toString())
+
+		$('#TTC').val(ttc)
+		$('#TTC-forshow').val(intspace(ttc))
 
 
 	})

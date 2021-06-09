@@ -1,6 +1,6 @@
 {%extends 'base.html'%} {% block title %} Welcome {% endblock %} 
 {% block content %}
-
+{% load intspace from intspace %}
 <!-- Wrapper -->
 <div id="wrapper">
   <!-- Header -->
@@ -56,8 +56,8 @@
                 <tr>
                     <td>{{com.reference_description}}</td>
                     <td>{{com.date}}</td>
-                    <td>{{com.totaleHT}}</td>
-                    <td>{{com.totaleTTC}}</td>
+                    <td>{{ com.totaleHT|intspace }}</td>
+                    <td>{{com.totaleTTC|intspace}}</td>
                     <td>{{com.etat}}</td>
                     <td><button
                       id="{{com.id}}"

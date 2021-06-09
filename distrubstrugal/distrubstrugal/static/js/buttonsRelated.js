@@ -7,7 +7,7 @@ $('#add-one-more').click(function () {
       <div class="col col-12 col-lg-4 col-xl-4">
           <div class="text-center d-lg-none">Article</div>
           <div class="">
-            <select name="article-` + ((parseInt(len) + 1).toString()) + `" class="form-control" id="selectjs-` + ((parseInt(len) + 1).toString()) + `-1">
+            <select name="article-` + ((parseInt(len) + 1).toString()) + `" class="form-control" id="selectjs-` + ((parseInt(len) + 1).toString()) + `-1" required>
               <option value=""></option>
             </select>
           </div>
@@ -16,7 +16,7 @@ $('#add-one-more').click(function () {
       <div class="col col-12 col-lg-3 col-xl-3 ">
         <div class="text-center d-lg-none">ref Article</div>
         <div class="">
-            <select class="form-control" id="selectjs-` + ((parseInt(len) + 1).toString()) + `-2">
+            <select class="form-control" id="selectjs-` + ((parseInt(len) + 1).toString()) + `-2" required>
               <option value=""></option>
             </select>
         </div>
@@ -29,9 +29,9 @@ $('#add-one-more').click(function () {
               type="text"
               name="quantite-` + ((parseInt(len) + 1).toString()) + `"
               id="quantite-` + ((parseInt(len) + 1).toString()) + `"
-              value="0"
               class="qte"
               placeholder="0"
+              required
             />
           </div>
       </div>
@@ -69,9 +69,18 @@ $('#add-one-more').click(function () {
           <div class="text-center d-lg-none">Montant</div>
           <div class="">
               <input
+                hidden
                 type="text"
                 name="mantant-` + ((parseInt(len) + 1).toString()) + `"
                 id="mantant-` + ((parseInt(len) + 1).toString()) + `"
+                value="0"
+                placeholder="0"
+                readonly
+              />
+              <input
+                type="text"
+                name="mantant-` + ((parseInt(len) + 1).toString()) + `-forshow"
+                id="mantant-` + ((parseInt(len) + 1).toString()) + `-forshow"
                 value="0"
                 placeholder="0"
                 readonly
@@ -243,6 +252,15 @@ $('#add-one-more').click(function () {
   $('#lenData').val((parseInt(len) + 1).toString())
 })
 
+function intspace(params) {
+  if (params.toString().indexOf('.') === -1) {
+    return params.toLocaleString()
+  } else {
+
+    params = params.toLocaleString()
+    return params
+  }
+}
 
 
 $("body").on('click', '.removeit', function () {
@@ -266,10 +284,13 @@ $("body").on('click', '.removeit', function () {
     console.log(mht)
 
   }
+  $('#MHT-forshow').val(intspace(mht))
   $('#MHT').val(mht.toString())
   tva = (mht * 19) / 100
+  $('#TVA-forshow').val(intspace(intspace(tva)))
   $('#TVA').val(tva.toString())
   ttc = tva + mht
+  $('#TTC-forshow').val(intspace(ttc))
   $('#TTC').val(ttc.toString())
 
 

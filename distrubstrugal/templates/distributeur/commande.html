@@ -69,7 +69,12 @@
         <div class="col col-12 col-lg-4 col-xl-4">
           <div class="text-center">Article</div>
           <div class="">
-            <select name="article-1" class="form-control" id="selectjs-1-1">
+            <select
+              name="article-1"
+              class="form-control"
+              id="selectjs-1-1"
+              required
+            >
               <option value=""></option>
             </select>
           </div>
@@ -77,7 +82,7 @@
         <div class="col col-12 col-lg-3 col-xl-3">
           <div class="text-center">ref Article</div>
           <div class="">
-            <select class="form-control" id="selectjs-1-2">
+            <select class="form-control" id="selectjs-1-2" required>
               <option value=""></option>
             </select>
           </div>
@@ -89,9 +94,9 @@
               type="text"
               name="quantite-1"
               id="quantite-1"
-              value="0"
               class="qte"
               placeholder="0"
+              required
             />
           </div>
         </div>
@@ -125,6 +130,15 @@
           <div class="text-center">Montant</div>
           <div class="">
             <input
+              type="text"
+              name="mantant-1-forshow"
+              id="mantant-1-forshow"
+              value="0"
+              placeholder="0"
+              readonly
+            />
+            <input
+              hidden
               type="text"
               name="mantant-1"
               id="mantant-1"
@@ -166,13 +180,22 @@
           "
         >
           <div>
-            <input name="MHT" id="MHT" type="text" readonly />
+            <input hidden name="MHT" id="MHT" type="text" readonly />
+            <input name="MHT-forshow" id="MHT-forshow" type="text" readonly />
           </div>
           <div>
-            <input type="text" id="TVA" value="" readonly />
+            <input hidden type="text" id="TVA" value="" readonly />
+            <input type="text" id="TVA-forshow" value="" readonly />
           </div>
           <div>
-            <input name="TTC" id="TTC" type="text" value="" readonly />
+            <input hidden name="TTC" id="TTC" type="text" value="" readonly />
+            <input
+              name="TTC-forshow"
+              id="TTC-forshow"
+              type="text"
+              value=""
+              readonly
+            />
           </div>
         </div>
       </div>

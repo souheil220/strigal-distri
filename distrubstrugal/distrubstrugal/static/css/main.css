@@ -4913,3 +4913,7 @@ div.col.col-12.col-lg-1.col-xl-1 {
 #span-date-FC {
   margin: 0 2% 0 2%;
 }
+
+.th-inner {
+  min-width: 200px;
+}

@@ -1,11 +1,13 @@
 {%extends 'base.html'%} {% block title %} LISTE DES COMMANDE {% endblock %} 
 {% block content %}
 {% load static %}
+{% load intspace %}
 <!-- Wrapper -->
 <div id="wrapper">
   <!-- Header -->
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+   <link rel="stylesheet" href="{% static '/css/main.css' %}" />
   {% include 'partials/_header.html'%} 
   {% include 'partials/_nav_com.html'%} 
   
@@ -36,7 +38,8 @@
                   <th  data-field="Date" data-sortable="true">Date</th>
                   <th  data-field="Client" data-sortable="true">Client</th>
                   <th  data-field="Ref" data-sortable="true">Ref Description</th>
-                  <th  data-field="THT" data-sortable="true">THT</th>
+                  <th  data-field="THT" data-sortable="true" style="
+                  width: 94px;">THT</th>
                   <th  data-field="TTC" data-sortable="true">TTC</th>
                   <th  data-field="Etat" data-sortable="true">Etat</th>
                   <th></th>
@@ -52,8 +55,8 @@
                   <td>{{com.date}}</td>
                   <td>{{com.destributeur}}</td>
                   <td>{{com.reference_description}}</td>
-                  <td>{{com.totaleHT}}</td>
-                  <td>{{com.totaleTTC}}</td>
+                  <td>{{com.totaleHT|intspace}}</td>
+                  <td>{{com.totaleTTC|intspace}}</td>
                   <td>{{com.etat}}</td>
                   <td data-visible="false"><button
                     id="{{com.id}}"
