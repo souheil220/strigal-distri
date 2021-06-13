@@ -92,14 +92,17 @@ def detailAndModif(id):
         'id_commande__reference_description',
         'id_commande__societe',
         'id_commande__destributeur__nom',
+        'id_commande__capture',
         "code_article__unite_mesure",
         "id_commande__totaleHT",
         "id_commande__n_commande_odoo",
         "montant")
+    print(list_commande[0]['id_commande__capture'])
     tva = int(list_commande[0]["id_commande__totaleHT"]) * 19 / 100
     context = {"id": id,
                'list_commande': list_commande,
                'totalTTC': list_commande[0]['id_commande__totaleTTC'],
+               'capture': list_commande[0]['id_commande__capture'],
                "n_commande_odoo": list_commande[0]['id_commande__n_commande_odoo'],
                "societe": list_commande[0]["id_commande__societe"],
                "client": list_commande[0]["id_commande__destributeur__nom"],
