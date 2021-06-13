@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, Group
-from distributeur.models import Commande, ListArticleCommande, Distributeur
+from distributeur.models import Commande, ListArticleCommande, Distributeur, Article
 import json
 from django.db.models import Q
 from django.http import Http404, HttpResponse
+from django.core.files.storage import FileSystemStorage
 # Create your views here.
 
 
@@ -80,44 +81,79 @@ def ajouterDis(request):
     return render(request, 'commerciale/ajouter_dis.html')
 
 
+def detailAndModif(id):
+    list_commande = ListArticleCommande.objects.filter(id_commande=id).values(
+        'code_article__id_article',
+        'code_article__nom_article',
+        'code_article__prix_unitaire',
+        'qte',
+        'id_commande__totaleTTC',
+        'id_commande__date',
+        'id_commande__reference_description',
+        'id_commande__societe',
+        'id_commande__destributeur__nom',
+        "code_article__unite_mesure",
+        "id_commande__totaleHT",
+        "id_commande__n_commande_odoo",
+        "montant")
+    tva = int(list_commande[0]["id_commande__totaleHT"]) * 19 / 100
+    context = {"id": id,
+               'list_commande': list_commande,
+               'totalTTC': list_commande[0]['id_commande__totaleTTC'],
+               "n_commande_odoo": list_commande[0]['id_commande__n_commande_odoo'],
+               "societe": list_commande[0]["id_commande__societe"],
+               "client": list_commande[0]["id_commande__destributeur__nom"],
+               "totaleHT": list_commande[0]["id_commande__totaleHT"],
+               "tva": tva,
+               'montant': list_commande[0]["montant"],
+               "date": list_commande[0]["id_commande__date"],
+               "reference_description": list_commande[0]["id_commande__reference_description"], }
+
+    return context
+
+
 def detailCommande(request, id):
     if request.is_ajax and request.method == "GET":
-        list_commande = ListArticleCommande.objects.filter(id_commande=id).values(
-            'code_article__id_article',
-            'code_article__nom_article',
-            'code_article__prix_unitaire',
-            'qte',
-            'id_commande__totaleTTC',
-            'id_commande__date',
-            'id_commande__reference_description',
-            'id_commande__societe',
-            'id_commande__destributeur__nom',
-            "code_article__unite_mesure",
-            "id_commande__totaleHT",
-            "id_commande__n_commande_odoo",
-            "montant")
-        print(list_commande[0]['id_commande__totaleTTC'])
-        # data = {}
-        # i = 0
-        # for p in list_commande:
+        context = detailAndModif(id)
+        print(context)
+        return render(request, "commerciale/detail.html", context)
+    else:
+        raise Http404
 
-        #     print(p.code_article.nom_article)
-        #     data[i]['id_article'] = p.code_article.id_article
-        #     data[i]['nom_article'] = p.code_article.nom_article
-        #     data[i]['qte'] = p.qte
-        # return HttpResponse(json.dumps(data, indent=4, default=str), content_type="application/json")
 
-        # return HttpResponse(list_commande)
-        tva = int(list_commande[0]["id_commande__totaleHT"]) * 19 / 100
-        return render(request, "commerciale/detail.html", {'list_commande': list_commande,
-                                                           'totalTTC': list_commande[0]['id_commande__totaleTTC'],
-                                                           "n_commande_odoo": list_commande[0]['id_commande__n_commande_odoo'],
-                                                           "societe": list_commande[0]["id_commande__societe"],
-                                                           "client": list_commande[0]["id_commande__destributeur__nom"],
-                                                           "totaleHT": list_commande[0]["id_commande__totaleHT"],
-                                                           "tva": tva,
-                                                           "date": list_commande[0]["id_commande__date"],
-                                                           "reference_description": list_commande[0]["id_commande__reference_description"], })
+def modifierCommande(request, id):
+    if request.method == "POST":
+        datalength = request.POST['datalength']
+        commande = Commande.objects.get(id=int(id))
+        commande.totaleHT = request.POST.get('MHT')
+        commande.totaleTTC = request.POST.get('TTC')
+        upload_file = request.FILES['capture']
+        fs = FileSystemStorage()
+        name = fs.save(upload_file.name, upload_file)
+        url = fs.url(name)
+        commande.capture = url
+        commande.save()
+        for i in range(1, int(datalength) + 1):
+            list_article_commande = ListArticleCommande.objects.filter(
+                id_commande=commande)[i-1]
+            article = request.POST.get('code_article-{}'.format(i))
+            print(article)
+            list_article_commande.code_article = Article.objects.get(
+                id_article=article)
+            list_article_commande.qte = request.POST['quantite-{}'.format(i)]
+            list_article_commande.prix_unitaire = request.POST.get(
+                'prix_unitaire-{}'.format(i))
+            list_article_commande.montant = request.POST.get(
+                'mantant-{}'.format(i))
+
+            list_article_commande.save()
+
+        return redirect("listCommandes")
+    elif request.is_ajax and request.method == "GET":
+        context = detailAndModif(id)
+        print((context))
+        print(len(context['list_commande']))
+        return render(request, "commerciale/modifier.html", context)
     else:
         raise Http404
 
@@ -134,7 +170,7 @@ def renew(request):
         return render(request, 'commerciale/renouveler_contrat.html')
 
 
-def loadMore(request, argum, whicheone):
+def loadMoreD(request, argum, whicheone):
     if request.is_ajax and request.method == "GET":
         if (whicheone == 'dist'):
             result = Distributeur.objects.filter(nom__contains=argum)[:5]
@@ -285,3 +321,27 @@ def filtererListCommand(request, dist, date, etat, refdes):
 
 def renouveler_contrat(request):
     return render(request, "commerciale/renouveler_contrat.html")
+
+
+def loadMore(request, name, whiche):
+    if request.is_ajax and request.method == "GET":
+        if(whiche == "1"):
+            result = Article.objects.filter(nom_article__contains=name)[:5]
+        else:
+            result = Article.objects.filter(id_article__contains=name)[:5]
+
+        print(result)
+        data = {}
+        i = 0
+        for product in result:
+            data[i] = {}
+            data[i]['id_article'] = product.id_article
+            data[i]['nom_article'] = product.nom_article
+            data[i]['unite_mesure'] = product.unite_mesure
+            data[i]['prix_unitaire'] = product.prix_unitaire
+            i = i+1
+
+        return HttpResponse(json.dumps(data, indent=4, default=str), content_type="application/json")
+
+    else:
+        raise Http404

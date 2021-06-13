@@ -258,7 +258,7 @@
 
 	}
 
-	function replaveTableSuiviContract() {
+	function replaceTableSuiviContract() {
 		$('#select2-selectDistri-container').text('')
 		var dateE = $('#dateE').val()
 		dateE.length <= 0 ? dateE = 'None' : dateE = dateE
@@ -731,7 +731,7 @@
 		if (pathname.includes('distributeur')) {
 			replaceTablelistCommandesD()
 		} else if (pathname.includes('suiviContrat')) {
-			replaveTableSuiviContract()
+			replaceTableSuiviContract()
 		} else {
 			replaceTableListeCommande()
 		}
@@ -742,8 +742,8 @@
 		if (params.toString().indexOf('.') === -1) {
 			return params.toLocaleString()
 		} else {
-			
-			params = params.toLocaleString() 
+
+			params = params.toLocaleString()
 			return params
 		}
 	}
@@ -814,137 +814,150 @@
 	} catch (error) {
 		return;
 	}
-	//eventSelect2
-	try {
-		var $eventSelect2 = $("#selectjs-1-2")
-		$eventSelect2.select2({
-			placeholder: "Type",
-			ajax: {
-				type: "GET",
+	var pathname = window.location.pathname
+	if (!pathname.includes('modifier')) {
 
-				dataType: 'json',
-				url: function (params) {
-					var num = $(this)["context"].id
-					var whiche = num.substring(num.length - 1)
-					var pathname = window.location.pathname;
-					pathname === '/' ? loca = 'distributeur/loadMore/' + params.term + "/" + whiche :
-						loca = 'loadMore/' + params.term + "/" + whiche
-					return loca
-				},
+		//eventSelect2
+		try {
+			var $eventSelect2 = $("#selectjs-1-2")
+			$eventSelect2.select2({
+				placeholder: "Type",
+				ajax: {
+					type: "GET",
 
-				processResults: function (data) {
-					// console.log(data)
-					lista = []
-					for (d in data) {
-						lista.push(data[d])
-					}
-					// console.log(lista)
-					var fin = []
-					fin = data
+					dataType: 'json',
+					url: function (params) {
+						var num = $(this)["context"].id
+						var whiche = num.substring(num.length - 1)
+						var pathname = window.location.pathname;
+						pathname === '/' ? loca = 'distributeur/loadMore/' + params.term + "/" + whiche :
+							loca = 'loadMore/' + params.term + "/" + whiche
+						return loca
+					},
 
-					return {
+					processResults: function (data) {
+						// console.log(data)
+						lista = []
+						for (d in data) {
+							lista.push(data[d])
+						}
+						// console.log(lista)
+						var fin = []
+						fin = data
+
+						return {
 
 
-						results: $.map(fin, function (item) {
-								// console.log(item)
+							results: $.map(fin, function (item) {
+									// console.log(item)
 
-								$eventSelect2.on("select2:select", function (e) {
-									nom = e.params.data.id
-									valeur = e.params.data.text
-									var $newOption = $("<option selected='selected'></option>").val(valeur).text(nom)
+									$eventSelect2.on("select2:select", function (e) {
+										nom = e.params.data.id
+										valeur = e.params.data.text
+										var $newOption = $("<option selected='selected'></option>").val(valeur).text(nom)
 
-									$("#selectjs-1-1").append($newOption).trigger('change');
-								})
+										$("#selectjs-1-1").append($newOption).trigger('change');
+									})
 
-								return {
-									text: item.id_article,
-									id: item.nom_article
+									return {
+										text: item.id_article,
+										id: item.nom_article
+
+									}
 
 								}
 
-							}
+							)
 
-						)
-
-					}
+						}
 
 
 
-				},
-				cache: true,
+					},
+					cache: true,
 
 
-			}
-		})
-	} catch (error) {
-		console.log('not here')
-	}
+				}
+			})
+		} catch (error) {
+			console.log('not here')
+		}
 
-	// eventSelect
-	try {
-		var $eventSelect = $("#selectjs-1-1")
-		$eventSelect.select2({
-			placeholder: "Type",
-			ajax: {
-				type: "GET",
+		// eventSelect
+		try {
 
-				dataType: 'json',
-				url: function (params) {
-					var num = $(this)["context"].id
-					var whiche = num.substring(num.length - 1)
-					var pathname = window.location.pathname;
-					pathname === '/' ? loca = 'distributeur/loadMore/' + params.term + "/" + whiche :
-						loca = 'loadMore/' + params.term + "/" + whiche
-					return loca
-				},
+			var $eventSelect = $("#selectjs-1-1")
+			$eventSelect.select2({
+				placeholder: "Type",
+				ajax: {
+					type: "GET",
 
-				processResults: function (data) {
-					// console.log(data)
-					lista = []
-					for (d in data) {
-						lista.push(data[d])
-					}
-					// console.log(lista)
-					var fin = []
-					fin = data
+					dataType: 'json',
+					url: function (params) {
+						var num = $(this)["context"].id
+						var whiche = num.substring(num.length - 1)
+						var pathname = window.location.pathname;
+						pathname === '/' ? loca = 'distributeur/loadMore/' + params.term + "/" + whiche :
+							loca = 'loadMore/' + params.term + "/" + whiche
+						return loca
+					},
 
+					processResults: function (data) {
+						// console.log(data)
+						lista = []
+						for (d in data) {
+							lista.push(data[d])
+						}
+						// console.log(lista)
+						var fin = []
+						fin = data
 
 
 
 
-					return {
+
+						return {
 
 
-						results: $.map(fin, function (item) {
-							$eventSelect.on("select2:select", function (e) {
-								id = e.params.data.id
-								var $newOption = $("<option selected='selected'></option>").val(id).text(id)
+							results: $.map(fin, function (item) {
+								$eventSelect.on("select2:select", function (e) {
+									id = e.params.data.id
+									var $newOption = $("<option selected='selected'></option>").val(id).text(id)
 
-								$("#selectjs-1-2").append($newOption).trigger('change');
+									$("#selectjs-1-2").append($newOption).trigger('change');
+								})
+								// console.log(item.nom_article)
+
+
+								return {
+									text: item.nom_article,
+									id: item.id_article
+
+								}
 							})
-							// console.log(item.nom_article)
 
-
-							return {
-								text: item.nom_article,
-								id: item.id_article
-
-							}
-						})
-
-					}
+						}
 
 
 
-				},
-				cache: true,
+					},
+					cache: true,
 
 
-			}
+				}
+			})
+
+		} catch (error) {
+			console.log('not here')
+		}
+
+		$eventSelect.on("select2:close", function (e) {
+			closeSelect("#select2-selectjs-1-1-container", e, $(this))
 		})
 
-	} catch (error) {
-		console.log('not here')
+		$eventSelect2.on("select2:close", function (e) {
+			closeSelect("#select2-selectjs-1-2-container", e, $(this))
+		})
 	}
 	//selectDistri
 	try {
@@ -956,7 +969,7 @@
 				dataType: 'json',
 				url: function (params) {
 					var whicheone = 'dist'
-					return 'loadMore/' + params.term + '/' + whicheone
+					return 'loadMoreD/' + params.term + '/' + whicheone
 				},
 
 				processResults: function (data) {
@@ -994,7 +1007,7 @@
 				dataType: 'json',
 				url: function (params) {
 					var whicheone = 'refDes'
-					return 'loadMore/' + params.term + '/' + whicheone
+					return 'loadMoreD/' + params.term + '/' + whicheone
 				},
 
 				processResults: function (data) {
@@ -1270,13 +1283,7 @@
 		})
 	}
 
-	$eventSelect.on("select2:close", function (e) {
-		closeSelect("#select2-selectjs-1-1-container", e, $(this))
-	})
 
-	$eventSelect2.on("select2:close", function (e) {
-		closeSelect("#select2-selectjs-1-2-container", e, $(this))
-	})
 
 	$selectDistri.on("select2:close", function (e) {
 		var pathname = window.location.pathname;

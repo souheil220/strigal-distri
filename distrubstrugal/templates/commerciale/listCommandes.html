@@ -60,7 +60,7 @@
                   <td>{{com.etat}}</td>
                   <td data-visible="false"><button
                     id="{{com.id}}"
-                    onClick=showDetail(this.id)
+                    onClick="showDetail(this.id)"
                     type="button"
                     class="btn "
                     data-toggle="modal" data-target="#exampleModal"
@@ -68,20 +68,19 @@
                   <td>
                     <a
                     id="{{com.id}}"
-                    onClick=showDetail(this.id)
                     type="button"
                     class="btn "
                     href="{% url 'pdf_view' com.id %}"
                     target="_blank"
                   >Imprimer</a>
                   </td>
-                  <td><button
+                  <td><a
                     id="{{com.id}}"
-                    onClick=showDetail(this.id)
+                   
                     type="button"
                     class="btn "
-                    data-toggle="modal" data-target="#exampleModal"
-                  >Modifier</button></td>
+                    href="{% url 'modifierCommande' com.id %}"
+                  >Modifier</a></td>
                   <td>
                     <div class="dropdown">
                       <button 
@@ -127,13 +126,14 @@
 </div>
 <script>
   $exemple = $('#exemple');
-  function showDetail(id){
-
+  function showDetail(id,typeA){
+    console.log(typeA)
     $exemple.load('detailCommande/'+id)    
 
 
   }
 </script>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>

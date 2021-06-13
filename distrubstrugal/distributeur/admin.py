@@ -39,6 +39,7 @@ class FilterCommande(admin.ModelAdmin):
                     "societe",
                     "totaleHT",
                     "totaleTTC",
+                    "capture",
                     "date")
 
 
