@@ -4,6 +4,7 @@ from distributeur.models import Commande, ListArticleCommande, Distributeur, Art
 import json
 from django.db.models import Q
 from django.http import Http404, HttpResponse
+from django.core.paginator import Paginator
 from django.core.files.storage import FileSystemStorage
 # Create your views here.
 
@@ -11,6 +12,11 @@ from django.core.files.storage import FileSystemStorage
 def listCommandes(request):
 
     commande = Commande.objects.all()
+    paginator = Paginator(commande, 5)
+
+    page = request.GET.get('page')
+
+    commande = paginator.get_page(page)
     context = {
         "commande": commande
     }
@@ -19,14 +25,12 @@ def listCommandes(request):
         request, "commerciale/listCommandes.html", context)
 
 
-def annulerCommande(request, id):
-    commande = Commande.objects.get(id=id)
-    commande.etat = 'Annuler'
-    commande.save()
-    return redirect('listCommandes')
+def renouveler_contrat(request):
+    return render(request, "commerciale/renouveler_contrat.html")
 
 
 def ajouterDis(request):
+
     if request.method == 'POST':
         nom = request.POST['nom']
         adress = request.POST['adress']
@@ -79,6 +83,27 @@ def ajouterDis(request):
         distributeur.save()
         return redirect('listCommandes')
     return render(request, 'commerciale/ajouter_dis.html')
+
+
+def suiviContrat(request):
+    distributeur = Distributeur.objects.all()[:5].values(
+        'id', 'nom', 'date_effet', 'date_echeance')
+    print(distributeur)
+    context = {
+        'distributeur': distributeur
+    }
+    return render(request, 'commerciale/suivi_contrat.html', context)
+
+
+def soldClient(request):
+    return render(request, 'commerciale/soldClient.html')
+
+
+def annulerCommande(request, id):
+    commande = Commande.objects.get(id=id)
+    commande.etat = 'Annuler'
+    commande.save()
+    return redirect('listCommandes')
 
 
 def detailAndModif(id):
@@ -221,16 +246,6 @@ def detailDisti(request, id):
         raise Http404
 
 
-def suiviContrat(request):
-    distributeur = Distributeur.objects.all()[:5].values(
-        'id', 'nom', 'date_effet', 'date_echeance')
-    print(distributeur)
-    context = {
-        'distributeur': distributeur
-    }
-    return render(request, 'commerciale/suivi_contrat.html', context)
-
-
 def get_filter_data(distributeur):
     i = 0
     final_data = {}
@@ -320,10 +335,6 @@ def filtererListCommand(request, dist, date, etat, refdes):
         print(final_data)
         context = {"result": final_data}
         return HttpResponse(json.dumps(context, indent=4, default=str), content_type="application/json")
-
-
-def renouveler_contrat(request):
-    return render(request, "commerciale/renouveler_contrat.html")
 
 
 def loadMore(request, name, whiche):

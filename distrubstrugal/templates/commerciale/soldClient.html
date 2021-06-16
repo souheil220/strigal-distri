@@ -1,0 +1,38 @@
+{% extends 'base.html' %} {% block title %} RENOUVELER CONTRAT {% endblock %} 
+{%block content %}
+
+<!-- Wrapper -->
+<div id="wrapper">
+  {% include 'partials/_header.html'%}
+  <!-- Header -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"
+  ></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <!-- Nav -->
+  {% include 'partials/_nav_com.html'%}
+
+  <div id="main">
+    <!-- Table -->
+    <h2>Renouveler Contrat</h2>
+
+    <div class="row gtr-uniform">
+      <!-- Break -->
+      <div class="col-sm-12 col-lg-6">
+        <select name="distributeur" class="form-control" id="selectDistri">
+          <option value=""></option>
+        </select>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+</div>

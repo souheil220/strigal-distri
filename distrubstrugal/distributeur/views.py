@@ -163,7 +163,7 @@ def listCommandes(request):
 
     commande = Commande.objects.filter(destributeur=destributeur)
 
-    paginator = Paginator(commande, 1)
+    paginator = Paginator(commande, 5)
 
     page = request.GET.get('page')
 

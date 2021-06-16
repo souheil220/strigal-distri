@@ -9,7 +9,7 @@ urlpatterns = [
     path("modifier/<str:id>", views.modifierCommande, name="modifierCommande"),
     path("detailDisti/<str:id>", views.detailDisti, name="detailDisti"),
     path("loadMoreD/<str:argum>/<str:whicheone>",
-         views.loadMore, name="loadMore"),
+         views.loadMoreD, name="loadMoreD"),
     path("modifier/loadMore/<str:name>/<str:whiche>",
          views.loadMore, name="loadMore"),
     path("filterer/<str:dist>/<str:date>",
@@ -19,4 +19,6 @@ urlpatterns = [
     path("renew", views.renew, name="renew"),
     path("renouvelerContrat", views.renouveler_contrat, name="renouveler_contrat"),
     path("annulerCommande/<str:id>", views.annulerCommande, name="annulerCommande"),
-    path("ajouterDis", views.ajouterDis, name="ajouterDis"), ]
+    path("ajouterDis", views.ajouterDis, name="ajouterDis"),
+    path("soldClient", views.soldClient, name="soldClient"),
+]

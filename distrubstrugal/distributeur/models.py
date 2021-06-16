@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 class Distributeur(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     id = models.AutoField(primary_key=True)
+    id_dist = models.IntegerField(default=0)
     nom = models.CharField(max_length=255)
     adress = models.CharField(max_length=255)
     tel_fix = models.CharField(null=True, blank=True, max_length=255)
