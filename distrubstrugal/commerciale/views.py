@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, Group
 from distributeur.models import Commande, ListArticleCommande, Distributeur, Article
 import json
+import requests
 from django.db.models import Q
 from django.http import Http404, HttpResponse
 from django.core.paginator import Paginator
@@ -208,7 +209,7 @@ def loadMoreD(request, argum, whicheone):
             i = 0
             for user in result:
                 data[i] = {}
-                data[i]['id_ditributeur'] = user.id
+                data[i]['id_ditributeur'] = user.id_dist
                 data[i]['nom_ditributeur'] = user.nom
                 i = i+1
 

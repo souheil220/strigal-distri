@@ -962,15 +962,49 @@
 		})
 	}
 
+	function displaySold() {
+		var id_disri = parseInt($('#selectDistri')[0][1]['value'])
+		// sum(account_move_line.credit)
+		// ,sum(account_move_line.debit)
+		// ,sum(account_move_line.debit  - account_move_line.credit)
+		$.ajax({
+			url: `http://10.10.10.64:8585/diststru/sold/?id_dist=${id_disri}`,
+			type: 'POST',
+			success: function (data) {
+				console.log("data " + data[0][0])
+				infoSold = document.getElementById('info-sold')
+				infoSold.innerHTML = ''
+
+				infoSold.innerHTML = `<div style="
+											display: flex;
+											flex-direction: column;
+											align-items: center;
+											justify-content: space-between;
+										">
+										<label>Client</label><input type="text" value="${data[0][0]}" readonly>
+										<label>Credit</label><input type="text" value="${data[0][1]}" readonly>
+										<label>Debit</label><input type="text" value="${data[0][2]}" readonly>	
+										<label>Sold</label><input type="text" value="${data[0][3]}" readonly>	
+										</div>
+										<hr>`
+
+			},
+			error: function (response) {
+				console.log(response)
+			}
+		})
+	}
+
 	$selectDistri.on("select2:close", function (e) {
 		var pathname = window.location.pathname;
-		pathname.includes('suiviContrat') ? changeTableSuivi() : changeTableListCommande()
-
-
+		if (pathname.includes('suiviContrat')) {
+			changeTableSuivi()
+		} else if (pathname.includes('soldClient')) {
+			displaySold()
+		} else {
+			changeTableListCommande()
+		}
 	})
-
-
-
 
 
 	$selectRefDesc.on("select2:close", function (e) {
