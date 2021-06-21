@@ -7,12 +7,52 @@ from django.db.models import Q
 from django.http import Http404, HttpResponse
 from django.core.paginator import Paginator
 from django.core.files.storage import FileSystemStorage
+from jobs.get_images import GetPictures
 # Create your views here.
 
 
 def listCommandes(request):
 
-    commande = Commande.objects.all()
+    get_pictures = GetPictures()
+    get_pictures.getAndInsertPhoto()
+    # try:
+    #     commande = Commande.objects.filter(
+    #         n_commande_odoo=None).values('reference_description')
+    #     data2 = {}
+    #     i = 0
+    #     for ids in commande:
+    #         print(ids['reference_description'])
+    #         data2[i] = ids['reference_description']
+    #         i = i + 1
+    #     data = {"data": data2
+    #             }
+
+    #     eleme = requests.post(
+    #         "http://10.10.10.64:8180/diststru/nodoo/", json=data).json()
+    #     print(eleme)
+    #     if eleme is not None:
+    #         for key in eleme.keys():
+    #             la_commande = Commande.objects.get(
+    #                 reference_description=eleme[key][3])
+    #             la_commande.n_commande_odoo = eleme[key][2]
+    #             la_commande.etat = eleme[key][4]
+    #             if la_commande.etat == 'drafte':
+    #                 la_commande.etat = 'Brouillon'
+    #             elif la_commande.etat == 'progress':
+    #                 la_commande.etat = 'En cours'
+    #             elif la_commande.etat == 'confirmed':
+    #                 la_commande.etat = 'confirmé'
+    #             elif la_commande.etat == 'done':
+    #                 la_commande.etat = 'Terminé'
+    #             else:
+    #                 la_commande.etat = 'Annuler'
+    #             la_commande.save()
+
+    #         print('success')
+    # except Exception as e:
+    # print(e)
+    # print('Error bringing n° odoo')
+    commande = Commande.objects.all().order_by('id')
     paginator = Paginator(commande, 5)
 
     page = request.GET.get('page')

@@ -29,7 +29,7 @@ def schedule_api():
                     reference_description=eleme[key][3])
                 la_commande.n_commande_odoo = eleme[key][2]
                 la_commande.etat = eleme[key][4]
-                if la_commande.etat == 'drafte':
+                if la_commande.etat == 'draft':
                     la_commande.etat = 'Brouillon'
                 elif la_commande.etat == 'progress':
                     la_commande.etat = 'En cours'

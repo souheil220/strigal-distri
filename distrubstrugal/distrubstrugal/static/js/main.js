@@ -1068,10 +1068,10 @@
 
 
 		for (var page = maxLeft; page <= maxRight; page++) {
-			wrapper.innerHTML += `<button value=${page} class="page btn btn-md btn-light">${page}</button>`
+			wrapper.innerHTML += `<button value=${page} class="page btn btn-md btn-light ">${page}</button>`
 		}
 		if (numPage != 1) {
-			wrapper.innerHTML = `<button value=${1} class="page btn btn-md btn-light">&#171; Début</button>` + wrapper.innerHTML
+			wrapper.innerHTML = `<button value=${1} class="page btn btn-md btn-light page-link">&#171; Début</button>` + wrapper.innerHTML
 		}
 		if (numPage != pages) {
 			wrapper.innerHTML += `<button value=${pages} class="page btn btn-md btn-light">Fin &#187;</button>`
