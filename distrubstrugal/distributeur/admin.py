@@ -5,15 +5,7 @@ from .models import *
 class FilterAricle(admin.ModelAdmin):
     list_display = ("id_article",
                     "nom_article",
-                    "type_de_categorie",
-                    "categorie_interne",
-                    "famille_article",
                     "unite_mesure",
-                    "sale_ok",
-                    "type_article",
-                    "template_id",
-                    "company_id",
-                    "active",
                     "product_id",
                     "prix_unitaire")
 
@@ -36,10 +28,11 @@ class FilterCommande(admin.ModelAdmin):
     list_display = ("id",
                     "reference_description",
                     "destributeur",
-                    "societe",
+                    "n_commande_odoo",
                     "totaleHT",
                     "totaleTTC",
                     "capture",
+                    "etat",
                     "date")
 
 

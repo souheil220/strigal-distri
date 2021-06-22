@@ -7,56 +7,142 @@ from django.db.models import Q
 from django.http import Http404, HttpResponse
 from django.core.paginator import Paginator
 from django.core.files.storage import FileSystemStorage
-from jobs.get_images import GetPictures
+from django.contrib import messages
+import openpyxl
 # Create your views here.
 
 
+def list_destri():
+    try:
+
+        print('lol')
+        data = []
+        pload = {'data': {}}
+        print(pload)
+        eleme = requests.post(
+            "http://10.10.10.64:8585/diststru/", json=pload).json()
+        s = "_"
+        for key in eleme.keys():
+            try:
+                x = eleme[key][7].split('@')
+                s = x[0]
+            except:
+                x = eleme[key][3].split()
+                if '-' in x[0]:
+                    x[0] = x[0].replace('-', '_')
+                s = "_"
+                s = s.join(x)
+
+            print(s)
+
+            utilisateur = User.objects.create_user(s, None, 'Azerty@22')
+
+            user = utilisateur
+            nom = eleme[key][3]
+            adress = eleme[key][4]
+            tel_fix = eleme[key][5]
+            tel_portable = eleme[key][6]
+            couriel = eleme[key][7]
+            civilite = eleme[key][8]
+            site_web = eleme[key][9]
+            rcn = eleme[key][10]
+            date_enregistrement_rc = eleme[key][11]
+            nis = eleme[key][12]
+            ifn = eleme[key][13]
+            art = eleme[key][14]
+            status = eleme[key][16]
+
+            distributeur = Distributeur(user=user,
+                                        nom=nom,
+                                        adress=adress,
+                                        tel_fix=tel_fix,
+                                        tel_portable=tel_portable,
+                                        couriel=couriel,
+                                        civilite=civilite,
+                                        site_web=site_web,
+                                        rcn=rcn,
+                                        date_enregistrement_rc=date_enregistrement_rc,
+                                        nis=nis,
+                                        ifn=ifn,
+                                        art=art,
+                                        status=status
+                                        )
+            distributeur.save()
+
+    except:
+        print('error')
+
+
 def listCommandes(request):
+    list_destri()
+    # bring N_odoo
+    try:
+        commande = Commande.objects.filter(
+            n_commande_odoo=None).values('reference_description')
+        data2 = {}
+        i = 0
+        for ids in commande:
+            print(ids['reference_description'])
+            data2[i] = ids['reference_description']
+            i = i + 1
+        data = {"data": data2
+                }
 
-    get_pictures = GetPictures()
-    get_pictures.getAndInsertPhoto()
-    # try:
-    #     commande = Commande.objects.filter(
-    #         n_commande_odoo=None).values('reference_description')
-    #     data2 = {}
-    #     i = 0
-    #     for ids in commande:
-    #         print(ids['reference_description'])
-    #         data2[i] = ids['reference_description']
-    #         i = i + 1
-    #     data = {"data": data2
-    #             }
+        eleme = requests.post(
+            "http://10.10.10.64:8180/diststru/nodoo/", json=data).json()
+        print(eleme)
+        if eleme is not None:
+            for key in eleme.keys():
+                la_commande = Commande.objects.get(
+                    reference_description=eleme[key][3])
+                la_commande.n_commande_odoo = eleme[key][2]
+                la_commande.etat = eleme[key][4]
+                if la_commande.etat == 'drafte':
+                    la_commande.etat = 'Brouillon'
+                elif la_commande.etat == 'progress':
+                    la_commande.etat = 'En cours'
+                elif la_commande.etat == 'confirmed':
+                    la_commande.etat = 'confirmé'
+                elif la_commande.etat == 'done':
+                    la_commande.etat = 'Terminé'
+                else:
+                    la_commande.etat = 'Annuler'
+                la_commande.save()
 
-    #     eleme = requests.post(
-    #         "http://10.10.10.64:8180/diststru/nodoo/", json=data).json()
-    #     print(eleme)
-    #     if eleme is not None:
-    #         for key in eleme.keys():
-    #             la_commande = Commande.objects.get(
-    #                 reference_description=eleme[key][3])
-    #             la_commande.n_commande_odoo = eleme[key][2]
-    #             la_commande.etat = eleme[key][4]
-    #             if la_commande.etat == 'drafte':
-    #                 la_commande.etat = 'Brouillon'
-    #             elif la_commande.etat == 'progress':
-    #                 la_commande.etat = 'En cours'
-    #             elif la_commande.etat == 'confirmed':
-    #                 la_commande.etat = 'confirmé'
-    #             elif la_commande.etat == 'done':
-    #                 la_commande.etat = 'Terminé'
-    #             else:
-    #                 la_commande.etat = 'Annuler'
-    #             la_commande.save()
+            print('success')
+    except Exception as e:
+        print(e)
+        print('Error bringing n° odoo')
 
-    #         print('success')
-    # except Exception as e:
-    # print(e)
-    # print('Error bringing n° odoo')
+    # bring Etat
+    try:
+
+        commande = Commande.objects.exclude(etat__in=[
+            "Annuler", 'done']).exclude(n_commande_odoo=None).values('reference_description', 'etat')
+        data2 = {}
+        i = 0
+        for ids in commande:
+            data2[i] = ids['reference_description']
+            i = i + 1
+        data = {"data": {"state": commande[0]['etat'], "n_odoo": data2}
+                }
+
+        eleme = requests.post(
+            "http://10.10.10.64:8585/diststru/state/", json=data).json()
+        if eleme is not None:
+            for key in eleme.keys():
+                la_commande = Commande.objects.get(
+                    reference_description=eleme[key][0])
+                la_commande.etat = eleme[key][1]
+                la_commande.save()
+            print('success')
+    except Exception as e:
+        print(e)
+        print('Error bringing Etat')
+
     commande = Commande.objects.all().order_by('id')
     paginator = Paginator(commande, 5)
-
     page = request.GET.get('page')
-
     commande = paginator.get_page(page)
     context = {
         "commande": commande
@@ -138,6 +224,47 @@ def suiviContrat(request):
 
 def soldClient(request):
     return render(request, 'commerciale/soldClient.html')
+
+
+def uploadProduct(request):
+    if request.method == 'POST':
+        try:
+            excel_file = request.FILES['product']
+            if (str(excel_file).split('.')[-1] == 'xls' or str(excel_file).split('.')[-1] == "xlsx"):
+                wb = openpyxl.load_workbook(excel_file, data_only=True)
+                worksheet = wb.active
+
+            excel_data = list()
+            # iterating over the rows and
+            # getting value from each cell in row
+            for row in list(worksheet.rows)[1:]:
+                row_data = list()
+                for cell in row:
+                    row_data.append(str(cell.value))
+
+                excel_data.append(row_data)
+
+            for produit in excel_data:
+                id_article = produit[0]
+                nom_article = produit[2]
+                unite_mesure = produit[3]
+                product_id = produit[1]
+                prix_unitaire = produit[4]
+                if (id_article != 'None' and nom_article != 'None' and unite_mesure != 'None' and product_id != 'None' and prix_unitaire != 'None'):
+                    article = Article(id_article=id_article,
+                                      nom_article=nom_article,
+                                      unite_mesure=unite_mesure,
+                                      product_id=product_id,
+                                      prix_unitaire=prix_unitaire)
+
+                    article.save()
+
+        except:
+            messages.error(
+                request, 'Veillez uploader un fichier valide')
+            return render(request, 'commerciale/uploadProduct.html')
+
+    return render(request, 'commerciale/uploadProduct.html')
 
 
 def annulerCommande(request, id):

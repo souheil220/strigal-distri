@@ -3758,8 +3758,8 @@ body.is-preload #intro:not(.hidden) + #header + #nav {
   overflow: hidden;
   padding: 0 2rem 0 0;
   position: relative;
-  width: calc(100% - 4rem);
-  max-width: 72rem;
+  /* width: calc(100% - 4rem); */
+  /* max-width: 72rem; */
   z-index: 2;
 }
 
@@ -3901,8 +3901,8 @@ body.is-preload #intro:not(.hidden) + #header + #nav {
   background-color: #ffffff;
   position: relative;
   margin: 0 auto;
-  width: calc(100% - 4rem);
-  max-width: 72rem;
+  /* width: calc(100% - 4rem); */
+  /* max-width: 72rem; */
   z-index: 2;
 }
 
@@ -4917,5 +4917,3 @@ div.col.col-12.col-lg-1.col-xl-1 {
 .th-inner {
   min-width: 200px;
 }
-
-/*** Select 2 styling ***/

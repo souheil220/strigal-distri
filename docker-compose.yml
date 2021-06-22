@@ -16,8 +16,8 @@ services:
     environment:
       - DB_HOST=db
       - DB_NAME=mydb-dev
-      - DB_USER=kheireddine
-      - DB_PASS=password
+      - DB_USER=Biuser
+      - DB_PASS=Avengers
     depends_on:
       - db
 
@@ -28,7 +28,7 @@ services:
       - ./data/db:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=mydb-dev
-      - POSTGRES_USER=kheireddine
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=Biuser
+      - POSTGRES_PASSWORD=Avengers
     ports:
       - "5432:5432"

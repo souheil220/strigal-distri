@@ -48,15 +48,7 @@ class Commande(models.Model):
 class Article(models.Model):
     id_article = models.CharField(max_length=255)
     nom_article = models.CharField(max_length=255)
-    type_de_categorie = models.CharField(max_length=255)
-    categorie_interne = models.CharField(max_length=255)
-    famille_article = models.CharField(max_length=255)
     unite_mesure = models.CharField(max_length=255)
-    sale_ok = models.BooleanField()
-    type_article = models.CharField(max_length=255)
-    template_id = models.IntegerField()
-    company_id = models.IntegerField()
-    active = models.BooleanField()
     product_id = models.IntegerField(primary_key=True)
     prix_unitaire = models.IntegerField(default=0)
 

@@ -1,0 +1,48 @@
+{%extends 'base.html'%} {% block title %} AJOUTER DES PRODUITS {% endblock %} 
+{% block content %}
+
+<!-- Wrapper -->
+<div id="wrapper">
+  <!-- Header -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  {% include 'partials/_header.html'%} 
+  {% include 'partials/_nav_com.html'%} 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+  <div id="main">
+    <!-- Table -->
+    <h2>Importer des produits</h2>
+    
+    <form
+    action="{% url 'uploadProduct' %}"
+    method="post"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %} Choisir le fichier Excel
+    {% for message in messages %}
+         
+        <p style="text-align:center;color:red">{{message}}</p>
+    {% endfor %}
+    <input
+      type="file"
+      name="product"
+      id="product"
+      accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    />
+    <input type="submit" value="Upload Image" name="submit" />
+  </form>
+    
+    <hr />
+  </div>
+</div>
+
+
+
+</div>
+{% endblock %}
+
+
+
