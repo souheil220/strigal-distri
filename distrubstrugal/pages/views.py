@@ -41,61 +41,6 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
-
-def list_destri():
-    try:
-
-        print('lol')
-        data = []
-        pload = {'data': {}}
-        print(pload)
-        eleme = requests.post(
-            "http://10.10.10.64:8585/diststru/", json=pload).json()
-
-        for key in eleme.keys():
-            x = eleme[key][7].split('@')
-            print(x)
-            # User.objects.create_user()
-
-            # user = eleme[key][0]
-            # id = eleme[key][1]
-            # nom = eleme[key][2]
-            # adress = eleme[key][3]
-            # tel_fix = eleme[key][4]
-            # tel_portable = eleme[key][5]
-            # couriel = eleme[key][6]
-            # civilite = eleme[key][7]
-            # site_web = eleme[key][8]
-            # rcn = eleme[key][9]
-            # date_enregistrement_rc = eleme[key][10]
-            # nis = eleme[key][11]
-            # ifn = eleme[key][11]
-            # art = eleme[key][11]
-            # date_debut_activité = eleme[key][11]
-            # date_effet = eleme[key][11]
-            # date_echeance = eleme[key][11]
-            # status = eleme[key][11]
-            # nbr_facture = eleme[key][11]
-
-            # article = Article(id_article=id_article,
-            #                   nom_article=nom_article,
-            #                   type_de_categorie=type_de_categorie,
-            #                   categorie_interne=categorie_interne,
-            #                   famille_article=famille_article,
-            #                   unite_mesure=unite_mesure,
-            #                   sale_ok=sale_ok,
-            #                   type_article=type_article,
-            #                   template_id=template_id,
-            #                   company_id=company_id,
-            #                   active=active,
-            #                   product_id=product_id
-            #                   )
-            # article.save()
-
-    except:
-        print('error')
-
-
 def loginPage(request):
     if request.method == 'POST':
         username = request.POST.get('username')

@@ -17,9 +17,9 @@ from django.core.paginator import Paginator
 def loadMore(request, name, whiche):
     if request.is_ajax and request.method == "GET":
         if(whiche == "1"):
-            result = Article.objects.filter(nom_article__contains=name)[:5]
+            result = Article.objects.filter(nom_article__icontains=name)[:5]
         else:
-            result = Article.objects.filter(id_article__contains=name)[:5]
+            result = Article.objects.filter(id_article__icontains=name)[:5]
 
         print(result)
         data = {}
@@ -67,8 +67,8 @@ def regCommand(request):
         commande = Commande(reference_description=reference_description,
                             destributeur=distributeur,
                             societe='strugal',
-                            totaleHT=request.POST.get('MHT'),
-                            totaleTTC=request.POST.get('TTC'),
+                            totaleHT=round(float(request.POST.get('MHT')), 2),
+                            totaleTTC=round(float(request.POST.get('TTC')), 2)
                             )
         commande.save()
         datalength = request.POST['datalength']
@@ -126,14 +126,6 @@ def listCommandes(request):
     }
     return render(
         request, "distributeur/listCommandes.html", context)
-
-
-def fitrer(request, etat=None, date=None):
-    destributeur = Distributeur.objects.get(user=current_user)
-
-    if etat is None:
-        commande = Commande.objects.filter(destributeur=destributeur)
-    pass
 
 
 def detailCommande(request, id):
@@ -377,8 +369,7 @@ def modifierMP(request):
                 user = authenticate(username=current_user, password=mot_pass)
                 login(request, user)
                 messages.success(request, 'Mot de passe modifier avec succées')
-                return render(
-                    request, "distributeur/listCommandes.html")
+                return redirect("listCommandesD")
             else:
                 messages.error(
                     request, 'Nouveau mot de passe est différent de Confirmer mot de passe')

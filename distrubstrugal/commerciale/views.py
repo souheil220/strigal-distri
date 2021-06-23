@@ -14,13 +14,10 @@ import openpyxl
 
 def list_destri():
     try:
-
-        print('lol')
-        data = []
         pload = {'data': {}}
         print(pload)
         eleme = requests.post(
-            "http://10.10.10.64:8585/diststru/", json=pload).json()
+            "http://10.10.10.64:8180/diststru/", json=pload).json()
         s = "_"
         mail = ""
         for key in eleme.keys():
@@ -36,7 +33,7 @@ def list_destri():
                 s = s.join(x)
 
             print(s)
- 
+
             utilisateur = User.objects.create_user(s, mail, 'Azerty@22')
 
             user = utilisateur
@@ -132,7 +129,7 @@ def listCommandes(request):
                 }
 
         eleme = requests.post(
-            "http://10.10.10.64:8585/diststru/state/", json=data).json()
+            "http://10.10.10.64:8180/diststru/state/", json=data).json()
         if eleme is not None:
             for key in eleme.keys():
                 la_commande = Commande.objects.get(
@@ -180,8 +177,10 @@ def ajouterDis(request):
         date_echeance = request.POST['date_echeance']
         status = request.POST['status']
         s = "_"
+        mail = None
         try:
             x = couriel.split('@')
+            mail = couriel
             s = x[0]
         except:
             x = nom.split()
@@ -189,7 +188,7 @@ def ajouterDis(request):
                 x[0] = x[0].replace('-', '_')
             s = "_"
             s = s.join(x)
-        utilisateur = User.objects.create_user(s, None, 'Azerty@22')
+        utilisateur = User.objects.create_user(s, mail, 'Azerty@22')
         user = utilisateur
         group = Group.objects.get(name='distributeur')
         user.groups.add(group)
@@ -373,7 +372,7 @@ def renew(request):
 def loadMoreD(request, argum, whicheone):
     if request.is_ajax and request.method == "GET":
         if (whicheone == 'dist'):
-            result = Distributeur.objects.filter(nom__contains=argum)[:5]
+            result = Distributeur.objects.filter(nom__icontains=argum)[:5]
 
             print(result)
             data = {}
@@ -386,7 +385,7 @@ def loadMoreD(request, argum, whicheone):
 
         else:
             result = Commande.objects.filter(
-                reference_description__contains=argum)[:5]
+                reference_description__icontains=argum)[:5]
 
             print(result)
             data = {}
@@ -512,9 +511,9 @@ def filtererListCommand(request, dist, date, etat, refdes):
 def loadMore(request, name, whiche):
     if request.is_ajax and request.method == "GET":
         if(whiche == "1"):
-            result = Article.objects.filter(nom_article__contains=name)[:5]
+            result = Article.objects.filter(nom_article__icontains=name)[:5]
         else:
-            result = Article.objects.filter(id_article__contains=name)[:5]
+            result = Article.objects.filter(id_article__icontains=name)[:5]
 
         print(result)
         data = {}

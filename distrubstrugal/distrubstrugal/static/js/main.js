@@ -387,7 +387,7 @@
 			success: function (data) {
 				var origin = window.location.origin;
 				console.log(data)
-				var table = $('#table-div-commande').children()
+				var table = $('#table-div-commande').children(":first-child")
 				new_content = `<div id='table-div-commande' class="table-wrapper">
 				<table class="alt">
 					<thead>
@@ -481,7 +481,56 @@
 			url: `filterer/${etat}/${dateE}`,
 			success: function (data) {
 				var origin = window.location.origin;
-				buildTable(data, origin, 1)
+				console.log(data)
+				var table = $('#table-div-commande').children(":first-child")
+				new_content = `<div id='table-div-commande' class="table-wrapper">
+				<table class="alt">
+					<thead>
+					<tr>
+                    <th>Ref Description</th>
+                    <th>Date</th>
+                    <th>THT</th>
+                    <th>TTC</th>
+                    <th>Etat</th>
+                	</tr>
+					</thead>
+					<tbody>`
+				for (d in data['result']) {
+
+					new_content = new_content + `<tr>
+								<td id = ` + data['result'][d]['id'] + ` hidden></td>
+								<td>` + data['result'][d]['reference_description'] + `</td>
+								<td>` + data['result'][d]['date'] + `</td>
+								<td>` + data['result'][d]['totaleHT'] + `</td>
+								<td>` + data['result'][d]['totaleTTC'] + `</td>
+								<td>` + data['result'][d]['etat'] + `</td>
+								<td><button
+								  id="` + data['result'][d]['id'] + `"
+								  onClick=showDetail(this.id)
+								  type="button"
+								  class="btn "
+								  data-toggle="modal" data-target="#exampleModal"
+								>Detail</button></td>
+
+								<td>
+								<a
+								id="` + data['result'][d]['id'] + `"
+								onClick=showDetail(this.id)
+								type="button"
+								class="btn "
+								href="` + origin + `/distributeur/pdf_view/` + data['result'][d]['id'] + `"
+								target="_blank"
+							  >Imprimer</a>
+							  </td>
+				
+							</tr>`
+				}
+				new_content = new_content + `
+		
+						</tbody>
+					</table>
+				  </div>`
+				table.replaceWith(new_content)
 
 			},
 			error: function (response) {
@@ -836,7 +885,7 @@
 				console.log("data" + data['result'])
 
 
-				var table = $('#table-div').children()
+				var table = $('#table-div').children(":first-child")
 				console.log(dateE)
 				console.log(dateE.length)
 				if (dateE === 'None') {
@@ -969,7 +1018,7 @@
 		// ,sum(account_move_line.debit)
 		// ,sum(account_move_line.debit  - account_move_line.credit)
 		$.ajax({
-			url: `http://10.10.10.64:8585/diststru/sold/?id_dist=${id_disri}`,
+			url: `http://10.10.10.64:8180/diststru/sold/?id_dist=${id_disri}`,
 			type: 'POST',
 			success: function (data) {
 				console.log(data)
@@ -1080,14 +1129,14 @@
 		}
 
 		$('.page').on('click', function () {
-			$('#table-div-commande').children(':first-child').empty()
+			$('#table-div-commande').children().empty()
 			page = $(this).val()
 			buildTable(data, origin, page)
 		})
 	}
 
 	function buildTable(data, origin, page) {
-
+		console.log(origin)
 		var test = paginator(data.result, page, 5)
 		var table = $('#table-div-commande').children(':first-child')
 		new_content = `<div id='table-div-commande' class="table-wrapper">
@@ -1101,7 +1150,6 @@
 					<th  data-field="THT" data-sortable="true">THT</th>
 					<th  data-field="TTC" data-sortable="true">TTC</th>
 					<th  data-field="Etat" data-sortable="true">Etat</th>
-					<th></th>
 					<th></th>
 					<th></th>
 					<th></th>
@@ -1145,8 +1193,6 @@
 							  >Imprimer</a>
 							  </td>
 							  <td><a
-								id="` + test['result'][d]['id'] + `"
-							
 								type="button"
 								`
 			if (test['result'][d]['etat'] === 'Annuler' || test['result'][d]['etat'] === 'done') {
@@ -1160,27 +1206,9 @@
 				classB +
 
 
-				`
-								href="` + origin + "/commerciale/modifier/" + test['result'][d]['id'] + `"
+				`"
+								href="modifier/` + test['result'][d]['id'] + `"
 							>Modifier</a></td>
-							  <td><button
-							  id="` + test['result'][d]['id'] + `"
-							  onClick=showDetail(this.id)
-							  type="button"
-							  `
-			if (test['result'][d]['etat'] === 'Annuler' || test['result'][d]['etat'] === 'done') {
-				var classB = "btn disabled"
-			} else {
-				var classB = "btn"
-			}
-			new_content = new_content +
-				`
-								class="` +
-				classB +
-
-				`
-							  data-toggle="modal" data-target="#exampleModal"
-							>Modifier</button></td>
 							  <td>
 								<div class="dropdown">
 								  <button `
@@ -1203,7 +1231,7 @@
 									...
 								  </button>
 								  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" disabled>
-									<a class="text-danger dropdown-item" href="{% url 'annulerCommande' com.id %}"  style="cursor: default;">Annuler</a>
+									<a class="text-danger dropdown-item" href="annulerCommande/` + test['result'][d]['id'] + `"  style="cursor: default;">Annuler</a>
 								  </div>
 								</div>
 							  </td>
