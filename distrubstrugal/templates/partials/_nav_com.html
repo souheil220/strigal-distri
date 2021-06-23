@@ -5,7 +5,7 @@
       <li {% if url_name == 'listCommandes' %}class="active"{% endif %}><a {% if url_name != 'listCommandes' %}href="{% url 'listCommandes' %}"{% endif %}>Liste des commande</a></li>
       <li {% if url_name == 'renouveler_contrat' %}class="active"{% endif %}><a {% if url_name != 'renouveler_contrat' %}href="{% url 'renouveler_contrat' %}"{% endif %} >Renouveler Contrat</a></li>
       <li {% if url_name == 'ajouterDis' %}class="active"{% endif %}><a {% if url_name != 'ajouterDis' %}href="{% url 'ajouterDis' %}"{% endif %} >Ajouter Distributeur</a></li>
-      <li {% if url_name == 'suiviContrat' %}class="active"{% endif %}><a {% if url_name != 'suiviContrat' %}href="{% url 'suiviContrat' %}"{% endif %} >Suivis des Contrat</a></li>
+      <li {% if url_name == 'suiviContrat' %}class="active"{% endif %}><a {% if url_name != 'suiviContrat' %}href="{% url 'suiviContrat' %}"{% endif %} >Suivis des Contrats</a></li>
       <li {% if url_name == 'soldClient' %}class="active"{% endif %}><a {% if url_name != 'soldClient' %}href="{% url 'soldClient' %}"{% endif %} >Sold Clients</a></li>
       <li {% if url_name == 'uploadProduct' %}class="active"{% endif %}><a {% if url_name != 'uploadProduct' %}href="{% url 'uploadProduct' %}"{% endif %} >Upload Product</a></li>
     </ul>

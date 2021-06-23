@@ -22,9 +22,11 @@ def list_destri():
         eleme = requests.post(
             "http://10.10.10.64:8585/diststru/", json=pload).json()
         s = "_"
+        mail = ""
         for key in eleme.keys():
             try:
                 x = eleme[key][7].split('@')
+                mail = eleme[key][7]
                 s = x[0]
             except:
                 x = eleme[key][3].split()
@@ -34,11 +36,12 @@ def list_destri():
                 s = s.join(x)
 
             print(s)
-
-            utilisateur = User.objects.create_user(s, None, 'Azerty@22')
+ 
+            utilisateur = User.objects.create_user(s, mail, 'Azerty@22')
 
             user = utilisateur
-            nom = eleme[key][3]
+            id_dist = eleme[key][3]
+            nom = eleme[key][2]
             adress = eleme[key][4]
             tel_fix = eleme[key][5]
             tel_portable = eleme[key][6]
@@ -65,6 +68,7 @@ def list_destri():
                                         nis=nis,
                                         ifn=ifn,
                                         art=art,
+                                        id_dist=id_dist,
                                         status=status
                                         )
             distributeur.save()
@@ -74,7 +78,7 @@ def list_destri():
 
 
 def listCommandes(request):
-    list_destri()
+    # list_destri()
     # bring N_odoo
     try:
         commande = Commande.objects.filter(

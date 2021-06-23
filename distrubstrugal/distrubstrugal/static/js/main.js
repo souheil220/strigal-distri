@@ -964,6 +964,7 @@
 
 	function displaySold() {
 		var id_disri = parseInt($('#selectDistri')[0][1]['value'])
+		console.log(id_disri)
 		// sum(account_move_line.credit)
 		// ,sum(account_move_line.debit)
 		// ,sum(account_move_line.debit  - account_move_line.credit)
@@ -971,6 +972,7 @@
 			url: `http://10.10.10.64:8585/diststru/sold/?id_dist=${id_disri}`,
 			type: 'POST',
 			success: function (data) {
+				console.log(data)
 				console.log("data " + data[0][0])
 				infoSold = document.getElementById('info-sold')
 				infoSold.innerHTML = ''

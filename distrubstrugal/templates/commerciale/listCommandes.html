@@ -15,7 +15,7 @@
     <!-- Table -->
     <h2>Listes de toutes les commandes</h2>
     <div  id="filtreur">
-      <div class="col col-12 col-lg-3 col-xl-3">
+      <div class="col col-12 col-lg-2 col-xl-2">
       <input type="date" id="dateE" class="margening">
     </div>
     <div class="col col-12 col-lg-3 col-xl-3">
@@ -23,18 +23,20 @@
         <option value=""></option>
       </select>
     </div>
-    <div class="col col-12 col-lg-3 col-xl-3">
+    <div class="col col-12 col-lg-2 col-xl-2">
       <select name="etat" id="etat" class="margening">
         <option value="">- Etat -</option>
         <option value="Brouillon">Brouillon</option>
         <option value="Annuler">Annuler</option>
         <option value="Done">Done</option>
       </select></div>
-      <div class="col col-12 col-lg-3 col-xl-3">
+      <div class="col col-12 col-lg-4 col-xl-4">
       <select name="distributeur" class="form-control" class="margening" id="selectDistri" >
         <option value=""></option>
       </select></div>
-      <div></div>
+      <div class="col col-12 col-lg-1 col-xl-1">
+        <button onClick="window.location.reload();">Reset</button>
+      </div>
       <br>
     </div>
     <div id='table-div-commande' class="table-wrapper">

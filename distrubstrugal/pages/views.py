@@ -101,8 +101,18 @@ def loginPage(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         pass_django = 'Azerty@22'
-        user = authenticate(
-            request, username=username, password=password)
+        if '@' in username:
+            try:
+                user = authenticate(
+                    request, username=User.objects.get(email=username), password=password)
+            except:
+                user = None
+                messages.error(
+                    request, 'Utilisateur innexistant')
+
+        else:
+            user = authenticate(
+                request, username=username, password=password)
         if user is not None:
             print(user)
 
