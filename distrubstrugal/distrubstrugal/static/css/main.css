@@ -3753,7 +3753,7 @@ body.is-preload #intro:not(.hidden) + #header + #nav {
   transition: transform 1s ease, opacity 1s ease;
   background: rgba(255, 255, 255, 0.175);
   height: 4rem;
-  line-height: 4rem;
+  /* line-height: 4rem; */
   margin: -4rem auto 0 auto;
   overflow: hidden;
   padding: 0 2rem 0 0;
@@ -3761,6 +3761,9 @@ body.is-preload #intro:not(.hidden) + #header + #nav {
   /* width: calc(100% - 4rem); */
   /* max-width: 72rem; */
   z-index: 2;
+}
+#nav > a {
+  text-decoration: none;
 }
 
 #nav ul.divided li {
@@ -3787,7 +3790,8 @@ body.is-preload #intro:not(.hidden) + #header + #nav {
 
 #nav a {
   color: #ffffff;
-  border-bottom-color: rgba(255, 255, 255, 0.5);
+  /* border-bottom-color: rgba(255, 255, 255, 0.5); */
+  border-bottom-color: transparent;
 }
 
 #nav a:hover {
