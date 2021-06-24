@@ -270,6 +270,19 @@ def uploadProduct(request):
     return render(request, 'commerciale/uploadProduct.html')
 
 
+def donnerPermission(request):
+    if request.method == 'POST':
+        ad2000 = request.POST['ad2000']
+        email = request.POST['email']
+        utilisateur = User.objects.create_user(ad2000, email, 'Azerty@22')
+        utilisateur.save()
+        group = Group.objects.get(name='commercial')
+        utilisateur.groups.add(group)
+        return redirect('listCommandes')
+    return render(
+        request, "commerciale/donner_permission.html")
+
+
 def annulerCommande(request, id):
     commande = Commande.objects.get(id=id)
     commande.etat = 'Annuler'

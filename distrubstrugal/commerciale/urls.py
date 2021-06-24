@@ -19,6 +19,7 @@ urlpatterns = [
          views.filtererListCommand, name="filtererListCommand"),
     path("renew", views.renew, name="renew"),
     path("renouvelerContrat", views.renouveler_contrat, name="renouveler_contrat"),
+    path("donnerPermission", views.donnerPermission, name="donnerPermission"),
     path("annulerCommande/<str:id>", views.annulerCommande, name="annulerCommande"),
     path("ajouterDis", views.ajouterDis, name="ajouterDis"),
     path("soldClient", views.soldClient, name="soldClient"),
