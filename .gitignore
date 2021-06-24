@@ -5,6 +5,12 @@
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
+./distrubstrugal/distrubstrugal/distributeur/__pycache__
+./distrubstrugal/distrubstrugal/distrubstrugal/__pycache__
+./distrubstrugal/distrubstrugal/commerciale/__pycache__
+./distrubstrugal/distrubstrugal/jobs/__pycache__
+./distrubstrugal/distrubstrugal/pages/__pycache__
+./distrubstrugal/.gitignore
 *.py[cod]
 *$py.class
 
