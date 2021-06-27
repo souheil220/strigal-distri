@@ -18,27 +18,32 @@ def list_destri():
         print(pload)
         eleme = requests.post(
             "http://10.10.10.64:8180/diststru/", json=pload).json()
+        print(eleme)
         s = "_"
         mail = ""
         for key in eleme.keys():
-            try:
+            print(eleme[key][7])
+            if eleme[key][7] is not None and '@' in eleme[key][7]:
+                print("i'm here")
                 x = eleme[key][7].split('@')
                 mail = eleme[key][7]
                 s = x[0]
-            except:
+                print(x)
+                print(mail)
+                print(s)
+            else:
                 x = eleme[key][3].split()
                 if '-' in x[0]:
                     x[0] = x[0].replace('-', '_')
                 s = "_"
                 s = s.join(x)
-
-            print(s)
+                print(s)
 
             utilisateur = User.objects.create_user(s, mail, 'Azerty@22')
 
             user = utilisateur
-            id_dist = eleme[key][3]
-            nom = eleme[key][2]
+            id_dist = eleme[key][2]
+            nom = eleme[key][3]
             adress = eleme[key][4]
             tel_fix = eleme[key][5]
             tel_portable = eleme[key][6]
@@ -70,47 +75,48 @@ def list_destri():
                                         )
             distributeur.save()
 
-    except:
-        print('error')
+    except Exception as e:
+        print('error', e)
 
 
 def listCommandes(request):
-    list_destri()
+    # list_destri()
     # bring N_odoo
     try:
         commande = Commande.objects.filter(
             n_commande_odoo=None).values('reference_description')
         data2 = {}
         i = 0
-        for ids in commande:
-            print(ids['reference_description'])
-            data2[i] = ids['reference_description']
-            i = i + 1
-        data = {"data": data2
-                }
+        if len(commande) > 0:
+            for ids in commande:
+                print(ids['reference_description'])
+                data2[i] = ids['reference_description']
+                i = i + 1
+            data = {"data": data2
+                    }
 
-        eleme = requests.post(
-            "http://10.10.10.64:8180/diststru/nodoo/", json=data).json()
-        print(eleme)
-        if eleme is not None:
-            for key in eleme.keys():
-                la_commande = Commande.objects.get(
-                    reference_description=eleme[key][3])
-                la_commande.n_commande_odoo = eleme[key][2]
-                la_commande.etat = eleme[key][4]
-                if la_commande.etat == 'drafte':
-                    la_commande.etat = 'Brouillon'
-                elif la_commande.etat == 'progress':
-                    la_commande.etat = 'En cours'
-                elif la_commande.etat == 'confirmed':
-                    la_commande.etat = 'confirmé'
-                elif la_commande.etat == 'done':
-                    la_commande.etat = 'Terminé'
-                else:
-                    la_commande.etat = 'Annuler'
-                la_commande.save()
+            eleme = requests.post(
+                "http://10.10.10.64:8180/diststru/nodoo/", json=data).json()
+            print(eleme)
+            if eleme is not None:
+                for key in eleme.keys():
+                    la_commande = Commande.objects.get(
+                        reference_description=eleme[key][3])
+                    la_commande.n_commande_odoo = eleme[key][2]
+                    la_commande.etat = eleme[key][4]
+                    if la_commande.etat == 'drafte':
+                        la_commande.etat = 'Brouillon'
+                    elif la_commande.etat == 'progress':
+                        la_commande.etat = 'En cours'
+                    elif la_commande.etat == 'confirmed':
+                        la_commande.etat = 'confirmé'
+                    elif la_commande.etat == 'done':
+                        la_commande.etat = 'Terminé'
+                    else:
+                        la_commande.etat = 'Annuler'
+                    la_commande.save()
 
-            print('success')
+                print('success')
     except Exception as e:
         print(e)
         print('Error bringing n° odoo')
@@ -122,21 +128,22 @@ def listCommandes(request):
             "Annuler", 'done']).exclude(n_commande_odoo=None).values('reference_description', 'etat')
         data2 = {}
         i = 0
-        for ids in commande:
-            data2[i] = ids['reference_description']
-            i = i + 1
-        data = {"data": {"state": commande[0]['etat'], "n_odoo": data2}
-                }
+        if len(commande) > 0:
+            for ids in commande:
+                data2[i] = ids['reference_description']
+                i = i + 1
+            data = {"data": {"state": commande[0]['etat'], "n_odoo": data2}
+                    }
 
-        eleme = requests.post(
-            "http://10.10.10.64:8180/diststru/state/", json=data).json()
-        if eleme is not None:
-            for key in eleme.keys():
-                la_commande = Commande.objects.get(
-                    reference_description=eleme[key][0])
-                la_commande.etat = eleme[key][1]
-                la_commande.save()
-            print('success')
+            eleme = requests.post(
+                "http://10.10.10.64:8180/diststru/state/", json=data).json()
+            if eleme is not None:
+                for key in eleme.keys():
+                    la_commande = Commande.objects.get(
+                        reference_description=eleme[key][0])
+                    la_commande.etat = eleme[key][1]
+                    la_commande.save()
+                print('success')
     except Exception as e:
         print(e)
         print('Error bringing Etat')
@@ -161,6 +168,7 @@ def ajouterDis(request):
 
     if request.method == 'POST':
         nom = request.POST['nom']
+        nom_utilisateur = request.POST['nom_utilisateur']
         adress = request.POST['adress']
         tel_fix = request.POST['tel_fix']
         tel_portable = request.POST['tel_portable']
@@ -176,41 +184,35 @@ def ajouterDis(request):
         date_effet = request.POST['date_effet']
         date_echeance = request.POST['date_echeance']
         status = request.POST['status']
-        s = "_"
-        mail = None
         try:
-            x = couriel.split('@')
-            mail = couriel
-            s = x[0]
+            user = User.objects.get(username=nom_utilisateur)
+            messages.error(
+                    request, 'Utilisateur existe deja')
         except:
-            x = nom.split()
-            if '-' in x[0]:
-                x[0] = x[0].replace('-', '_')
-            s = "_"
-            s = s.join(x)
-        utilisateur = User.objects.create_user(s, mail, 'Azerty@22')
-        user = utilisateur
-        group = Group.objects.get(name='distributeur')
-        user.groups.add(group)
-        distributeur = Distributeur(user=user,
-                                    nom=nom,
-                                    adress=adress,
-                                    tel_fix=tel_fix,
-                                    tel_portable=tel_portable,
-                                    couriel=couriel,
-                                    civilite=civilite,
-                                    site_web=site_web,
-                                    rcn=rcn,
-                                    date_enregistrement_rc=date_enregistrement_rc,
-                                    nis=nis,
-                                    ifn=ifn,
-                                    art=art,
-                                    date_debut_activité=date_debut_activité,
-                                    date_effet=date_effet,
-                                    date_echeance=date_echeance,
-                                    status=status
-                                    )
-        distributeur.save()
+            print("user does not exist")
+            utilisateur = User.objects.create_user(nom_utilisateur, couriel, 'Azerty@22')
+            user = utilisateur
+            group = Group.objects.get(name='distributeur')
+            user.groups.add(group)
+            distributeur = Distributeur(user=user,
+                                        nom=nom,
+                                        adress=adress,
+                                        tel_fix=tel_fix,
+                                        tel_portable=tel_portable,
+                                        couriel=couriel,
+                                        civilite=civilite,
+                                        site_web=site_web,
+                                        rcn=rcn,
+                                        date_enregistrement_rc=date_enregistrement_rc,
+                                        nis=nis,
+                                        ifn=ifn,
+                                        art=art,
+                                        date_debut_activité=date_debut_activité,
+                                        date_effet=date_effet,
+                                        date_echeance=date_echeance,
+                                        status=status
+                                        )
+            distributeur.save()
         return redirect('listCommandes')
     return render(request, 'commerciale/ajouter_dis.html')
 
