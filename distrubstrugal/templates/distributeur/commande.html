@@ -1,6 +1,5 @@
 {%extends 'base.html'%} {% block title %} Welcome {% endblock %} 
 {% block content %}
-
 <!-- Wrapper -->
 <div id="wrapper">
   <!-- Header -->
@@ -19,22 +18,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <!-- Nav -->
-  <nav id="nav">
-    <ul class="links">
-      <li><a href="{% url 'listCommandesD' %}">Liste des commande</a></li>
-      <li class="active"><a>Commande</a></li>
-      <li><a href="{% url 'modifierMP' %}">Modifier Mot de passe</a></li>
-    </ul>
-    <ul class="icons">
-      <li>
-        <span class="label"
-          ><a href="{% url 'logout' %}" class="icon brands fa-sign-out"
-            >logout</a
-          ></span
-        >
-      </li>
-    </ul>
-  </nav>
+  {% include 'partials/_nav_dist.html'%} 
   {% if rest <= 15 %}
   <script type="text/javascript">
     $(window).on("load", function () {

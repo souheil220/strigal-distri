@@ -22,5 +22,4 @@ urlpatterns = [
     path("donnerPermission", views.donnerPermission, name="donnerPermission"),
     path("annulerCommande/<str:id>", views.annulerCommande, name="annulerCommande"),
     path("ajouterDis", views.ajouterDis, name="ajouterDis"),
-    path("soldClient", views.soldClient, name="soldClient"),
 ]

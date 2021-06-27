@@ -353,6 +353,19 @@ def filterer(request, etat=None, date=None):
         return HttpResponse(json.dumps(context, indent=4, default=str), content_type="application/json")
 
 
+def soldClient(request):
+    user = request.user
+    distributeur = Distributeur.objects.get(user=user).id_dist
+    pload = {'data': {}}
+    url = "http://10.10.10.64:8180/diststru/sold/?id_dist={}".format(
+        distributeur)
+    eleme = requests.post(
+        url, json=pload).json()
+    context = {'eleme': eleme}
+    print(eleme)
+    return render(request, 'distributeur/soldClient.html', context)
+
+
 @ login_required(login_url='login')
 def modifierMP(request):
     if request.method == "POST":

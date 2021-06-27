@@ -11,4 +11,5 @@ urlpatterns = [
     path("filterer/<str:etat>/<str:date>", views.filterer, name="filterer"),
     path("regCommand", views.regCommand, name="regCommand"),
     path('pdf_view/<int:id>', views.render_to_pdf, name='pdf_view'),
+    path("soldClient", views.soldClient, name="soldClient"),
 ]
