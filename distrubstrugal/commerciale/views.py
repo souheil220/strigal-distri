@@ -80,77 +80,7 @@ def list_destri():
 
 
 def listCommandes(request):
-<<<<<<< HEAD
     # list_destri()
-=======
-    #list_destri()
-    # bring N_odoo
-    try:
-        commande = Commande.objects.filter(
-            n_commande_odoo=None).values('reference_description')
-        data2 = {}
-        i = 0
-        if len(commande) > 0:
-            for ids in commande:
-                print(ids['reference_description'])
-                data2[i] = ids['reference_description']
-                i = i + 1
-            data = {"data": data2
-                    }
-
-            eleme = requests.post(
-                "http://10.10.10.64:8180/diststru/nodoo/", json=data).json()
-            print(eleme)
-            if eleme is not None:
-                for key in eleme.keys():
-                    la_commande = Commande.objects.get(
-                        reference_description=eleme[key][3])
-                    la_commande.n_commande_odoo = eleme[key][2]
-                    la_commande.etat = eleme[key][4]
-                    if la_commande.etat == 'drafte':
-                        la_commande.etat = 'Brouillon'
-                    elif la_commande.etat == 'progress':
-                        la_commande.etat = 'En cours'
-                    elif la_commande.etat == 'confirmed':
-                        la_commande.etat = 'confirmé'
-                    elif la_commande.etat == 'done':
-                        la_commande.etat = 'Terminé'
-                    else:
-                        la_commande.etat = 'Annuler'
-                    la_commande.save()
-
-                print('success')
-    except Exception as e:
-        print(e)
-        print('Error bringing n° odoo')
-
-    # bring Etat
-    try:
-
-        commande = Commande.objects.exclude(etat__in=[
-            "Annuler", 'done']).exclude(n_commande_odoo=None).values('reference_description', 'etat')
-        data2 = {}
-        i = 0
-        if len(commande) > 0:
-            for ids in commande:
-                data2[i] = ids['reference_description']
-                i = i + 1
-            data = {"data": {"state": commande[0]['etat'], "n_odoo": data2}
-                    }
-
-            eleme = requests.post(
-                "http://10.10.10.64:8180/diststru/state/", json=data).json()
-            if eleme is not None:
-                for key in eleme.keys():
-                    la_commande = Commande.objects.get(
-                        reference_description=eleme[key][0])
-                    la_commande.etat = eleme[key][1]
-                    la_commande.save()
-                print('success')
-    except Exception as e:
-        print(e)
-        print('Error bringing Etat')
->>>>>>> 39a882cf2eec98f244cb34367de078b3194445cb
 
     commande = Commande.objects.all().order_by('id')
     paginator = Paginator(commande, 5)
