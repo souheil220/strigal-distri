@@ -80,7 +80,7 @@ def list_destri():
 
 
 def listCommandes(request):
-    # list_destri()
+    list_destri()
     # bring N_odoo
     try:
         commande = Commande.objects.filter(
