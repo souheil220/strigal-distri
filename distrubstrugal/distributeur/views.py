@@ -10,98 +10,52 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.core.paginator import Paginator
+from .decorators import distributeur
 
 # Create your views here.
 
 
-def loadMore(request, name, whiche):
-    if request.is_ajax and request.method == "GET":
-        if(whiche == "1"):
-            result = Article.objects.filter(nom_article__icontains=name)[:5]
-        else:
-            result = Article.objects.filter(id_article__icontains=name)[:5]
-
-        print(result)
-        data = {}
-        i = 0
-        for product in result:
-            data[i] = {}
-            data[i]['id_article'] = product.id_article
-            data[i]['nom_article'] = product.nom_article
-            data[i]['unite_mesure'] = product.unite_mesure
-            data[i]['prix_unitaire'] = product.prix_unitaire
-            i = i+1
-
-        return HttpResponse(json.dumps(data, indent=4, default=str), content_type="application/json")
-
-    else:
-        raise Http404
-
-
-def regCommand(request):
-
-    if request.method == "POST":
-        current_user = request.user
-        try:
-            nbr_facture = Distributeur.objects.get(
-                user=current_user).nbr_facture
-            nbr_facture = nbr_facture+1
-            Distributeur.objects.filter(user=current_user).update(
-                nbr_facture=nbr_facture)
-        except:
-            nbr_facture = 0
-        distributeur = Distributeur.objects.get(
-            user=current_user)
-        two_dig_of_y = datetime.now().strftime("%y")
-        try:
-            last_commande = (
-                Commande.objects.last().reference_description)[-2:]
-
-            if last_commande > two_dig_of_y:
-                nbr_facture = 1
-        except:
-            nbr_facture = 1
-
-        reference_description = 'DC' + (str((current_user.id)-1).zfill(2)) + \
-            str(nbr_facture).zfill(4) + "/" + two_dig_of_y
-        commande = Commande(reference_description=reference_description,
-                            destributeur=distributeur,
-                            societe='strugal',
-                            totaleHT=round(float(request.POST.get('MHT')), 2),
-                            totaleTTC=round(float(request.POST.get('TTC')), 2)
-                            )
-        commande.save()
-        datalength = request.POST['datalength']
-        for i in range(1, int(datalength) + 1):
-            id_commande = Commande.objects.all().last()
-            article = request.POST.get('article-{}'.format(i))
-            print('test ', article)
-            code_article = Article.objects.get(id_article=article)
-            qte = request.POST['quantite-{}'.format(i)]
-            prix_unitaire = request.POST.get('prix_unitaire-{}'.format(i))
-
-            montant = request.POST.get('mantant-{}'.format(i))
-            print(montant)
-
-            list_article_commande = ListArticleCommande(id_commande=id_commande,
-                                                        code_article=code_article,
-                                                        qte=int(qte),
-                                                        prix_unitaire=int(
-                                                            prix_unitaire),
-                                                        montant=int(montant),)
-
-            list_article_commande.save()
-
-        return redirect('/distributeur/listCommandesD')
-
-
 @ login_required(login_url='login')
+@distributeur
 def commande(request):
     return render(
         request, "distributeur/commande.html")
 
 
 @ login_required(login_url='login')
+@distributeur
+def modifierMP(request):
+    if request.method == "POST":
+        actual_pass = request.POST['actual-pass']
+        current_user = request.user
+        user = authenticate(username=current_user, password=actual_pass)
+        if user is not None:
+            print("user ", user)
+            mot_pass = request.POST['pass']
+            conf_pass = request.POST['conf-pass']
+            if mot_pass == conf_pass:
+                user.set_password(mot_pass)
+                user.save()
+                user = authenticate(username=current_user, password=mot_pass)
+                login(request, user)
+                messages.success(request, 'Mot de passe modifier avec succées')
+                return redirect("listCommandesD")
+            else:
+                messages.error(
+                    request, 'Nouveau mot de passe est différent de Confirmer mot de passe')
+                return render(
+                    request, "distributeur/modifier_mp.html")
+        else:
+            messages.error(
+                request, 'Mot de passe actuel erroné')
+            return render(
+                request, "distributeur/modifier_mp.html")
+    return render(
+        request, "distributeur/modifier_mp.html")
+
+
+@ login_required(login_url='login')
+@distributeur
 def listCommandes(request):
     current_user = request.user
     destributeur = Distributeur.objects.get(user=current_user)
@@ -126,6 +80,21 @@ def listCommandes(request):
     }
     return render(
         request, "distributeur/listCommandes.html", context)
+
+
+@ login_required(login_url='login')
+@distributeur
+def soldClient(request):
+    user = request.user
+    distributeur = Distributeur.objects.get(user=user).id_dist
+    pload = {'data': {}}
+    url = "http://10.10.10.64:8180/diststru/sold/?id_dist={}".format(
+        distributeur)
+    eleme = requests.post(
+        url, json=pload).json()
+    context = {'eleme': eleme}
+    print(eleme)
+    return render(request, 'distributeur/soldClient.html', context)
 
 
 def detailCommande(request, id):
@@ -353,45 +322,82 @@ def filterer(request, etat=None, date=None):
         return HttpResponse(json.dumps(context, indent=4, default=str), content_type="application/json")
 
 
-def soldClient(request):
-    user = request.user
-    distributeur = Distributeur.objects.get(user=user).id_dist
-    pload = {'data': {}}
-    url = "http://10.10.10.64:8180/diststru/sold/?id_dist={}".format(
-        distributeur)
-    eleme = requests.post(
-        url, json=pload).json()
-    context = {'eleme': eleme}
-    print(eleme)
-    return render(request, 'distributeur/soldClient.html', context)
-
-
-@ login_required(login_url='login')
-def modifierMP(request):
-    if request.method == "POST":
-        actual_pass = request.POST['actual-pass']
-        current_user = request.user
-        user = authenticate(username=current_user, password=actual_pass)
-        if user is not None:
-            print("user ", user)
-            mot_pass = request.POST['pass']
-            conf_pass = request.POST['conf-pass']
-            if mot_pass == conf_pass:
-                user.set_password(mot_pass)
-                user.save()
-                user = authenticate(username=current_user, password=mot_pass)
-                login(request, user)
-                messages.success(request, 'Mot de passe modifier avec succées')
-                return redirect("listCommandesD")
-            else:
-                messages.error(
-                    request, 'Nouveau mot de passe est différent de Confirmer mot de passe')
-                return render(
-                    request, "distributeur/modifier_mp.html")
+def loadMore(request, name, whiche):
+    if request.is_ajax and request.method == "GET":
+        if(whiche == "1"):
+            result = Article.objects.filter(nom_article__icontains=name)[:5]
         else:
-            messages.error(
-                request, 'Mot de passe actuel erroné')
-            return render(
-                request, "distributeur/modifier_mp.html")
-    return render(
-        request, "distributeur/modifier_mp.html")
+            result = Article.objects.filter(id_article__icontains=name)[:5]
+
+        print(result)
+        data = {}
+        i = 0
+        for product in result:
+            data[i] = {}
+            data[i]['id_article'] = product.id_article
+            data[i]['nom_article'] = product.nom_article
+            data[i]['unite_mesure'] = product.unite_mesure
+            data[i]['prix_unitaire'] = product.prix_unitaire
+            i = i+1
+
+        return HttpResponse(json.dumps(data, indent=4, default=str), content_type="application/json")
+
+    else:
+        raise Http404
+
+
+def regCommand(request):
+
+    if request.method == "POST":
+        current_user = request.user
+        try:
+            nbr_facture = Distributeur.objects.get(
+                user=current_user).nbr_facture
+            nbr_facture = nbr_facture+1
+            Distributeur.objects.filter(user=current_user).update(
+                nbr_facture=nbr_facture)
+        except:
+            nbr_facture = 0
+        distributeur = Distributeur.objects.get(
+            user=current_user)
+        two_dig_of_y = datetime.now().strftime("%y")
+        try:
+            last_commande = (
+                Commande.objects.last().reference_description)[-2:]
+
+            if last_commande > two_dig_of_y:
+                nbr_facture = 1
+        except:
+            nbr_facture = 1
+
+        reference_description = 'DC' + (str((current_user.id)-1).zfill(2)) + \
+            str(nbr_facture).zfill(4) + "/" + two_dig_of_y
+        commande = Commande(reference_description=reference_description,
+                            destributeur=distributeur,
+                            societe='strugal',
+                            totaleHT=round(float(request.POST.get('MHT')), 2),
+                            totaleTTC=round(float(request.POST.get('TTC')), 2)
+                            )
+        commande.save()
+        datalength = request.POST['datalength']
+        for i in range(1, int(datalength) + 1):
+            id_commande = Commande.objects.all().last()
+            article = request.POST.get('article-{}'.format(i))
+            print('test ', article)
+            code_article = Article.objects.get(id_article=article)
+            qte = request.POST['quantite-{}'.format(i)]
+            prix_unitaire = request.POST.get('prix_unitaire-{}'.format(i))
+
+            montant = request.POST.get('mantant-{}'.format(i))
+            print(montant)
+
+            list_article_commande = ListArticleCommande(id_commande=id_commande,
+                                                        code_article=code_article,
+                                                        qte=int(qte),
+                                                        prix_unitaire=int(
+                                                            prix_unitaire),
+                                                        montant=int(montant),)
+
+            list_article_commande.save()
+
+        return redirect('/distributeur/listCommandesD')

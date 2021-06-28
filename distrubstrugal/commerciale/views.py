@@ -9,6 +9,8 @@ from django.core.paginator import Paginator
 from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
 import openpyxl
+from django.contrib.auth.decorators import login_required
+from .decorators import commercial
 # Create your views here.
 
 
@@ -79,6 +81,8 @@ def list_destri():
         print('error', e)
 
 
+@ login_required(login_url='login')
+@commercial
 def listCommandes(request):
     # list_destri()
 
@@ -94,10 +98,14 @@ def listCommandes(request):
         request, "commerciale/listCommandes.html", context)
 
 
+@ login_required(login_url='login')
+@commercial
 def renouveler_contrat(request):
     return render(request, "commerciale/renouveler_contrat.html")
 
 
+@ login_required(login_url='login')
+@commercial
 def ajouterDis(request):
 
     if request.method == 'POST':
@@ -152,6 +160,8 @@ def ajouterDis(request):
     return render(request, 'commerciale/ajouter_dis.html')
 
 
+@ login_required(login_url='login')
+@commercial
 def suiviContrat(request):
     distributeur = Distributeur.objects.all()[:5].values(
         'id', 'nom', 'date_effet', 'date_echeance')
@@ -162,6 +172,8 @@ def suiviContrat(request):
     return render(request, 'commerciale/suivi_contrat.html', context)
 
 
+@ login_required(login_url='login')
+@commercial
 def uploadProduct(request):
     if request.method == 'POST':
         try:
@@ -203,6 +215,8 @@ def uploadProduct(request):
     return render(request, 'commerciale/uploadProduct.html')
 
 
+@ login_required(login_url='login')
+@commercial
 def donnerPermission(request):
     if request.method == 'POST':
         ad2000 = request.POST['ad2000']
