@@ -1,5 +1,4 @@
-{% extends 'base.html' %} {% block title %} RENOUVELER CONTRAT {% endblock %} 
-{% block content %}
+{% extends 'base.html' %} {% block title %} RENOUVELER CONTRAT {% endblock %} {%block content %}
 
 <!-- Wrapper -->
 <div id="wrapper">
@@ -19,12 +18,12 @@
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
   <!-- Nav -->
-  {% include 'partials/_nav_com.html'%} 
+  {% include 'partials/_nav_com.html'%}
 
   <div id="main">
     <!-- Table -->
     <h2>Renouveler Contrat</h2>
-    <form method="post" action="{% url 'renew' %}">
+    <form id="form1" method="post" action="{% url 'renew' %}">
       {% csrf_token %}
       <div class="row gtr-uniform">
         <!-- Break -->
@@ -33,7 +32,7 @@
             <option value=""></option>
           </select>
         </div>
-        <div class="col-sm-12 col-lg-4 ">
+        <div class="col-sm-12 col-lg-4">
           <input
             type="date"
             name="demo-date"
@@ -44,13 +43,31 @@
         </div>
 
         <!-- Break -->
-        <div class="col-sm-12 col-lg-2 ">
+        <div class="col-sm-12 col-lg-2">
           <ul class="actions">
-            <li><input type="submit" value="Renouveler" class="primary" /></li>
+            <li>
+              <input
+                id="btnSubmit"
+                type="submit"
+                value="Renouveler"
+                class="primary"
+              />
+            </li>
           </ul>
         </div>
       </div>
     </form>
   </div>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $("#btnSubmit").on("click", function () {
+        var myForm = $("form#form1");
+        if (myForm) {
+          $(this).prop("disabled", true);
+          $(myForm).submit();
+        }
+      });
+    });
+  </script>
   {% endblock %}
 </div>

@@ -11,20 +11,31 @@
   <div id="main">
     <!-- Table -->
     <h2>Modifier Mot de passe</h2>
-    <form method="POST" action="{% url 'modifierMP' %}">
+    <form id="form1" method="POST" action="{% url 'modifierMP' %}">
         {% csrf_token %}
         <div class="text-center">
             <input class="form-group" type="password" name="actual-pass" placeholder="Mot de passe actuel">
             <input class="form-group" type="password" name="pass" placeholder="Nouveau mot de passe">
             <input class="form-group" type="password" name="conf-pass" placeholder="Confirmer mot de passe">
-            <button class ="btn">Modifier</button>
+            <button id="btnSubmit" class ="btn">Modifier</button>
         </div>
     </form>
     <hr />
   </div>
 </div>
 
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#btnSubmit").on("click", function () {
+      var myForm = $("form#form1");
+      if (myForm) {
+        $(this).prop("disabled", true);
+        $(myForm).submit();
+      }
+    });
+  });
 </script>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha512-3P8rXCuGJdNZOnUx/03c1jOTnMn3rP63nBip5gOP2qmUh5YAdVAvFZ1E+QLZZbC1rtMrQb+mah3AfYW11RUrWA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

@@ -6,6 +6,7 @@
   <div id="main">
     <input value="{{data}}" hidden />
     <form
+      id="form1"
       method="post"
       action="{% url 'modifierCommande' id=id %}"
       enctype="multipart/form-data"
@@ -129,7 +130,13 @@
         <div style="display: flex">
           <div class="text-center"></div>
           <div class="">
-            <input type="file" name="capture" id="capture" accept="image/*" />
+            <input
+              type="file"
+              name="capture"
+              id="capture"
+              accept="image/*"
+              required
+            />
           </div>
         </div>
         <div style="display: flex; height: 25vh; justify-content: flex-end">
@@ -190,11 +197,12 @@
         </div>
       </div>
       <div style="display: flex; justify-content: flex-end; margin-top: 2%">
-        <button class="">Enregistrer</button>
+        <button id="btnSubmit" class="">Enregistrer</button>
       </div>
     </form>
     <hr />
   </div>
 </div>
 <script src="{% static 'js/modif.js' %}"></script>
+
 {% endblock %}

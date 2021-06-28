@@ -24,7 +24,7 @@
   <div id="main">
     <!-- Table -->
     <h2>Renouveler Contrat</h2>
-    <form method="post" action="{% url 'donnerPermission' %}">
+    <form id="form1" method="post" action="{% url 'donnerPermission' %}">
       {% csrf_token %}
       <div class="row gtr-uniform">
         <!-- Break -->
@@ -35,7 +35,7 @@
           <input type="text" name="email" placeholder="EMAIL" required />
         </div>
         <div class="col">
-          <button type="submit" class="primary">Donner Accées</button>
+          <button id="btnSubmit" type="submit" class="primary">Donner Accées</button>
         </div>
 
         <!-- Break -->
@@ -44,3 +44,14 @@
   </div>
   {% endblock %}
 </div>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#btnSubmit").on("click", function () {
+      var myForm = $("form#form1");
+      if (myForm) {
+        $(this).prop("disabled", true);
+        $(myForm).submit();
+      }
+    });
+  });
+</script>

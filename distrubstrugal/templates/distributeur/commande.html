@@ -18,8 +18,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <!-- Nav -->
-  {% include 'partials/_nav_dist.html'%} 
-  {% if rest <= 15 %}
+  {% include 'partials/_nav_dist.html'%} {% if rest <= 15 %}
   <script type="text/javascript">
     $(window).on("load", function () {
       $("#myModal").modal("show");
@@ -40,6 +39,7 @@
     </div>
     <input value="{{data}}" hidden />
     <form
+      id="form1"
       method="post"
       action="{% url 'regCommand' %}"
       enctype="multipart/form-data"
@@ -184,7 +184,7 @@
         </div>
       </div>
       <div style="display: flex; justify-content: flex-end; margin-top: 2%">
-        <button class="">Enregistrer</button>
+        <button id="btnSubmit" class="">Enregistrer</button>
       </div>
     </form>
     <hr />
@@ -223,4 +223,15 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#btnSubmit").on("click", function () {
+      var myForm = $("form#form1");
+      if (myForm) {
+        $(this).prop("disabled", true);
+        $(myForm).submit();
+      }
+    });
+  });
+</script>
 {% endblock %}

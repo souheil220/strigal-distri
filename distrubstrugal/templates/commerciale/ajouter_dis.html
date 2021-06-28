@@ -6,7 +6,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
   <div id="main">
     <h2>Ajouter un nouveau distributeur</h2>
-    <form method="post" action="{% url 'ajouterDis' %}">
+    <form id="form1" method="post" action="{% url 'ajouterDis' %}">
       {% csrf_token %}
       <div
         style="
@@ -111,10 +111,20 @@
           <label>status</label>
           <input name="status" type="text" value="validate" required />
         </div>
-        <button class="btn" style="margin-top: 1%">Enregistrer</button>
+        <button id="btnSubmit" class="btn" style="margin-top: 1%">Enregistrer</button>
       </div>
     </form>
   </div>
 </div>
-
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#btnSubmit").on("click", function () {
+      var myForm = $("form#form1");
+      if (myForm) {
+        $(this).prop("disabled", true);
+        $(myForm).submit();
+      }
+    });
+  });
+</script>
 {% endblock %}
