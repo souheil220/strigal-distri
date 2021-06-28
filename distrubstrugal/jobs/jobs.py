@@ -13,6 +13,9 @@ from os import walk
 def schedule_api():
     getAndInsertPhoto()
 
+# bring N_odoo
+
+
 def schedule_api2():
     # bring N_odoo
     try:
@@ -36,17 +39,7 @@ def schedule_api2():
                     la_commande = Commande.objects.get(
                         reference_description=eleme[key][3])
                     la_commande.n_commande_odoo = eleme[key][2]
-                    la_commande.etat = eleme[key][4]
-                    if la_commande.etat == 'drafte':
-                        la_commande.etat = 'Brouillon'
-                    elif la_commande.etat == 'progress':
-                        la_commande.etat = 'En cours'
-                    elif la_commande.etat == 'confirmed':
-                        la_commande.etat = 'confirmé'
-                    elif la_commande.etat == 'done':
-                        la_commande.etat = 'Terminé'
-                    else:
-                        la_commande.etat = 'Annuler'
+                    la_commande.etat = "En cours"
                     la_commande.save()
 
                 print('success')
@@ -54,12 +47,15 @@ def schedule_api2():
         print(e)
         print('Error bringing n° odoo')
 
+# bring Etat
+
+
 def schedule_api3():
-    # bring Etat
+
     try:
 
         commande = Commande.objects.exclude(etat__in=[
-            "Annuler", 'done']).exclude(n_commande_odoo=None).values('reference_description', 'etat')
+            "Annulé", 'Livré']).exclude(n_commande_odoo=None).values('reference_description', 'etat')
         data2 = {}
         i = 0
         if len(commande) > 0:
@@ -75,12 +71,23 @@ def schedule_api3():
                 for key in eleme.keys():
                     la_commande = Commande.objects.get(
                         reference_description=eleme[key][0])
-                    la_commande.etat = eleme[key][1]
+
+                    if eleme[key][1] == 'drafte':
+                        la_commande.etat = 'Brouillon'
+                    elif eleme[key][1] == 'progress':
+                        la_commande.etat = 'En cours'
+                    elif eleme[key][1] == 'confirmed':
+                        la_commande.etat = 'confirmé'
+                    elif eleme[key][1] == 'done':
+                        la_commande.etat = 'Terminé'
+                    else:
+                        la_commande.etat = 'Annuler'
                     la_commande.save()
                 print('success')
     except Exception as e:
         print(e)
         print('Error bringing Etat')
+
 
 def GetFromOdoo(query):
     try:

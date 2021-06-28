@@ -232,7 +232,7 @@ def donnerPermission(request):
 
 def annulerCommande(request, id):
     commande = Commande.objects.get(id=id)
-    commande.etat = 'Annuler'
+    commande.etat = 'Annulé'
     commande.save()
     return redirect('listCommandes')
 
