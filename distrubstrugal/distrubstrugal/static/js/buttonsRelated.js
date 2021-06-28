@@ -254,8 +254,13 @@ $('#add-one-more').click(function () {
   })
 
   $eventSelect2.on("select2:close", function (e) {
-    var num = ($(this).parents()[2].id)
-    num = (num.substr(num.length - 1))
+      var num = ($(this).parents()[2].id)
+    var aa = num.lastIndexOf("-") + 1
+    var bb = num.lastIndexOf(num.substr(num.length - 1)) + 1
+    num = row.substring(
+    aa, 
+    bb
+);
     closeSelect("#select2-selectjs-" + num + "-2-container", e, $(this))
   })
 
