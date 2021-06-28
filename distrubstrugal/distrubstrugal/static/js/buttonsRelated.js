@@ -217,7 +217,7 @@ $('#add-one-more').click(function () {
     var num = ($(this).parents()[2].id)
     var aa = num.lastIndexOf("-") + 1
     var bb = num.lastIndexOf(num.substr(num.length - 1)) + 1
-    num = row.substring(
+    num = num.substring(
     aa, 
     bb
 );
@@ -246,7 +246,7 @@ $('#add-one-more').click(function () {
     var num = ($(this).parents()[2].id)
     var aa = num.lastIndexOf("-") + 1
     var bb = num.lastIndexOf(num.substr(num.length - 1)) + 1
-    num = row.substring(
+    num = num.substring(
     aa, 
     bb
 );
@@ -257,7 +257,7 @@ $('#add-one-more').click(function () {
       var num = ($(this).parents()[2].id)
     var aa = num.lastIndexOf("-") + 1
     var bb = num.lastIndexOf(num.substr(num.length - 1)) + 1
-    num = row.substring(
+    num = num.substring(
     aa, 
     bb
 );
