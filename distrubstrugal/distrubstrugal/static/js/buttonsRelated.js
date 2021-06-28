@@ -214,8 +214,13 @@ $('#add-one-more').click(function () {
   })
 
   function closeSelect(idContainer, e, that) {
-    var num = (that.parents()[2].id)
-    num = (num.substr(num.length - 1))
+    var num = ($(this).parents()[2].id)
+    var aa = num.lastIndexOf("-") + 1
+    var bb = num.lastIndexOf(num.substr(num.length - 1)) + 1
+    num = row.substring(
+    aa, 
+    bb
+);
     console.log(num)
     var pos = lista.map(function (event) {
       if (idContainer === "#select2-selectjs-" + num + "-1-container") {
@@ -239,7 +244,12 @@ $('#add-one-more').click(function () {
 
   $eventSelect.on("select2:close", function (e) {
     var num = ($(this).parents()[2].id)
-    num = (num.substr(num.length - 1))
+    var aa = num.lastIndexOf("-") + 1
+    var bb = num.lastIndexOf(num.substr(num.length - 1)) + 1
+    num = row.substring(
+    aa, 
+    bb
+);
     closeSelect("#select2-selectjs-" + num + "-1-container", e, $(this))
   })
 
