@@ -221,7 +221,8 @@ def donnerPermission(request):
     if request.method == 'POST':
         ad2000 = request.POST['ad2000']
         email = request.POST['email']
-        utilisateur = User.objects.create_user(ad2000, email, 'Azerty@22')
+        utilisateur = User.objects.create_user(
+            username=ad2000, email=email, password='Azerty@22')
         utilisateur.save()
         group = Group.objects.get(name='commercial')
         utilisateur.groups.add(group)
