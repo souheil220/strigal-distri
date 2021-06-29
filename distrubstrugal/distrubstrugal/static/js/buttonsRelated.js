@@ -214,11 +214,15 @@ $('#add-one-more').click(function () {
   })
 
   function closeSelect(idContainer, e, that) {
+    console.log(that.parents()[2].id)
     var num = (that.parents()[2].id)
-    num = (num.substr(num.length - 1))
+    num = (num.substr(num.length - 2))
+    var va = test.lastIndexOf(num)
+    var jj = test.lastIndexOf("s-") + 2
+    var mySubString = test.substring(jj, va);
     console.log(num)
     var pos = lista.map(function (event) {
-      if (idContainer === "#select2-selectjs-" + num + "-1-container") {
+      if (idContainer === "#select2-selectjs-" + mySubString + "-1-container") {
         return event.nom_article
       } else {
         return event.id_article
@@ -229,8 +233,8 @@ $('#add-one-more').click(function () {
     }).indexOf($(idContainer).text());
     console.log(pos)
 
-    $('#unitedemeusur-' + num).val(lista[pos]['unite_mesure'])
-    $('#prix_unitaire-' + num).val(lista[pos]['prix_unitaire'])
+    $('#unitedemeusur-' + mySubString).val(lista[pos]['unite_mesure'])
+    $('#prix_unitaire-' + mySubString).val(lista[pos]['prix_unitaire'])
 
     console.log("select2:close", e);
   }
