@@ -15,6 +15,8 @@
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"
   ></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+
 
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <!-- Nav -->
@@ -55,7 +57,7 @@
           <div class="">
             <select
               name="article-1"
-              class="form-control"
+              class="form-control valodo"
               id="selectjs-1-1"
               required
             >
@@ -66,7 +68,7 @@
         <div class="col col-12 col-lg-3 col-xl-3">
           <div class="text-center">ref Article</div>
           <div class="">
-            <select class="form-control" id="selectjs-1-2" required>
+            <select class="form-control valodo" id="selectjs-1-2" required>
               <option value=""></option>
             </select>
           </div>
@@ -78,9 +80,8 @@
               type="text"
               name="quantite-1"
               id="quantite-1"
-              class="qte"
-              placeholder="0"
-              required
+              class="qte valodo"
+              required="true"
             />
           </div>
         </div>
@@ -184,8 +185,9 @@
         </div>
       </div>
       <div style="display: flex; justify-content: flex-end; margin-top: 2%">
-        <button id="btnSubmit" class="">Enregistrer</button>
+        <button id="btnSubmit" type="submit" class="">Enregistrer</button>
       </div>
+     
     </form>
     <hr />
   </div>
@@ -224,14 +226,24 @@
   </div>
 </div>
 <script type="text/javascript">
+
   $(document).ready(function () {
-    $("#btnSubmit").on("click", function () {
-      var myForm = $("form#form1");
-      if (myForm) {
+    $("#btnSubmit").on("click", function (e) {
+      var valeur = 1
+      $('.valodo').each(function(){
+        if($(this).val().length===0){
+          valeur = 0
+        }
+
+      })
+      if(valeur===1){
         $(this).prop("disabled", true);
-        $(myForm).submit();
+        $("form#form1").submit()
       }
+      
     });
+    
   });
+  
 </script>
 {% endblock %}

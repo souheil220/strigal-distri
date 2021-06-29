@@ -567,7 +567,14 @@
 		var mht = 0
 		var tva = 0
 		var ttc = 0
-		var num = ($(this)[0].id).substr(($(this)[0].id).length - 1)
+		var num = ($(this)[0].id)
+		var aa = num.lastIndexOf("-") + 1
+		var bb = num.lastIndexOf(num.substr(num.length - 1)) + 1
+		num = num.substring(
+			aa,
+			bb
+		);
+		console.log(num)
 
 		if ($('#quantite-' + num).val().length > 0 && $('#quantite-' + num).val() !== '0') {
 
