@@ -214,12 +214,22 @@ $('#add-one-more').click(function () {
   })
 
   function closeSelect(idContainer, e, that) {
+<<<<<<< HEAD
     console.log(that.parents()[2].id)
     var num = (that.parents()[2].id)
     num = (num.substr(num.length - 2))
     var va = test.lastIndexOf(num)
     var jj = test.lastIndexOf("s-") + 2
     var mySubString = test.substring(jj, va);
+
+    var num = ($(this).parents()[2].id)
+    var aa = num.lastIndexOf("-") + 1
+    var bb = num.lastIndexOf(num.substr(num.length - 1)) + 1
+    num = num.substring(
+    aa, 
+    bb
+);
+>>>>>>> ad90188aaad0ab1223498d84a0cbfa6113e690d5
     console.log(num)
     var pos = lista.map(function (event) {
       if (idContainer === "#select2-selectjs-" + mySubString + "-1-container") {
@@ -243,13 +253,23 @@ $('#add-one-more').click(function () {
 
   $eventSelect.on("select2:close", function (e) {
     var num = ($(this).parents()[2].id)
-    num = (num.substr(num.length - 1))
+    var aa = num.lastIndexOf("-") + 1
+    var bb = num.lastIndexOf(num.substr(num.length - 1)) + 1
+    num = num.substring(
+    aa, 
+    bb
+);
     closeSelect("#select2-selectjs-" + num + "-1-container", e, $(this))
   })
 
   $eventSelect2.on("select2:close", function (e) {
-    var num = ($(this).parents()[2].id)
-    num = (num.substr(num.length - 1))
+      var num = ($(this).parents()[2].id)
+    var aa = num.lastIndexOf("-") + 1
+    var bb = num.lastIndexOf(num.substr(num.length - 1)) + 1
+    num = num.substring(
+    aa, 
+    bb
+);
     closeSelect("#select2-selectjs-" + num + "-2-container", e, $(this))
   })
 
