@@ -214,7 +214,7 @@ $('#add-one-more').click(function () {
   })
 
   function closeSelect(idContainer, e, that) {
-<<<<<<< HEAD
+
     console.log(that.parents()[2].id)
     var num = (that.parents()[2].id)
     num = (num.substr(num.length - 2))
@@ -229,7 +229,7 @@ $('#add-one-more').click(function () {
     aa, 
     bb
 );
->>>>>>> ad90188aaad0ab1223498d84a0cbfa6113e690d5
+
     console.log(num)
     var pos = lista.map(function (event) {
       if (idContainer === "#select2-selectjs-" + mySubString + "-1-container") {
