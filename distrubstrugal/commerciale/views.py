@@ -219,7 +219,7 @@ def uploadProduct(request):
 @commercial
 def donnerPermission(request):
     if request.method == 'POST':
-        ad2000 = request.POST['ad2000']
+        ad2000 = request.POST['ad2000'].lower()
         email = request.POST['email']
         utilisateur = User.objects.create_user(
             username=ad2000, email=email, password='Azerty@22')

@@ -37,7 +37,7 @@ def logoutUser(request):
 
 def loginPage(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
+        username = request.POST.get('username').lower()
         password = request.POST.get('password')
 
         if '@' in username:
@@ -69,11 +69,14 @@ def loginPage(request):
                 connexion = connexion_ad2000(email_util, password)
             else:
                 connexion = connexion_email(username, password)
+
+            print("connexion ", connexion)
             if connexion == 'deco':
                 messages.error(request, 'Something went wrong')
             else:
                 user = authenticate(
                     request, username=connexion['ad_2000'], password=pass_django)
+                print("user", user)
 
                 if user is not None:
                     login(request, user)

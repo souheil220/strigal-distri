@@ -32,6 +32,8 @@ def connexion_ad2000(email_util, passw_util):
 
 
 def connexion_email(email_util, passw_util):
+    print("email ", email_util)
+    print("pass ", passw_util)
     server = Server('10.10.10.11', get_info=ldap3.ALL)
     try:
         conn = Connection(server, email_util, passw_util, auto_bind=True)
@@ -53,6 +55,8 @@ def connexion_email(email_util, passw_util):
             msg = dict
         else:
             msg = 'deco'
-    except Exception:
-        msg = 'deco'
+    except Exception as e:
+        msg = e
+
+
     return msg
