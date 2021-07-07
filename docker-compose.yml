@@ -1,6 +1,18 @@
 version: "3"
 
 services:
+  db:
+    image: postgres
+    container_name: DISTRU_DB
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=mydb-dev
+      - POSTGRES_USER=Biuser
+      - POSTGRES_PASSWORD=Avengers
+    ports:
+      - "5432:5432"
+
   distrubstrugal:
     build:
       context: .
@@ -18,17 +30,6 @@ services:
       - DB_NAME=mydb-dev
       - DB_USER=Biuser
       - DB_PASS=Avengers
+      - DB_PORT=5432
     depends_on:
       - db
-
-  db:
-    image: postgres
-    container_name: DISTRU_DB
-    volumes:
-      - ./data/db:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=mydb-dev
-      - POSTGRES_USER=Biuser
-      - POSTGRES_PASSWORD=Avengers
-    ports:
-      - "5432:5432"
