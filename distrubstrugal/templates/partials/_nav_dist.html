@@ -2,9 +2,9 @@
  <nav id="nav">
     {% with request.resolver_match.url_name as url_name %}
     <ul class="links">
-      <li {% if url_name == 'listCommandesD' %}class="active"{% endif %}><a class="test" {% if url_name != 'listCommandesD' %}href="{% url 'listCommandesD' %}"{% endif %}>list des commandes</a></li>
+      <li {% if url_name == 'listCommandesD' %}class="active"{% endif %}><a class="test" {% if url_name != 'listCommandesD' %}href="{% url 'listCommandesD' %}"{% endif %}>LISTE DES COMMANDES</a></li>
       <li {% if url_name == 'commande' %}class="active"{% endif %}><a class="test" {% if url_name != 'commande' %}href="{% url 'commande' %}"{% endif %} >Faire une Commande</a></li>
-      <li {% if url_name == 'soldClient' %}class="active"{% endif %}><a class="test" {% if url_name != 'soldClient' %}href="{% url 'soldClient' %}"{% endif %} >Sold Clients</a></li>
+      <li {% if url_name == 'soldClient' %}class="active"{% endif %}><a class="test" {% if url_name != 'soldClient' %}href="{% url 'soldClient' %}"{% endif %} >Solde Client</a></li>
       <li {% if url_name == 'modifierMP' %}class="active"{% endif %}><a class="test" {% if url_name != 'modifierMP' %}href="{% url 'modifierMP' %}"{% endif %} >Modifier Mot de Passe</a></li>
     </ul>
     <ul class="icons">

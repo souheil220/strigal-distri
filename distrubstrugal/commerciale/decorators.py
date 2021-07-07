@@ -10,7 +10,7 @@ def commercial(view_func):
             for g in query_set:
                 profile = g
             print(type(profile.name))
-            if profile.name == 'commercial':
+            if profile.name == 'commercial' or profile.name == "super_commercial":
                 return view_func(request, *args, **kwargs)
             else:
                 return HttpResponse('Non autorisé')

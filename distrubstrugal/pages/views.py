@@ -20,8 +20,8 @@ def index(request):
         profile = ""
         for g in query_set:
             profile = g
-        print(type(profile.name))
-        if profile.name == 'commercial':
+        print(profile.name)
+        if profile.name == 'commercial' or profile.name == "super_commercial":
             return redirect("commerciale/listCommandesC")
         else:
             rest = calculDate(request.user)

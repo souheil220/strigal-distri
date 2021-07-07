@@ -10,6 +10,7 @@ __pycache__/
 ./distrubstrugal/distrubstrugal/commerciale/__pycache__
 ./distrubstrugal/distrubstrugal/jobs/__pycache__
 ./distrubstrugal/distrubstrugal/pages/__pycache__
+./distrubstrugal/data
 ./distrubstrugal/.gitignore
 *.py[cod]
 *$py.class

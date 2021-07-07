@@ -21,9 +21,8 @@ services:
     depends_on:
       - db
 
-
   db:
-    image: postgres:13-alpine
+    image: postgres
     container_name: DISTRU_DB
     volumes:
       - ./data/db:/var/lib/postgresql/data

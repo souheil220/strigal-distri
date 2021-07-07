@@ -1,4 +1,3 @@
-from datetime import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
 from .jobs import schedule_api, schedule_api2, schedule_api3
 
