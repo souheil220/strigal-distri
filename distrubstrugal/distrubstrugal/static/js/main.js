@@ -1160,7 +1160,7 @@
 								onClick=showDetail(this.id)
 								type="button"
 								class="btn "
-								href="pdf_view/` + test['result'][d]['id'] + `"
+								href="/distributeur/pdf_view/` + test['result'][d]['id'] + `"
 								target="_blank"
 							  >Imprimer</a>
 							  </td>

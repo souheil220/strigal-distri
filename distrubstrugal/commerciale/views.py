@@ -84,9 +84,12 @@ def list_destri():
 @ login_required(login_url='login')
 @commercial
 def listCommandes(request):
-    list_destri()
-
-    commande = Commande.objects.all().order_by('id')
+    # list_destri()
+    num_commande = Commande.objects.count()
+    if num_commande > 25:
+        commande = Commande.objects.all().order_by('id')[:25]
+    else:
+        commande = Commande.objects.all().order_by('id')
     paginator = Paginator(commande, 5)
     page = request.GET.get('page')
     commande = paginator.get_page(page)
@@ -323,8 +326,7 @@ def renew(request):
     if request.method == "POST":
         id = request.POST.get('distributeur')
         new_date = request.POST.get('demo-date')
-
-        distributeur = Distributeur.objects.get(id=int(id))
+        distributeur = Distributeur.objects.get(id_dist=int(id))
         print(new_date)
         distributeur.date_echeance = new_date
         distributeur.save()

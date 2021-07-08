@@ -40,22 +40,34 @@
   </div>
 </div>
 <script type="text/javascript">
-  $(document).ready(function () {
-    $("#btnSubmit").on("click", function (e) {
-      var myForm = $("#form1");
-     	console.log($("form#form1").val().length)
-      if ($('#product').get(0).files.length === 0) {
+  // $(document).ready(function () {
+  //   $("#btnSubmit").on("click", function (e) {
+  //     var myForm = $("#form1");
+  //    	console.log($("form#form1").val().length)
+  //     if ($('#product').get(0).files.length === 0) {
+  //       console.log("please upload a file")
+  //     e.preventDefault();
+  //     }
+  //     else{
+  //     console.log("button was clicked")
+  //     $("#btnSubmit").prop("disabled", true);
+  //     $(myForm).submit();
+  //     console.log($(this))
+      
+  //     }
+  //   });
+  // });
+
+  $('#form1').submit(function(e) {
+    if ($('#product').get(0).files.length === 0) {
         console.log("please upload a file")
       e.preventDefault();
+      }else{
+        $(this).find("input[type='submit']").prop('disabled',true);
       }
-      else{
-      console.log("button was clicked")
-      $(myForm).submit();
-        // $(this).prop("disabled", true);
-      
-      }
-    });
-  });
+});
+
+ 
 </script>
 
 
