@@ -60,8 +60,9 @@ def loginPage(request):
         profile = ""
         for g in query_set:
             profile = g
-        if profile.name == 'commercial':
-
+        print(profile.name)
+        if profile.name == 'commercial' or profile.name == 'super_commercial':
+            print("fel if")
             # connexionAd(request, username, password)
             pass_django = 'Azerty@22'
             if not re.match(r"^[A-Za-z0-9\.\+-]+@[A-Za-z0-9\.-]+\.[a-zA-Z]*$", username):

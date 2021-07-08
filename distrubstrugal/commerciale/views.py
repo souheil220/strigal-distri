@@ -18,7 +18,7 @@ def list_destri():
     try:
         pload = {'data': {}}
         print(pload)
-        eleme = requests.post(
+        eleme = requests.get(
             "http://10.10.10.64:8180/diststru/", json=pload).json()
         print(eleme)
         s = "_"
@@ -84,7 +84,7 @@ def list_destri():
 @ login_required(login_url='login')
 @commercial
 def listCommandes(request):
-    # list_destri()
+    list_destri()
 
     commande = Commande.objects.all().order_by('id')
     paginator = Paginator(commande, 5)
@@ -176,6 +176,7 @@ def suiviContrat(request):
 @commercial
 def uploadProduct(request):
     if request.method == 'POST':
+        print('dkhalt fel upload')
         try:
             excel_file = request.FILES['product']
             if (str(excel_file).split('.')[-1] == 'xls' or str(excel_file).split('.')[-1] == "xlsx"):
