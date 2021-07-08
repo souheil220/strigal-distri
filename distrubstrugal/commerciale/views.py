@@ -87,9 +87,9 @@ def listCommandes(request):
     # list_destri()
     num_commande = Commande.objects.count()
     if num_commande > 25:
-        commande = Commande.objects.all().order_by('id')[:25]
+        commande = Commande.objects.all().order_by('-id')[:25]
     else:
-        commande = Commande.objects.all().order_by('id')
+        commande = Commande.objects.all().order_by('-id')
     paginator = Paginator(commande, 5)
     page = request.GET.get('page')
     commande = paginator.get_page(page)
