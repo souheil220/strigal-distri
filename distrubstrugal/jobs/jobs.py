@@ -81,7 +81,7 @@ def schedule_api3():
                     elif eleme[key][1] == 'done':
                         la_commande.etat = 'Terminé'
                     else:
-                        la_commande.etat = 'Annuler'
+                        la_commande.etat = 'Annulé'
                     la_commande.save()
                 print('success')
     except Exception as e:

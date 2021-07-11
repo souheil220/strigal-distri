@@ -268,7 +268,7 @@
 			type: 'GET',
 			url: `filterer/None/${dateE}`,
 			success: function (data) {
-				console.log(data)
+
 				var table = $('#table-div').children()
 				new_content = `<div id='suivi_des_contrat' class="table-wrapper">
 				<table class="alt">
@@ -386,7 +386,7 @@
 			url: `filterer/${etat}/${dateE}`,
 			success: function (data) {
 				var origin = window.location.origin;
-				console.log(data)
+
 				var table = $('#table-div-commande').children(":first-child")
 				new_content = `<div id='table-div-commande' class="table-wrapper">
 				<table class="alt">
@@ -481,7 +481,7 @@
 			url: `filterer/${etat}/${dateE}`,
 			success: function (data) {
 				var origin = window.location.origin;
-				console.log(data)
+
 				var table = $('#table-div-commande').children(":first-child")
 				new_content = `<div id='table-div-commande' class="table-wrapper">
 				<table class="alt">
@@ -574,12 +574,12 @@
 			aa,
 			bb
 		);
-		console.log(num)
+
 
 		if ($('#quantite-' + num).val().length > 0 && $('#quantite-' + num).val() !== '0') {
 
 			var montant = (parseInt($('#quantite-' + num).val()) * parseInt($('#prix_unitaire-' + num).val()))
-			console.log(intspace(montant))
+
 
 			$('#mantant-' + num).val(montant.toString())
 			$('#mantant-' + num + "-forshow").val(intspace(montant))
@@ -657,12 +657,12 @@
 					},
 
 					processResults: function (data) {
-						// console.log(data)
+
 						lista = []
 						for (d in data) {
 							lista.push(data[d])
 						}
-						// console.log(lista)
+
 						var fin = []
 						fin = data
 
@@ -670,7 +670,7 @@
 
 
 							results: $.map(fin, function (item) {
-									// console.log(item)
+
 
 									$eventSelect2.on("select2:select", function (e) {
 										nom = e.params.data.id
@@ -724,12 +724,12 @@
 					},
 
 					processResults: function (data) {
-						// console.log(data)
+
 						lista = []
 						for (d in data) {
 							lista.push(data[d])
 						}
-						// console.log(lista)
+
 						var fin = []
 						fin = data
 
@@ -747,7 +747,7 @@
 
 									$("#selectjs-1-2").append($newOption).trigger('change');
 								})
-								// console.log(item.nom_article)
+
 
 
 								return {
@@ -832,7 +832,7 @@
 				},
 
 				processResults: function (data) {
-					console.log(data)
+
 					lista = []
 					for (d in data) {
 						lista.push(data[d])
@@ -860,7 +860,7 @@
 		var num = (that.parents()[2].id)
 		num = (num.substr(num.length - 1))
 		var pos = lista.map(function (event) {
-			console.log(event)
+
 			if (idContainer === "#select2-selectjs-1-1-container") {
 				return event.nom_article
 			} else {
@@ -872,65 +872,30 @@
 		}).indexOf($(idContainer).text());
 
 		$('#unitedemeusur-' + num).val(lista[pos]['unite_mesure'])
-		console.log(lista[pos]['prix_unitaire'])
-		console.log('#prix_unitaire-' + num)
+
 		$('#prix_unitaire-' + num).val(lista[pos]['prix_unitaire'])
 
-		console.log("select2:close", e);
+
 	}
 
 	function changeTableSuivi() {
 		var nom_distri = $('#select2-selectDistri-container').text()
-		console.log(nom_distri)
+
 		var dateE = $('#dateE').val()
 		dateE.length <= 0 ? dateE = 'None' : dateE = dateE
+		if (nom_distri !== 'Recherche Ditributeur') {
 
-		$.ajax({
-			type: 'GET',
-			url: `filterer/${nom_distri}/${dateE}`,
-			success: function (data) {
-				console.log("data" + data['result'])
+			$.ajax({
+				type: 'GET',
+				url: `filterer/${nom_distri}/${dateE}`,
+				success: function (data) {
 
 
-				var table = $('#table-div').children(":first-child")
-				console.log(dateE)
-				console.log(dateE.length)
-				if (dateE === 'None') {
-					console.log("rani fel if te3 else")
-					new_content = `<div id='suivi_des_contrat' class="table-wrapper">
-					<table class="alt">
-						<thead>
-							<tr>
-								<th>Client</th>
-								<th>Date Effet</th>
-								<th>Date Fin de Contrat</th>
-							</tr>
-						</thead>
-						<tbody>
-					<tr>
-								<td id = ` + data['id'] + ` hidden></td>
-								<td>` + data['nom'] + `</td>
-								<td>` + data['date_effet'] + `</td>
-								<td>` + data['date_echeance'] + `</td>
-								<td><button
-								  id="` + data['id'] + `"
-								  onClick=showDetail(` + data['id'] + `)
-								  type="button"
-								  class="btn "
-								  data-toggle="modal" data-target="#exampleModal"
-								>Detail</button></td>
-	
-							</tr>
-						</tbody>
-					</table>
-				  </div>`
-					table.replaceWith(new_content)
-				} else {
 
-					console.log("rani fel else te3 else")
+					var table = $('#table-div').children(":first-child")
 
-					if (data && !jQuery.isEmptyObject((data['result'])) && data.constructor === Object) {
-						console.log('rani fel if te3 else te3 else')
+					if (dateE === 'None') {
+
 						new_content = `<div id='suivi_des_contrat' class="table-wrapper">
 						<table class="alt">
 							<thead>
@@ -942,13 +907,13 @@
 							</thead>
 							<tbody>
 						<tr>
-									<td id = ` + data['result']['id'] + ` hidden></td>
-									<td>` + data['result']['nom'] + `</td>
-									<td>` + data['result']['date_effet'] + `</td>
-									<td>` + data['result']['date_echeance'] + `</td>
+									<td id = ` + data['id'] + ` hidden></td>
+									<td>` + data['nom'] + `</td>
+									<td>` + data['date_effet'] + `</td>
+									<td>` + data['date_echeance'] + `</td>
 									<td><button
-									  id="` + data['result']['id'] + `"
-									  onClick=showDetail(` + data['result']['id'] + `)
+									  id="` + data['id'] + `"
+									  onClick=showDetail(` + data['id'] + `)
 									  type="button"
 									  class="btn "
 									  data-toggle="modal" data-target="#exampleModal"
@@ -960,37 +925,73 @@
 					  </div>`
 						table.replaceWith(new_content)
 					} else {
-						new_content = `<div id='suivi_des_contrat' class="table-wrapper">
-					<table class="alt">
-						<thead>
+
+
+
+						if (data && !jQuery.isEmptyObject((data['result'])) && data.constructor === Object) {
+
+							new_content = `<div id='suivi_des_contrat' class="table-wrapper">
+							<table class="alt">
+								<thead>
+									<tr>
+										<th>Client</th>
+										<th>Date Effet</th>
+										<th>Date Fin de Contrat</th>
+									</tr>
+								</thead>
+								<tbody>
 							<tr>
-								<th>Client</th>
-								<th>Date Effet</th>
-								<th>Date Fin de Contrat</th>
-							</tr>
-						</thead>
-						<tbody></tbody></table></div>
-						`
-						table.replaceWith(new_content)
+										<td id = ` + data['result']['id'] + ` hidden></td>
+										<td>` + data['result']['nom'] + `</td>
+										<td>` + data['result']['date_effet'] + `</td>
+										<td>` + data['result']['date_echeance'] + `</td>
+										<td><button
+										  id="` + data['result']['id'] + `"
+										  onClick=showDetail(` + data['result']['id'] + `)
+										  type="button"
+										  class="btn "
+										  data-toggle="modal" data-target="#exampleModal"
+										>Detail</button></td>
+			
+									</tr>
+								</tbody>
+							</table>
+						  </div>`
+							table.replaceWith(new_content)
+						} else {
+							new_content = `<div id='suivi_des_contrat' class="table-wrapper">
+						<table class="alt">
+							<thead>
+								<tr>
+									<th>Client</th>
+									<th>Date Effet</th>
+									<th>Date Fin de Contrat</th>
+								</tr>
+							</thead>
+							<tbody></tbody></table></div>
+							`
+							table.replaceWith(new_content)
+						}
 					}
+
+
+
+
+
+
+				},
+				error: function (response) {
+					console.log(response)
 				}
 
-
-
-
-
-
-			},
-			error: function (response) {
-				console.log(response)
-			}
-
-		})
+			})
+		}
 	}
 
 	function changeTableListCommande() {
 		var dateE = $('#dateE').val()
 		var dist = $('#select2-selectDistri-container').text()
+
 		var etat = $("#etat").val();
 		var refdes = $('#select2-refdes-container').text()
 		dateE.length <= 0 ? dateE = 'None' : dateE = dateE
@@ -998,24 +999,27 @@
 		if (refdes.length > 0) {
 			refdes = refdes.replace('/', '-')
 		}
-		console.log(etat)
+
 		refdes.length <= 0 ? refdes = 'None' : refdes = refdes
-		$.ajax({
-			type: 'GET',
-			url: `filtererListCommand/${dist}/${dateE}/${etat}/${refdes}`,
-			success: function (data) {
+		if (dist !== "Recherche Ditributeur") {
+
+			$.ajax({
+				type: 'GET',
+				url: `filtererListCommand/${dist}/${dateE}/${etat}/${refdes}`,
+				success: function (data) {
 
 
 
-				var origin = window.location.origin;
-				console.log(data)
-				buildTable(data, origin, 1)
+					var origin = window.location.origin;
 
-			},
-			error: function (response) {
-				console.log(response)
-			}
-		})
+					buildTable(data, origin, 1)
+
+				},
+				error: function (response) {
+					console.log(response)
+				}
+			})
+		}
 	}
 
 
@@ -1033,6 +1037,7 @@
 	$selectRefDesc.on("select2:close", function (e) {
 		var refDesc = e.params.originalSelect2Event.data['text']
 
+		console.log('refDesc ' + refDesc)
 		refdes = refDesc.replace('/', '-')
 		$.ajax({
 			type: 'GET',
@@ -1057,47 +1062,81 @@
 		for (i in Object.keys(result)) {
 			querset.push(result[i])
 		}
-		console.log(querset)
+
 		var trimStart = (page - 1) * rows
 		var trimEnd = trimStart + rows
 		var trimedData = querset.slice(trimStart, trimEnd)
 		var pages = Math.ceil(querset.length / rows)
-
 		return {
 			'result': trimedData,
 			'pages': pages
 		}
 	}
 
-	function pageButtons(pages, data, numPage, champ) {
+	function pageButtons(pages, data, numPage) {
 		var origin = window.location.origin;
 		var wrapper = document.getElementById('pagination-wrapper')
 		wrapper.innerHTML = ""
-		var mexLeft = (numPage - Math.floor(champ / 2))
-		var maxRight = (numPage + Math.floor(champ / 2))
 
-		if (mexLeft < 1) {
-			maxLeft = 1
-			maxRight = champ
+		let beforePage = numPage - 1
+		let afterPage = numPage + 1
+		let activePage
+
+		if (numPage > 1) {
+			wrapper.innerHTML += `<button value=${numPage -1} class="page btn btn-md btn-light">previous</button>`
 		}
 
-		if (maxRight > pages) {
-			maxLeft = pages - (champ - 1)
-			maxRight = pages
-			if (maxLeft < 1) {
-				maxLeft = 1
+		if (numPage > 2) {
+			wrapper.innerHTML += `<button value=1 class="page btn btn-md btn-light">1</button>`
+			if (numPage > 3) {
+				wrapper.innerHTML += `<span class="btn btn-md btn-light">...</span>`
 			}
 		}
 
+		// //how many pages or buttons show before current button
+		// if (numPage == pages && (beforePage - 1) !== 0) { //if page value is equal to pages then susbtract by -2 to the beforepage value
+		// 	beforePage = beforePage - 2
+		// } else if (numPage == pages && (beforePage - 1) !== -1) { //else if page value is equal to pages - 1  then susbtract by -1 to the beforepage value
+		// 	beforePage = beforePage - 1
+		// }
 
-		for (var page = maxLeft; page <= maxRight; page++) {
-			wrapper.innerHTML += `<button value=${page} class="page btn btn-md btn-light ">${page}</button>`
+		// //how many pages or buttons show after current button
+		// if (numPage == 1) { //if page value is equal to 1 then add +1 to the afterPage value
+		// 	afterPage = afterPage + 2
+		// } else if (numPage == 2) { //else if page value is equal to pages 3  then add  +2 to the afterPage value
+		// 	afterPage = afterPage + 1
+		// }
+
+		for (let pageLength = beforePage; pageLength <= afterPage; pageLength++) {
+			if (pageLength > pages) {
+				continue
+			}
+			if (pageLength == 0) {
+				pageLength = pageLength + 1
+			}
+
+			if (numPage == pageLength) {
+				activePage = 'active'
+			} else {
+				activePage = ''
+			}
+			wrapper.innerHTML += `<button value=${pageLength} class="page btn btn-md btn-light ${activePage}">${pageLength}</button>`
+
 		}
-		if (numPage != 1) {
-			wrapper.innerHTML = `<button value=${1} class="page btn btn-md btn-light page-link">&#171; Début</button>` + wrapper.innerHTML
+
+		if (numPage < pages - 1) {
+
+			if (numPage < pages - 2) {
+
+				wrapper.innerHTML += `<span class="btn btn-md btn-light">...</span>`
+			}
+			wrapper.innerHTML += `<button value=${pages} class="page btn btn-md btn-light">${pages}</button>`
 		}
-		if (numPage != pages) {
-			wrapper.innerHTML += `<button value=${pages} class="page btn btn-md btn-light">Fin &#187;</button>`
+
+
+		if (numPage < pages) {
+
+			wrapper.innerHTML += `<button value=${numPage +1} class="page btn btn-md btn-light">next</button>`
 		}
 
 		$('.page').on('click', function () {
@@ -1107,9 +1146,12 @@
 		})
 	}
 
+
+
 	function buildTable(data, origin, page) {
-		console.log(origin)
+
 		var test = paginator(data.result, page, 5)
+
 		var table = $('#table-div-commande').children(':first-child')
 		new_content = `<div id='table-div-commande' class="table-wrapper">
 				<table id="bootstrap-table" class="table">
@@ -1213,13 +1255,23 @@
 			`
 						</tbody>
 					</table>
-				  </div>`
+				  </div>
+				  `
+		var wrapper = document.getElementById('pagination-wrapper')
+
+		if (wrapper == null) {
+			new_content = new_content + `
+					<div class="container">
+		  <div id="pagination-wrapper"></div>
+		</div>`
+		}
+
 		table.replaceWith(new_content)
-		console.log('didnt fet here')
+
 		initiamizeVoutsrapTable()
-		console.log('didnt fet here')
+
 		$('#paginator').css('display', 'none')
-		pageButtons(test.pages, data, page, 5)
+		pageButtons(test.pages, data, parseInt(page))
 	}
 
 })(jQuery);
