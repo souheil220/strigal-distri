@@ -17,7 +17,6 @@
   ></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 
-
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <!-- Nav -->
   {% include 'partials/_nav_dist.html'%} {% if rest <= 15 %}
@@ -33,9 +32,11 @@
     <div style="display: flex; justify-content: space-between">
       <h3>Societe : Strugal</h3>
       <input
+        name="todayDate"
+        id="todayDate"
         type="text"
         style="width: 25%"
-        value="{% now 'd/m/Y' %}"
+        value="{% now 'Y-m-d' %}"
         disabled
       />
     </div>
@@ -46,6 +47,14 @@
       action="{% url 'regCommand' %}"
       enctype="multipart/form-data"
     >
+      <input
+        name="todayDate"
+        id="todayDate"
+        type="text"
+        style="width: 25%"
+        value="{% now 'Y-m-d' %}"
+        hidden
+      />
       <input name="datalength" id="lenData" hidden value="1" />
       <input name="mat" id="mat" hidden value="0" />
       <input name="ttc" id="ttc" hidden value="0" />
@@ -187,7 +196,6 @@
       <div style="display: flex; justify-content: flex-end; margin-top: 2%">
         <button id="btnSubmit" type="submit" class="">Enregistrer</button>
       </div>
-     
     </form>
     <hr />
   </div>
@@ -226,24 +234,19 @@
   </div>
 </div>
 <script type="text/javascript">
-
   $(document).ready(function () {
     $("#btnSubmit").on("click", function (e) {
-      var valeur = 1
-      $('.valodo').each(function(){
-        if($(this).val().length===0){
-          valeur = 0
+      var valeur = 1;
+      $(".valodo").each(function () {
+        if ($(this).val().length === 0) {
+          valeur = 0;
         }
-
-      })
-      if(valeur===1){
+      });
+      if (valeur === 1) {
         $(this).prop("disabled", true);
-        $("form#form1").submit()
+        $("form#form1").submit();
       }
-      
     });
-    
   });
-  
 </script>
 {% endblock %}

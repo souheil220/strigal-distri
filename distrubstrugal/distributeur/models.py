@@ -41,8 +41,7 @@ class Commande(models.Model):
     capture = models.ImageField(
         upload_to='emailCapture/', null=True, blank=True)
     etat = models.CharField(default='Brouillon', max_length=255)
-    date = models.CharField(
-        default=date.today().strftime("%Y-%m-%d"), max_length=255)
+    date = models.CharField(max_length=255)
 
 
 class Article(models.Model):

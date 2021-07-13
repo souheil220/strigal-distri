@@ -372,11 +372,13 @@ def regCommand(request):
 
         reference_description = 'DC' + (str((current_user.id)-1).zfill(2)) + \
             str(nbr_facture).zfill(4) + "/" + two_dig_of_y
+        print("date is : ", request.POST.get('todayDate'))
         commande = Commande(reference_description=reference_description,
                             destributeur=distributeur,
                             societe='strugal',
                             totaleHT=round(float(request.POST.get('MHT')), 2),
-                            totaleTTC=round(float(request.POST.get('TTC')), 2)
+                            totaleTTC=round(float(request.POST.get('TTC')), 2),
+                            date=request.POST.get('todayDate')
                             )
         commande.save()
         datalength = request.POST['datalength']
