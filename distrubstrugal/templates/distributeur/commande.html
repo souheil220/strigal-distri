@@ -61,7 +61,7 @@
       {% csrf_token %}
       <div id="myRow-1" class="row align-items-end col-sm-12 test">
         <!-- la somme des colonne est < 12 pk ? ajout un ligne et tu comprendra -->
-        <div class="col col-12 col-lg-4 col-xl-4">
+        <div class="col col-12 col-lg-3 col-xl-3">
           <div class="text-center">Article</div>
           <div class="">
             <select
@@ -74,6 +74,7 @@
             </select>
           </div>
         </div>
+
         <div class="col col-12 col-lg-3 col-xl-3">
           <div class="text-center">ref Article</div>
           <div class="">
@@ -82,6 +83,21 @@
             </select>
           </div>
         </div>
+
+        <div class="col col-12 col-lg-1 col-xl-1">
+          <div id="cond" class="text-center">Conditionement</div>
+          <div class="">
+            <input
+              type="text"
+              name="conditionnement-1"
+              id="conditionnement-1"
+              value=""
+              placeholder="..."
+              readonly
+            />
+          </div>
+        </div>
+
         <div class="col col-12 col-lg-1 col-xl-1">
           <div class="text-center">Quantité</div>
           <div class="">
@@ -94,6 +110,7 @@
             />
           </div>
         </div>
+
         <div class="col col-12 col-lg-1 col-xl-1">
           <div class="text-center">Unité de mesure</div>
           <div class="">
@@ -107,6 +124,7 @@
             />
           </div>
         </div>
+
         <div class="col col-12 col-lg-1 col-xl-1">
           <div class="text-center">Prix Unitaire</div>
           <div class="">
@@ -120,6 +138,7 @@
             />
           </div>
         </div>
+
         <div class="col col-12 col-lg-1 col-xl-1">
           <div class="text-center">Montant</div>
           <div class="">
@@ -143,6 +162,7 @@
           </div>
         </div>
       </div>
+
       <div style="display: flex; justify-content: center">
         <button
           id="add-one-more"

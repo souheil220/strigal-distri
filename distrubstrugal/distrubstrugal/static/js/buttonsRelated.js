@@ -4,7 +4,7 @@ $('#add-one-more').click(function () {
 
   $('#myRow-' + len).after(`
     <div id='myRow-` + ((parseInt(len) + 1).toString()) + `' class="row align-items-end col-sm-12 test" style="margin-bottom: 3%;">
-      <div class="col col-12 col-lg-4 col-xl-4">
+      <div class="col col-12 col-lg-3 col-xl-3">
           <div class="text-center d-lg-none">Article</div>
           <div class="">
             <select name="article-` + ((parseInt(len) + 1).toString()) + `" class="form-control valodo" id="selectjs-` + ((parseInt(len) + 1).toString()) + `-1" required>
@@ -21,6 +21,20 @@ $('#add-one-more').click(function () {
             </select>
         </div>
       </div>
+
+      <div class="col col-12 col-lg-1 col-xl-1">
+      <div class="text-center d-lg-none">Conditionement</div>
+      <div class="">
+        <input
+          type="text"
+          name="conditionnement-` + ((parseInt(len) + 1).toString()) + `"
+          id="conditionnement-` + ((parseInt(len) + 1).toString()) + `"
+          value=""
+          placeholder="..."
+          readonly
+        />
+      </div>
+    </div>
 
       <div class="col col-12 col-lg-1 col-xl-1">
         <div class="text-center d-lg-none">Quantité</div>
@@ -237,9 +251,10 @@ $('#add-one-more').click(function () {
 
 
     }).indexOf($(idContainer).text());
-    console.log(pos)
+    console.log(lista[pos]['conditionnement'])
 
     $('#unitedemeusur-' + num).val(lista[pos]['unite_mesure'])
+    $('#conditionnement-' + num).val(lista[pos]['conditionnement'])
     $('#prix_unitaire-' + num).val(lista[pos]['prix_unitaire'])
 
     console.log("select2:close", e);

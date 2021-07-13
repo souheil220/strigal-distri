@@ -4921,3 +4921,6 @@ div.col.col-12.col-lg-1.col-xl-1 {
 .th-inner {
   min-width: 200px;
 }
+#cond {
+  overflow-wrap: break-word;
+}

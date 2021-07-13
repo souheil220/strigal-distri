@@ -85,7 +85,7 @@
                   </td>
                   <td><a
                     id="{{com.id}}"
-                    {% if com.etat == 'Annuler' or com.etat == 'done' %}
+                    {% if com.etat == 'Annulé' or com.etat == 'Terminé' %}
                     class="btn disabled"
                     {% else %} 
                     class="btn" 
@@ -96,7 +96,7 @@
                   <td>
                     <div class="dropdown">
                       <button 
-                      {% if com.etat == 'Annuler' or com.etat == 'done' %}
+                      {% if com.etat == 'Annulé' or com.etat == 'Terminé' %}
                       class="btn disabled"
                       {% else %} 
                       class="btn" 

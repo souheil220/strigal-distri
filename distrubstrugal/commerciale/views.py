@@ -201,12 +201,14 @@ def uploadProduct(request):
                 nom_article = produit[2]
                 unite_mesure = produit[3]
                 product_id = produit[1]
-                prix_unitaire = produit[4]
-                if (id_article != 'None' and nom_article != 'None' and unite_mesure != 'None' and product_id != 'None' and prix_unitaire != 'None'):
+                conditionnement = produit[4]
+                prix_unitaire = produit[5]
+                if (id_article != 'None' and nom_article != 'None' and unite_mesure != 'None' and product_id != 'None' and prix_unitaire != 'None' and conditionnement != 'None'):
                     article = Article(id_article=id_article,
                                       nom_article=nom_article,
                                       unite_mesure=unite_mesure,
                                       product_id=product_id,
+                                      conditionnement=conditionnement,
                                       prix_unitaire=prix_unitaire)
 
                     article.save()

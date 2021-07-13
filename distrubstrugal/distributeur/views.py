@@ -338,6 +338,7 @@ def loadMore(request, name, whiche):
             data[i]['nom_article'] = product.nom_article
             data[i]['unite_mesure'] = product.unite_mesure
             data[i]['prix_unitaire'] = product.prix_unitaire
+            data[i]['conditionnement'] = product.conditionnement
             i = i+1
 
         return HttpResponse(json.dumps(data, indent=4, default=str), content_type="application/json")

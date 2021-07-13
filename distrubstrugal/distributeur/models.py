@@ -45,10 +45,11 @@ class Commande(models.Model):
 
 
 class Article(models.Model):
-    id_article = models.CharField(max_length=255)
-    nom_article = models.CharField(max_length=255)
-    unite_mesure = models.CharField(max_length=255)
     product_id = models.IntegerField(primary_key=True)
+    nom_article = models.CharField(max_length=255)
+    id_article = models.CharField(max_length=255)
+    unite_mesure = models.CharField(max_length=255)
+    conditionnement = models.CharField(max_length=255, null=True, blank=True)
     prix_unitaire = models.IntegerField(default=0)
 
     def __str__(self):

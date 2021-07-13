@@ -871,7 +871,11 @@
 
 		}).indexOf($(idContainer).text());
 
+		console.log(lista[pos])
+
 		$('#unitedemeusur-' + num).val(lista[pos]['unite_mesure'])
+
+		$('#conditionnement-' + num).val(lista[pos]['conditionnement'])
 
 		$('#prix_unitaire-' + num).val(lista[pos]['prix_unitaire'])
 
@@ -1209,7 +1213,7 @@
 							  <td><a
 								type="button"
 								`
-			if (test['result'][d]['etat'] === 'Annuler' || test['result'][d]['etat'] === 'done') {
+			if (test['result'][d]['etat'] === 'Annulé' || test['result'][d]['etat'] === 'Terminé') {
 				var classB = "btn disabled"
 			} else {
 				var classB = "btn"
@@ -1226,7 +1230,7 @@
 							  <td>
 								<div class="dropdown">
 								  <button `
-			if (test['result'][d]['etat'] === 'Annuler' || test['result'][d]['etat'] === 'done') {
+			if (test['result'][d]['etat'] === 'Annulé' || test['result'][d]['etat'] === 'Terminé') {
 				var classB = "btn disabled"
 			} else {
 				var classB = "btn"
