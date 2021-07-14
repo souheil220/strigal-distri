@@ -111,20 +111,23 @@
           <label>status</label>
           <input name="status" type="text" value="validate" required />
         </div>
-        <button id="btnSubmit" class="btn" style="margin-top: 1%">Enregistrer</button>
+        <button id="btnSubmit" class="btn" style="margin-top: 1%">
+          Enregistrer
+        </button>
       </div>
     </form>
   </div>
 </div>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
   $(document).ready(function () {
     $("#btnSubmit").on("click", function () {
       var myForm = $("form#form1");
       if (myForm) {
         $(this).prop("disabled", true);
-        $(myForm).submit();
+        // $(myForm).submit();
       }
     });
   });
-</script>
+</script> -->
 {% endblock %}
+ 

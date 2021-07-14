@@ -113,7 +113,7 @@ def ajouterDis(request):
 
     if request.method == 'POST':
         nom = request.POST['nom']
-        nom_utilisateur = request.POST['nom_utilisateur']
+        nom_utilisateur = request.POST['nom_utilisateur'].lower()
         adress = request.POST['adress']
         tel_fix = request.POST['tel_fix']
         tel_portable = request.POST['tel_portable']
