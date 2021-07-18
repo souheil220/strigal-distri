@@ -428,6 +428,8 @@ def search(**kwargs):
 
 def filtererListCommand(request, dist, date, etat, refdes):
 
+    print("etat ", etat)
+
     print("refdes : ", refdes == 'Recherche par Ref Des')
     if request.is_ajax and request.method == 'GET':
         print(dist == 'Recherche Ditributeur')
