@@ -307,8 +307,7 @@ $("body").on('click', '.removeit', function () {
   var lenData = parseInt($('#lenData').val())
 
   var mht = 0
-  var tva = 0
-  var ttc = 0
+
 
   console.log($('#lenData').val())
 
@@ -321,12 +320,7 @@ $("body").on('click', '.removeit', function () {
   }
   $('#MHT-forshow').val(intspace(mht))
   $('#MHT').val(mht.toString())
-  tva = (mht * 19) / 100
-  $('#TVA-forshow').val(intspace(intspace(tva)))
-  $('#TVA').val(tva.toString())
-  ttc = tva + mht
-  $('#TTC-forshow').val(intspace(ttc))
-  $('#TTC').val(ttc.toString())
+
 
 
 

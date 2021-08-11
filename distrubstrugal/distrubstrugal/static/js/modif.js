@@ -160,8 +160,6 @@ $eventSelect2.on("select2:close", function (e) {
 function calculate(num) {
     var lenData = parseInt($('#lenData').val())
     var mht = 0
-    var tva = 0
-    var ttc = 0
 
 
     if ($('#quantite-' + num).val().length > 0 && $('#quantite-' + num).val() !== '0') {
@@ -188,13 +186,5 @@ function calculate(num) {
     $('#MHT').val(mht)
     $('#MHT-forshow').val(intspace(mht))
 
-    tva = (mht * 19) / 100
-
-    $('#TVA').val(tva)
-    $('#TVA-forshow').val(intspace(tva))
-    ttc = tva + mht
-
-    $('#TTC').val(ttc)
-    $('#TTC-forshow').val(intspace(ttc))
 
 }

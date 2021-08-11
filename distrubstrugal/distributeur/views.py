@@ -100,8 +100,7 @@ def soldClient(request):
 def detailCommande(request, id):
     if request.is_ajax and request.method == "GET":
         list_commande = ListArticleCommande.objects.filter(id_commande=id).values(
-            'code_article__id_article', 'code_article__nom_article', 'qte', 'id_commande__totaleTTC')
-        print(list_commande[0]['id_commande__totaleTTC'])
+            'code_article__id_article', 'code_article__nom_article', 'qte', 'id_commande__totaleHT')
         # data = {}
         # i = 0
         # for p in list_commande:
@@ -112,7 +111,7 @@ def detailCommande(request, id):
         #     data[i]['qte'] = p.qte
         # return HttpResponse(json.dumps(data, indent=4, default=str), content_type="application/json")
         # return HttpResponse(list_commande)
-        return render(request, "distributeur/detail.html", {'list_commande': list_commande, 'totalTTC': list_commande[0]['id_commande__totaleTTC']})
+        return render(request, "distributeur/detail.html", {'list_commande': list_commande, 'totalTTC': list_commande[0]['id_commande__totaleHT']})
     else:
         raise Http404
 
@@ -224,7 +223,6 @@ def render_to_pdf(request, id):
     list_commande = ListArticleCommande.objects.filter(id_commande=id).values(
         'id_commande__reference_description',
         'id_commande__date',
-        'id_commande__totaleTTC',
         'id_commande__destributeur__id',
         'id_commande__destributeur__nom',
         'id_commande__destributeur__adress',
@@ -253,7 +251,7 @@ def render_to_pdf(request, id):
         commande.append(article[key])
         i += 1
 
-    total = numberToLetter((list_commande[0]['id_commande__totaleTTC']))
+    total = numberToLetter((list_commande[0]['id_commande__totaleHT']))
     # print(total)
     date = datetime.strptime(
         list_commande[0]['id_commande__date'], "%Y-%m-%d").strftime("%d/%m/%Y")
@@ -274,7 +272,7 @@ def render_to_pdf(request, id):
         "total": {
                 "total_ht": list_commande[0]['id_commande__totaleHT'],
                 "montant_tva": list_commande[0]['id_commande__totaleHT']*19/100,
-                "total_ttc": list_commande[0]['id_commande__totaleTTC']
+                "total_ttc": list_commande[0]['id_commande__totaleHT']
     }
     }
     # return HttpResponse(json.dumps(data))
@@ -294,7 +292,6 @@ def get_filter_data(commande):
         final_data[i]['reference_description'] = comm['reference_description']
         final_data[i]['date'] = comm['date']
         final_data[i]['totaleHT'] = comm['totaleHT']
-        final_data[i]['totaleTTC'] = comm['totaleTTC']
         final_data[i]['etat'] = comm['etat']
         i += 1
     return final_data
@@ -307,15 +304,15 @@ def filterer(request, etat=None, date=None):
         if date != 'None':
             if etat != "None":
                 commande = Commande.objects.filter(destributeur=destributeur, date=date, etat=etat).values(
-                    'id', 'reference_description', 'date', 'totaleHT', 'totaleTTC', 'etat')[:5]
+                    'id', 'reference_description', 'date', 'totaleHT', 'etat')[:5]
 
             else:
                 commande = Commande.objects.filter(destributeur=destributeur, date=date).values(
-                    'id', 'reference_description', 'date', 'totaleHT', 'totaleTTC', 'etat')[:5]
+                    'id', 'reference_description', 'date', 'totaleHT', 'etat')[:5]
 
         else:
             commande = Commande.objects.filter(destributeur=destributeur, etat=etat).values(
-                'id', 'reference_description', 'date', 'totaleHT', 'totaleTTC', 'etat')[:5]
+                'id', 'reference_description', 'date', 'totaleHT', 'etat')[:5]
 
         final_data = get_filter_data(commande)
         context = {"result": final_data}
@@ -378,7 +375,6 @@ def regCommand(request):
                             destributeur=distributeur,
                             societe='strugal',
                             totaleHT=round(float(request.POST.get('MHT')), 2),
-                            totaleTTC=round(float(request.POST.get('TTC')), 2),
                             date=request.POST.get('todayDate')
                             )
         commande.save()

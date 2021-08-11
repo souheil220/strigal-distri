@@ -37,7 +37,6 @@ class Commande(models.Model):
     destributeur = models.ForeignKey(Distributeur, on_delete=models.CASCADE)
     societe = models.CharField(default='Strugal', max_length=255)
     totaleHT = models.FloatField()
-    totaleTTC = models.FloatField()
     capture = models.ImageField(
         upload_to='emailCapture/', null=True, blank=True)
     etat = models.CharField(default='Brouillon', max_length=255)
@@ -50,7 +49,7 @@ class Article(models.Model):
     id_article = models.CharField(max_length=255)
     unite_mesure = models.CharField(max_length=255)
     conditionnement = models.CharField(max_length=255, null=True, blank=True)
-    prix_unitaire = models.IntegerField(default=0)
+    prix_unitaire = models.FloatField(default=0)
 
     def __str__(self):
         return "{}".format(self.id_article)

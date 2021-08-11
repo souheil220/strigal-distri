@@ -106,3 +106,4 @@ def calculDate(user):
     date_aujourdui = datetime.strptime(d1, '%Y-%m-%d')
     rest = date_fin_contrat - date_aujourdui
     return rest
+

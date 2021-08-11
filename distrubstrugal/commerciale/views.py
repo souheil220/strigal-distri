@@ -178,6 +178,9 @@ def suiviContrat(request):
 @ login_required(login_url='login')
 @commercial
 def uploadProduct(request):
+    product_existing = Article.objects.all().values_list(
+        'id_article', flat=True)
+
     if request.method == 'POST':
         print('dkhalt fel upload')
         try:
@@ -197,23 +200,32 @@ def uploadProduct(request):
                 excel_data.append(row_data)
 
             for produit in excel_data:
-                id_article = produit[0]
-                nom_article = produit[2]
-                unite_mesure = produit[3]
-                product_id = produit[1]
-                conditionnement = produit[4]
-                prix_unitaire = produit[5]
-                if (id_article != 'None' and nom_article != 'None' and unite_mesure != 'None' and product_id != 'None' and prix_unitaire != 'None' and conditionnement != 'None'):
-                    article = Article(id_article=id_article,
-                                      nom_article=nom_article,
-                                      unite_mesure=unite_mesure,
-                                      product_id=product_id,
-                                      conditionnement=conditionnement,
-                                      prix_unitaire=prix_unitaire)
+                if produit[0] not in product_existing:
+                    id_article = produit[0]
+                    nom_article = produit[2]
+                    unite_mesure = produit[3]
+                    product_id = produit[1]
+                    conditionnement = produit[4]
+                    prix_unitaire = produit[5]
+                    if (id_article != 'None' and nom_article != 'None' and unite_mesure != 'None' and product_id != 'None' and prix_unitaire != 'None' and conditionnement != 'None'):
+                        article = Article(id_article=id_article,
+                                          nom_article=nom_article,
+                                          unite_mesure=unite_mesure,
+                                          product_id=product_id,
+                                          conditionnement=conditionnement,
+                                          prix_unitaire=prix_unitaire)
 
-                    article.save()
+                        article.save()
+                else:
+                    my_product = Article.objects.get(id_article=produit[0])
+                    if my_product.prix_unitaire != float(produit[5]):
 
-        except:
+                        my_product.prix_unitaire = produit[5]
+                        my_product.save()
+
+        except Exception as e:
+            print(produit[0])
+            print(e)
             messages.error(
                 request, 'Veillez uploader un fichier valide')
             return render(request, 'commerciale/uploadProduct.html')
@@ -222,7 +234,7 @@ def uploadProduct(request):
 
 
 @ login_required(login_url='login')
-@commercial
+@ commercial
 def donnerPermission(request):
     if request.method == 'POST':
         ad2000 = request.POST['ad2000'].lower()
@@ -250,7 +262,6 @@ def detailAndModif(id):
         'code_article__nom_article',
         'code_article__prix_unitaire',
         'qte',
-        'id_commande__totaleTTC',
         'id_commande__date',
         'id_commande__reference_description',
         'id_commande__societe',
@@ -264,7 +275,6 @@ def detailAndModif(id):
     tva = int(list_commande[0]["id_commande__totaleHT"]) * 19 / 100
     context = {"id": id,
                'list_commande': list_commande,
-               'totalTTC': list_commande[0]['id_commande__totaleTTC'],
                'capture': list_commande[0]['id_commande__capture'],
                "n_commande_odoo": list_commande[0]['id_commande__n_commande_odoo'],
                "societe": list_commande[0]["id_commande__societe"],
@@ -292,7 +302,6 @@ def modifierCommande(request, id):
         datalength = request.POST['datalength']
         commande = Commande.objects.get(id=int(id))
         commande.totaleHT = request.POST.get('MHT')
-        commande.totaleTTC = request.POST.get('TTC')
         upload_file = request.FILES['capture']
         fs = FileSystemStorage()
         name = fs.save(upload_file.name, upload_file)
@@ -307,10 +316,10 @@ def modifierCommande(request, id):
             list_article_commande.code_article = Article.objects.get(
                 id_article=article)
             list_article_commande.qte = request.POST['quantite-{}'.format(i)]
-            list_article_commande.prix_unitaire = request.POST.get(
-                'prix_unitaire-{}'.format(i))
-            list_article_commande.montant = request.POST.get(
-                'mantant-{}'.format(i))
+            list_article_commande.prix_unitaire = float(request.POST.get(
+                'prix_unitaire-{}'.format(i)).replace(',', '.'))
+            list_article_commande.montant = float(request.POST.get(
+                'mantant-{}'.format(i)).replace(',', '.'))
 
             list_article_commande.save()
 
@@ -456,7 +465,6 @@ def filtererListCommand(request, dist, date, etat, refdes):
             final_data[i]['destributeur'] = d.destributeur.nom
             final_data[i]['reference_description'] = d.reference_description
             final_data[i]['totaleHT'] = d.totaleHT
-            final_data[i]['totaleTTC'] = d.totaleTTC
             final_data[i]['etat'] = d.etat
             i += 1
         # option = {}

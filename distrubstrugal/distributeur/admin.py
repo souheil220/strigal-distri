@@ -30,7 +30,6 @@ class FilterCommande(admin.ModelAdmin):
                     "destributeur",
                     "n_commande_odoo",
                     "totaleHT",
-                    "totaleTTC",
                     "capture",
                     "etat",
                     "date")

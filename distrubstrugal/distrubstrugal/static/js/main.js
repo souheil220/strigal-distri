@@ -395,7 +395,6 @@
                     <th>Ref Description</th>
                     <th>Date</th>
                     <th>THT</th>
-                    <th>TTC</th>
                     <th>Etat</th>
                 	</tr>
 					</thead>
@@ -407,7 +406,6 @@
 								<td>` + data['result'][d]['reference_description'] + `</td>
 								<td>` + data['result'][d]['date'] + `</td>
 								<td>` + data['result'][d]['totaleHT'] + `</td>
-								<td>` + data['result'][d]['totaleTTC'] + `</td>
 								<td>` + data['result'][d]['etat'] + `</td>
 								<td><button
 								  id="` + data['result'][d]['id'] + `"
@@ -490,7 +488,6 @@
                     <th>Ref Description</th>
                     <th>Date</th>
                     <th>THT</th>
-                    <th>TTC</th>
                     <th>Etat</th>
                 	</tr>
 					</thead>
@@ -502,7 +499,6 @@
 								<td>` + data['result'][d]['reference_description'] + `</td>
 								<td>` + data['result'][d]['date'] + `</td>
 								<td>` + data['result'][d]['totaleHT'] + `</td>
-								<td>` + data['result'][d]['totaleTTC'] + `</td>
 								<td>` + data['result'][d]['etat'] + `</td>
 								<td><button
 								  id="` + data['result'][d]['id'] + `"
@@ -565,8 +561,6 @@
 	$("body").on("keyup", '.qte', function () {
 		var lenData = parseInt($('#lenData').val())
 		var mht = 0
-		var tva = 0
-		var ttc = 0
 		var num = ($(this)[0].id)
 		var aa = num.lastIndexOf("-") + 1
 		var bb = num.lastIndexOf(num.substr(num.length - 1)) + 1
@@ -599,15 +593,6 @@
 
 		$('#MHT').val(mht)
 		$('#MHT-forshow').val(intspace(mht))
-
-		tva = (mht * 19) / 100
-
-		$('#TVA').val(tva)
-		$('#TVA-forshow').val(intspace(tva))
-		ttc = tva + mht
-
-		$('#TTC').val(ttc)
-		$('#TTC-forshow').val(intspace(ttc))
 
 
 	})
@@ -1166,7 +1151,6 @@
 					<th  data-field="Client" data-sortable="true">Client</th>
 					<th  data-field="Ref" data-sortable="true">Ref Description</th>
 					<th  data-field="THT" data-sortable="true">THT</th>
-					<th  data-field="TTC" data-sortable="true">TTC</th>
 					<th  data-field="Etat" data-sortable="true">Etat</th>
 					<th></th>
 					<th></th>
@@ -1190,7 +1174,6 @@
 								<td>` + test['result'][d]['destributeur'] + `</td>
 								<td>` + test['result'][d]['reference_description'] + `</td>
 								<td>` + intspace(parseFloat(test['result'][d]['totaleHT'])) + `</td>
-								<td>` + intspace(parseFloat(test['result'][d]['totaleTTC'])) + `</td>
 								<td>` + test['result'][d]['etat'] + `</td>
 								<td><button
 								  id="` + test['result'][d]['id'] + `"

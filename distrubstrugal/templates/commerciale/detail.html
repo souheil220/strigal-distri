@@ -31,8 +31,6 @@
         <th>Prix Unitaire</th>
         {% if capture %}
         <th>Capture</th>
-        {% else %}
-        <th>Tax</th>
         {% endif %}
       </tr>
     </thead>
@@ -54,27 +52,19 @@
               style="text-align: center"
           /></a>
         </td>
-        {% else %}
-        <td>TVA sur vente à 19%</td>
         {% endif %}
       </tr>
       {% endfor %}
     </tbody>
     <tfoot>
       <tr>
+        {% if capture %}
         <td colspan="4"></td>
-        <td>MHT</td>
+        {% else %}
+        <td colspan="3"></td>
+        {% endif %}
+        <td>MTTC</td>
         <td>{{totaleHT|intspace}}</td>
-      </tr>
-      <tr>
-        <td colspan="4"></td>
-        <td>TVA</td>
-        <td>{{tva|intspace}}</td>
-      </tr>
-      <tr>
-        <td colspan="4"></td>
-        <td>TTC</td>
-        <td>{{totalTTC|intspace}}</td>
       </tr>
     </tfoot>
   </table>

@@ -6,6 +6,7 @@ def distributeur(view_func):
     def wrapper_func(request, *args, **kwargs):
         if request.user.is_authenticated:
             query_set = Group.objects.filter(user=request.user)
+            print(request.user)
             profile = ""
             for g in query_set:
                 profile = g
