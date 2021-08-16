@@ -1,7 +1,5 @@
-from django.core import paginator
 from django.shortcuts import render, redirect
 from .models import *
-from django.contrib.auth.models import User
 from datetime import datetime
 import json
 import requests
@@ -322,9 +320,9 @@ def filterer(request, etat=None, date=None):
 def loadMore(request, name, whiche):
     if request.is_ajax and request.method == "GET":
         if(whiche == "1"):
-            result = Article.objects.filter(nom_article__icontains=name)[:5]
+            result = Article.objects.filter(nom_article__icontains=name)
         else:
-            result = Article.objects.filter(id_article__icontains=name)[:5]
+            result = Article.objects.filter(id_article__icontains=name)
 
         print(result)
         data = {}
