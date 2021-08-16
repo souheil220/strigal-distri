@@ -391,7 +391,7 @@ def regCommand(request):
             list_article_commande = ListArticleCommande(id_commande=id_commande,
                                                         code_article=code_article,
                                                         qte=int(qte),
-                                                        prix_unitaire=int(
+                                                        prix_unitaire=float(
                                                             prix_unitaire),
                                                         montant=int(montant),)
 
