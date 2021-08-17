@@ -572,7 +572,7 @@
 
 		if ($('#quantite-' + num).val().length > 0 && $('#quantite-' + num).val() !== '0') {
 
-			var montant = (parseInt($('#quantite-' + num).val()) * parseInt($('#prix_unitaire-' + num).val()))
+			var montant = (parseFloat($('#quantite-' + num).val()) * parseFloat($('#prix_unitaire-' + num).val()))
 
 
 			$('#mantant-' + num).val(montant.toString())
@@ -585,7 +585,7 @@
 
 		for (var i = 1; i <= lenData; i++) {
 
-			mht = mht + parseInt($('#mantant-' + i).val())
+			mht = mht + parseFloat($('#mantant-' + i).val())
 
 		}
 
