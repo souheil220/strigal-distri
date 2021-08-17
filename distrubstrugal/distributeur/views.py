@@ -393,7 +393,7 @@ def regCommand(request):
                                                         qte=int(qte),
                                                         prix_unitaire=float(
                                                             prix_unitaire),
-                                                        montant=int(montant),)
+                                                        montant=float(montant),)
 
             list_article_commande.save()
 
