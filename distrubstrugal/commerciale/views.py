@@ -84,7 +84,9 @@ def list_destri():
 @ login_required(login_url='login')
 @commercial
 def listCommandes(request):
-    # list_destri()
+    test_distributeur = Distributeur.objects.first()
+    if test_distributeur is None:
+        list_destri()
     num_commande = Commande.objects.count()
     if num_commande > 25:
         commande = Commande.objects.all().order_by('-id')[:25]

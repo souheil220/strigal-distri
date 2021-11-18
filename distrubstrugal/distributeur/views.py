@@ -59,6 +59,13 @@ def listCommandes(request):
     destributeur = Distributeur.objects.get(user=current_user)
 
     commande = Commande.objects.filter(destributeur=destributeur)
+    num_commande = Commande.objects.count()
+    if num_commande > 25:
+        commande = Commande.objects.filter(
+            destributeur=destributeur).order_by('-id')[:25]
+    else:
+        commande = Commande.objects.filter(
+            destributeur=destributeur).order_by('-id')
 
     paginator = Paginator(commande, 5)
 
