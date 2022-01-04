@@ -6,6 +6,7 @@ from django.db.models import Q
 import base64
 from django.conf import settings
 from os import walk
+import psycopg2
 
 # bring pic that i dont have
 

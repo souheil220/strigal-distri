@@ -366,10 +366,15 @@ def regCommand(request):
         two_dig_of_y = datetime.now().strftime("%y")
         try:
             last_commande = (
-                Commande.objects.last().reference_description)[-2:]
+                Commande.objects.values_list(
+                    'reference_description', flat=True)
+                .filter(destributeur=Distributeur.objects
+                        .get(user=current_user)).last())[-2:]
 
-            if last_commande > two_dig_of_y:
+            if last_commande < two_dig_of_y:
                 nbr_facture = 1
+                Distributeur.objects.filter(user=current_user).update(
+                    nbr_facture=nbr_facture)
         except:
             nbr_facture = 1
 
