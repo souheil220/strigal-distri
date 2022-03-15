@@ -8,6 +8,7 @@ urlpatterns = [
     path("suiviContrat", views.suiviContrat, name="suiviContrat"),
     path("detailCommande/<str:id>", views.detailCommande, name="detailCommande"),
     path("modifier/<str:id>", views.modifierCommande, name="modifierCommande"),
+    path("approuver/<str:id>", views.approuverCommande, name="approuverCommande"),
     path("detailDisti/<str:id>", views.detailDisti, name="detailDisti"),
     path("loadMoreD/<str:argum>/<str:whicheone>",
          views.loadMoreD, name="loadMoreD"),
@@ -22,4 +23,6 @@ urlpatterns = [
     path("donnerPermission", views.donnerPermission, name="donnerPermission"),
     path("annulerCommande/<str:id>", views.annulerCommande, name="annulerCommande"),
     path("ajouterDis", views.ajouterDis, name="ajouterDis"),
+    path("getPricePricelist/<int:price_list_id>",
+         views.get_price_pricelist, name="getPricePricelist"),
 ]

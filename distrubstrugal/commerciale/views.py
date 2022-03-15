@@ -1,16 +1,18 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, Group
-from distributeur.models import Commande, ListArticleCommande, Distributeur, Article
+from distributeur.models import *
 import json
 import requests
-from django.db.models import Q
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, JsonResponse
 from django.core.paginator import Paginator
 from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
 import openpyxl
 from django.contrib.auth.decorators import login_required
+from .sql import SQLConnexion
 from .decorators import commercial
+from datetime import datetime
+import re
 # Create your views here.
 
 
@@ -84,6 +86,7 @@ def list_destri():
 @ login_required(login_url='login')
 @commercial
 def listCommandes(request):
+
     test_distributeur = Distributeur.objects.first()
     if test_distributeur is None:
         list_destri()
@@ -98,7 +101,51 @@ def listCommandes(request):
     context = {
         "commande": commande
     }
+    article = Article.objects.first()
+    if article is None:
+        database = SQLConnexion(user="cbiuser",
+                                password="CBI@2022.GSHR",
+                                host="10.20.10.18",
+                                port="5434",
+                                database="hasnaoui")
+        list = database.connection()
+        data = database.get_articles(list[0])
+        for produit in data:
+            product_id = produit[0]
+            nom_article = produit[1]
+            if 'HPS' in produit[2]:
+                id_article = re.sub(r'\/[^>]*', '', produit[2])
+            else:
+                id_article = produit[2]
+            unite_mesure = produit[3]
+            conditionnement = int(float(produit[4]))
+            prix_unitaire = produit[5]
+            id_154_surcharge = return_zero_if_null(produit[6])
+            id_346_surcharge = return_zero_if_null(produit[7])
+            id_347_surcharge = return_zero_if_null(produit[8])
+            id_376_surcharge = return_zero_if_null(produit[9])
+            id_154_prixparlist = return_zero_if_null(produit[10])
+            id_346_prixparlist = return_zero_if_null(produit[11])
+            id_347_prixparlist = return_zero_if_null(produit[12])
+            id_376_prixparlist = return_zero_if_null(produit[13])
 
+            article = Article(product_id=product_id,
+                              nom_article=nom_article,
+                              id_article=id_article,
+                              unite_mesure=unite_mesure,
+                              conditionnement=conditionnement,
+                              prix_unitaire=prix_unitaire,
+                              id_154_surcharge=id_154_surcharge,
+                              id_346_surcharge=id_346_surcharge,
+                              id_347_surcharge=id_347_surcharge,
+                              id_376_surcharge=id_376_surcharge,
+                              id_154_prixparlist=id_154_prixparlist,
+                              id_346_prixparlist=id_346_prixparlist,
+                              id_347_prixparlist=id_347_prixparlist,
+                              id_376_prixparlist=id_376_prixparlist)
+            article.save()
+
+        database.closeConnection(list[0], list[1])
     return render(
         request, "commerciale/listCommandes.html", context)
 
@@ -260,6 +307,7 @@ def annulerCommande(request, id):
 
 def detailAndModif(id):
     list_commande = ListArticleCommande.objects.filter(id_commande=id).values(
+        'code_article__product_id',
         'code_article__id_article',
         'code_article__nom_article',
         'code_article__prix_unitaire',
@@ -270,6 +318,7 @@ def detailAndModif(id):
         'id_commande__destributeur__nom',
         'id_commande__capture',
         "code_article__unite_mesure",
+        "code_article__conditionnement",
         "id_commande__totaleHT",
         "id_commande__n_commande_odoo",
         "montant")
@@ -293,8 +342,9 @@ def detailAndModif(id):
 def detailCommande(request, id):
     if request.is_ajax and request.method == "GET":
         context = detailAndModif(id)
-        print(context)
-        return render(request, "commerciale/detail.html", context)
+        if(context['n_commande_odoo'] == None):
+            return render(request, "commerciale/detail_before_approuver.html", context)
+        return render(request, "commerciale/detail_after_approuver.html", context)
     else:
         raise Http404
 
@@ -335,6 +385,80 @@ def modifierCommande(request, id):
         raise Http404
 
 
+def approuverCommande(request, id):
+    if request.method == "POST":
+        datalength = request.POST['datalength']
+        commande = Commande.objects.get(id=int(id))
+        commande.totaleHT = float(request.POST.get('MHT').replace(',', ''))
+        commande.list_des_prix = ListeDesTarifs.objects.get(
+            id=int(request.POST.get('listPrix-1')))
+        commande.regime_fiscal = RegimeFiscal.objects.get(
+            id=int(request.POST.get('regime-1')))
+        commande.creer_facture = CréerFacture.objects.get(
+            id=int(request.POST.get('creerFacture-1')))
+        commande.equipe_commerciale = EquipeCommerciale.objects.get(
+            id=int(request.POST.get('equipe-commerciale-1')))
+        commande.vendeur = Vendeur.objects.get(
+            id=int(request.POST.get('vendeur-1')))
+
+        commande.warehouse = Warehouse.objects.get(
+            id=int(request.POST.get('entrepot')))
+        two_dig_of_y = datetime.now().strftime("%y")
+
+        database = SQLConnexion(user="cbiuser",
+                                password="CBI@2022.GSHR",
+                                host="10.20.10.18",
+                                port="5434",
+                                database="hasnaoui")
+        list = database.connection()
+        number_next = database.get_num_sequence(list[0], 19, 9)
+        name = str(number_next[1]) + str(number_next[0]
+                                         ).zfill(5) + "/" + two_dig_of_y
+        commande.n_commande_odoo = str(name)
+        commande.save()
+        if(request.POST.get('payment_on_picking', False) == "on"):
+            payment_on_picking = True
+        else:
+            payment_on_picking = False
+
+        print("payment_on_picking", payment_on_picking)
+        order_id = database.insert_sale_order(
+            list[0], list[1], request.user.email, commande.reference_description, name, commande.date, commande.destributeur.id_dist, commande.totaleHT,
+            commande.regime_fiscal.fiscal_position, commande.list_des_prix.id, commande.equipe_commerciale.id, commande.creer_facture.policy, payment_on_picking, commande.warehouse.id)
+
+        print(order_id)
+
+        for i in range(1, int(datalength) + 1):
+            list_article_commande = ListArticleCommande.objects.filter(
+                id_commande=commande)[i-1]
+
+            list_article_commande.qte = int(
+                request.POST['quantite-{}'.format(i)])
+            list_article_commande.montant = float(request.POST.get(
+                'mantant-{}'.format(i)).replace(',', '.'))
+            product_id = Article.objects.get(
+                id_article=request.POST['product_id-{}'.format(i)]).product_id
+
+            database.insert_sale_order_line(list[0], list[1], request.user.email, list_article_commande.qte,
+                                            request.POST['unite_de_mesure-{}'.format(
+                                                i)], i,
+                                            request.POST['prix_unitaire-{}'.format(
+                                                i)], request.POST['product_name-{}'.format(i)],
+                                            request.POST['product_id-{}'.format(
+                                                i)],
+                                            commande.destributeur.id_dist, order_id, request.POST['remise-{}'.format(
+                                                i)], product_id,
+                                            int(request.POST['conditionnement-{}'.format(i)]))
+            list_article_commande.save()
+
+        database.update_num_sequence(
+            list[0], list[1], int(number_next[0])+1, 19, commande.warehouse.id)
+
+        database.closeConnection(list[0], list[1])
+
+        return redirect("listCommandes")
+
+
 def renew(request):
     if request.method == "POST":
         id = request.POST.get('distributeur')
@@ -358,6 +482,62 @@ def loadMoreD(request, argum, whicheone):
                 data[i] = {}
                 data[i]['id_ditributeur'] = user.id_dist
                 data[i]['nom_ditributeur'] = user.nom
+                i = i+1
+
+        elif(whicheone == 'listP'):
+            result = ListeDesTarifs.objects.filter(name__icontains=argum)[:5]
+            print(result)
+            data = {}
+            i = 0
+            for listprix in result:
+                data[i] = {}
+                data[i]['id_list_prix'] = listprix.id
+                data[i]['nom_list_prix'] = listprix.name
+                i = i+1
+
+        elif(whicheone == 'regimeF'):
+            result = RegimeFiscal.objects.filter(name__icontains=argum)[:5]
+            print(result)
+            data = {}
+            i = 0
+            for regimeFiscal in result:
+                data[i] = {}
+                data[i]['id_regime_fiscal'] = regimeFiscal.id
+                data[i]['nom_regime_fiscal'] = regimeFiscal.name
+                i = i+1
+
+        elif(whicheone == 'creerF'):
+            result = CréerFacture.objects.filter(policy__icontains=argum)[:5]
+            print(result)
+            data = {}
+            i = 0
+            for creerFacture in result:
+                data[i] = {}
+                data[i]['id_creer_facture'] = creerFacture.id
+                data[i]['policy_creer_facture'] = creerFacture.policy
+                i = i+1
+
+        elif(whicheone == 'equipeC'):
+            result = EquipeCommerciale.objects.filter(
+                name__icontains=argum)[:5]
+            print(result)
+            data = {}
+            i = 0
+            for equipe in result:
+                data[i] = {}
+                data[i]['id_equipe'] = equipe.id
+                data[i]['name_equipe'] = equipe.name
+                i = i+1
+
+        elif(whicheone == 'vendeur'):
+            result = Vendeur.objects.filter(name__icontains=argum)[:5]
+            print(result)
+            data = {}
+            i = 0
+            for vendeur in result:
+                data[i] = {}
+                data[i]['id_vendeur'] = vendeur.id
+                data[i]['name_vendeur'] = vendeur.name
                 i = i+1
 
         else:
@@ -508,3 +688,35 @@ def loadMore(request, name, whiche):
 
     else:
         raise Http404
+
+
+def return_zero_if_null(value):
+    if value is None:
+        return 0
+    else:
+        return value
+
+
+def get_price_pricelist(request, price_list_id):
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+    if is_ajax:
+        if request.method == "POST":
+            print("POST request")
+            data = json.load(request)
+            lista = data.get('listIds')
+            print(lista)
+            prices = []
+            for ids in lista:
+                prices.append(price(price_list_id, ids))
+            return JsonResponse({'prices': prices})
+
+
+def price(i, id):
+    switcher = {
+        154: Article.objects.get(product_id=id).id_154_surcharge,
+        346: Article.objects.get(product_id=id).id_346_surcharge,
+        347: Article.objects.get(product_id=id).id_347_surcharge,
+        376: Article.objects.get(product_id=id).id_376_surcharge,
+
+    }
+    return switcher.get(i, "Invalid Price Liste ID")

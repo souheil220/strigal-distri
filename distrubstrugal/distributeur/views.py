@@ -385,7 +385,8 @@ def regCommand(request):
                             destributeur=distributeur,
                             societe='strugal',
                             totaleHT=round(float(request.POST.get('MHT')), 2),
-                            date=request.POST.get('todayDate')
+                            date=request.POST.get(
+                                'todayDate') + " "+str(datetime.now().strftime('%H:%M:%S'))
                             )
         commande.save()
         datalength = request.POST['datalength']

@@ -1,0 +1,271 @@
+{% extends 'base.html' %} {% block title %} Modifier Commande {% endblock %}
+{%block content %} {% load intspace %}{% load static %}
+<div id="wrapper">
+  {% include 'partials/_header.html'%}
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  {% load intspace %}
+  <div id="main">
+  <div style="display: flex; justify-content: space-around; margin-bottom: 1%">
+    <div
+      style="
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+      "
+    >
+      <h6>N°</h6>
+      <h6>Societe</h6>
+      <h6>Client</h6>
+      <h6>Date</h6>
+      <h6>Réference Description</h6>
+    </div>
+    <div
+      style="
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+      "
+    >
+      <h6>{{n_commande_odoo}}</h6>
+      <h6>{{societe}}</h6>
+      <h6>{{client}}</h6>
+      <h6>{{date|slice:"0:10"}}</h6>
+      <h6>{{reference_description}}</h6>
+    </div>
+  </div>
+  <div class="table-wrapper">
+    <form
+      id="form1"
+      method="post"
+      action="{% url 'approuverCommande' id=id %}"
+      enctype="multipart/form-data"
+    >
+    {% csrf_token %}
+    <input
+        name="datalength"
+        id="lenData"
+        hidden
+        value="{{list_commande|length}}"
+      />
+    <input
+        name="remiseTotal"
+        id="remiseTotal"
+        hidden
+        value="0"
+      />
+    <input name="mat" id="mat" hidden value="{{totaleHT}}" />
+    <input name="ttc" id="ttc" hidden value="{{totalTTC}}" />
+    <div id="myRow-1" class="row align-items-end col-sm-12 test">
+      <div class="col col-12 col-lg-4 col-xl-3">
+        <div class="text-center">Liste des Prix</div>
+        <select name="listPrix-1" id="listPrix-1" required>
+          <option value="0">- Liste des Prix -</option>
+          <option value="154">LISTE DE PRIX STRUGAL DISTRIBUTEUR</option>
+          <option value="346">TARIF DISTRIBUTEUR 9.5% INCLUS</option>
+          <option value="347">TARIF DISTRIBUTEUR POUR VENTE A FACTURER</option>
+          <option value="376"> PRICE LIST SPECIAL DSITRIBUTEUR (ANBT-ANNR)</option>
+        </select>
+      </div>
+      <div class="col col-12 col-lg-4 col-xl-3">
+        <div class="text-center">Régime fiscal</div>
+        <select name="regime-1" id="regime-1" required>
+          <option value="0">- Régime fiscal -</option>
+          <option value="1">Exonéré</option>
+        </select>
+      </div>
+      <div class="col col-12 col-lg-4 col-xl-3">
+        <div class="text-center">Créer facture</div>
+        <select name="creerFacture-1" id="creerFacture-1" required>
+          <option value="0">- Créer facture -</option>
+          <option value="1">manual</option>
+          <option value="2">picking</option>
+        </select>
+      </div>
+      <div class="col col-12 col-lg-4 col-xl-3">
+        <div class="text-center">Equipe Comerciale</div>
+        <select name="equipe-commerciale-1" id="equipe-commerciale-1" required>
+          <option value="0">- Equipe Comerciale -</option>
+          <option value="49">DISTRIBUTION CENTRE-STRUGAL</option>
+          <option value="50">DISTRIBUTION EST-STRUGAL</option>
+          <option value="51">DISTRIBUTION OUEST-STRUGAL</option>
+          <option value="52">DISTRIBUTION SUD-STRUGAL</option>
+        </select>
+      </div>
+    </div>
+    <div id="myRow-2" class="row align-items-end col-sm-12 test">
+      <div class="col col-12 col-lg-4 col-xl-3">
+        <div class="text-center">Vendeur</div>
+        <select name="vendeur-1" id="vendeur-1" required>
+          <option value="0">- Vendeur -</option>
+          <option value="299">Houssam Benmalek</option>
+          <option value="2034">Ayyoub Mensour</option>
+          <option value="2252">Sidahmed Benali</option>
+          <option value="2257">Mohamed Arfa</option>
+          <option value="2063">Karim Bouldjadj</option>
+        </select>
+        
+      </div>
+
+      <div class="col col-12 col-lg-4 col-xl-3"> 
+        <input type="checkbox" id="payment_on_picking" name="payment_on_picking" checked="">
+        <label for="payment_on_picking">Payment on picking</label>
+      </div>
+      <div class="col col-12 col-lg-4 col-xl-3">
+       
+           
+        <select name="entrepot" id="entrepot">
+          <option value="0">- Entrepôt -</option>
+          <option value="9">STRUGAL</option>
+        </select>
+      </div>
+     
+     
+     
+      </div>
+    <table class="alt">
+      <thead>
+        <tr>
+          <th>Code Article</th>
+          <th>Nom Article</th>
+          <th>Quantité</th>
+          <th>Conditionnement</th>
+          <th>Remise</th>
+          <th>Unité de mesure</th>
+          <th>Prix Unitaire</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for prod in list_commande %}
+     
+          <td hidden>
+            <input
+            type="text"
+            name="product_id-{{ forloop.counter }}"
+            id="product_id-{{ forloop.counter }}"
+            value="{{prod.code_article__product_id}}"
+            
+          />
+            </td>
+          <td>
+            <input
+            type="text"
+            name="id_article-{{ forloop.counter }}"
+            id="id_article-{{ forloop.counter }}"
+            value="{{prod.code_article__id_article}}"
+            readonly
+          />
+            </td>
+          <td>
+            <input
+            type="text"
+            name="product_name-{{ forloop.counter }}"
+            id="product_name-{{ forloop.counter }}"
+            value="{{prod.code_article__nom_article}}"
+            readonly
+          /></td>
+          {% if prod.qte|divisibleby:prod.code_article__conditionnement %}
+          <input id="devisible" hidden value="true"/>
+          <td ><input
+            type="text"
+            name="quantite-{{ forloop.counter }}"
+            id="quantite-{{ forloop.counter }}"
+            class="qteDetail"
+            required="true"
+            value="{{prod.qte}}"
+          /></td>
+          {%else%}
+          <input id="devisible" hidden value="false"/>
+          <td ><input style="color:red"
+            type="text"
+            name="quantite-{{ forloop.counter }}"
+            id="quantite-{{ forloop.counter }}"
+            class="qteDetail"
+            required="true"
+            value="{{prod.qte}}"
+          /></td>
+          {% endif %}
+         
+          <td>
+            <input
+            type="text"
+            name="conditionnement-{{ forloop.counter }}"
+            id="conditionnement-{{ forloop.counter }}"
+            value="{{prod.code_article__conditionnement}}"
+           
+            readonly
+          />
+            </td>
+            <td>
+              <input
+              type="text"
+              name="remise-{{ forloop.counter }}"
+              id="remise-{{ forloop.counter }}"
+              value="0"
+              class="discount"
+            />
+              </td>
+          <td>
+            <input
+            type="text"
+            name="unite_de_mesure-{{ forloop.counter }}"
+            id="unite_de_mesure-{{ forloop.counter }}"
+            value="{{prod.code_article__unite_mesure}}"
+            readonly
+          />
+            </td>
+          <td><input
+            type="text"
+            name="prix_unitaire-{{ forloop.counter }}"
+            id="prix_unitaire-{{ forloop.counter }}"
+            value="{{prod.code_article__prix_unitaire|intspace}}"
+            readonly
+          /></td>
+          <td hidden><input
+          hidden
+          type="text"
+          name="mantant-{{ forloop.counter }}"
+          id="mantant-{{ forloop.counter }}"
+          value="{{prod.montant}}"
+          readonly
+        /></td>
+        <td hidden><input
+          hidden
+          type="text"
+          name="remiseTotaleLigne-{{ forloop.counter }}"
+          id="remiseTotaleLigne-{{ forloop.counter }}"
+          value="0"
+          placeholder="0"
+          readonly
+        /></td>
+        </tr>
+        
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          
+          <td colspan="5"></td>
+          <td>MTTC</td>
+          <td>
+            <input hidden name="MHT" id="MHT" type="text" value="{{totaleHT}}" readonly />
+            <input name="MHT-forshow"
+            type="text"
+            id="MHT-forshow" value="{{totaleHT|intspace}}"readonly/></td>
+        </tr>
+        <tr>
+          
+          <td colspan="6"></td>
+          <td><button id="approuver" disabled>Approuver</button></td>
+        </tr>
+      </tfoot>
+    </table>
+    </form>
+  </div>
+
+  <hr />
+</div>
+</div>
+  <script src="{% static 'js/modif.js' %}"></script>
+
+  {% endblock %}
+</div>

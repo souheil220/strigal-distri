@@ -2520,7 +2520,7 @@ input[type="radio"] + label {
   font-family: "Merriweather", Georgia, serif;
   text-transform: none;
   font-weight: 300;
-  /* padding-left: 2.8rem; */
+  padding-left: 2.8rem;
   padding-right: 1rem;
   position: relative;
 }

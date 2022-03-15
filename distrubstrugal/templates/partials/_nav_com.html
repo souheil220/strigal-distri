@@ -7,7 +7,7 @@
       <li {% if url_name == 'ajouterDis' %}class="active"{% endif %}><a class="test" {% if url_name != 'ajouterDis' %}href="{% url 'ajouterDis' %}"{% endif %} >Ajouter Distributeur</a></li>
       <li {% if url_name == 'suiviContrat' %}class="active"{% endif %}><a class="test" {% if url_name != 'suiviContrat' %}href="{% url 'suiviContrat' %}"{% endif %} >Suivis des Contrats</a></li>
       <li {% if url_name == 'uploadProduct' %}class="active"{% endif %}><a class="test" {% if url_name != 'uploadProduct' %}href="{% url 'uploadProduct' %}"{% endif %} >Upload Product</a></li>
-      {% ifequal user.groups.all.1.name  'super_commercial' %}
+      {% ifequal user.groups.all.0.name  'super_commercial' %}
        <li {% if url_name == 'donnerPermission' %}class="active"{% endif %}><a class="test" {% if url_name != 'donnerPermission' %}href="{% url 'donnerPermission' %}"{% endif %} >Donner Permission</a></li>
       {% endifequal  %}
     </ul>

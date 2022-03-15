@@ -61,18 +61,27 @@
               {% for com in commande %}
               <tr>
                   <td>{{com.n_commande_odoo}}</td>
-                  <td>{{com.date}}</td>
+                  <td>{{com.date|slice:"0:10"}}</td>
                   <td>{{com.destributeur}}</td>
                   <td>{{com.reference_description}}</td>
                   <td>{{com.totaleHT|intspace}}</td>
                   <td>{{com.etat}}</td>
-                  <td data-visible="false"><button
+                  {% if not com.n_commande_odoo %}
+                  <td data-visible="false"><a
+                    id="{{com.id}}"
+                    class="btn" 
+                    type="button"
+                    href="{% url 'detailCommande' com.id %}"
+                  >Detail</a></td>
+                  {% else %}
+                  <td data-visible="false"><a
                     id="{{com.id}}"
                     onClick="showDetail(this.id)"
                     type="button"
                     class="btn "
                     data-toggle="modal" data-target="#exampleModal"
-                  >Detail</button></td>
+                  >Detail</a></td>
+                  {% endif %}
                   <td>
                     <a
                     id="{{com.id}}"
