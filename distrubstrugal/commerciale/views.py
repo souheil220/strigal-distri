@@ -699,6 +699,7 @@ def return_zero_if_null(value):
 
 def get_price_pricelist(request, price_list_id):
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+    print(is_ajax)
     if is_ajax:
         if request.method == "POST":
             print("POST request")

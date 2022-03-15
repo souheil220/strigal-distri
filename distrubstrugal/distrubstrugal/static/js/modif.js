@@ -128,7 +128,7 @@ try {
                 var whicheone = 'listP'
                 console.log(window.location.pathname)
                 return window.location.origin + '/commerciale/loadMoreD/' + params.term + '/' + whicheone
-                return window.location.origin
+
             },
 
             processResults: function (data) {
@@ -353,9 +353,47 @@ function checkIfQTEisRed() {
     return red
 }
 
-
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + "=")) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 
 $('#listPrix-1').change(function () {
+    var lenData = parseInt($('#lenData').val())
+    listIds = getProductIds(lenData)
+    $.ajax({
+        url: window.location.origin + '/commerciale/getPricePricelist/' + parseInt($('#listPrix-1').val()),
+        type: "POST",
+        dataType: "json",
+        data: JSON.stringify({
+            listIds: listIds,
+        }),
+        headers: {
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRFToken": getCookie("csrftoken"), // don't forget to include the 'getCookie' function
+        },
+        success: (results) => {
+            for (index in results.prices) {
+                $(`#prix_unitaire-${parseInt(index) + 1}`).val(results.prices[index])
+                calculateMontant(parseInt(index) + 1, lenData, true)
+                console.log(results.prices[index])
+            }
+        },
+        error: (error) => {
+            console.log(error);
+        }
+    });
     checkIfAllRequirement()
 })
 $('#regime-1').change(function () {
@@ -373,6 +411,14 @@ $('#vendeur-1').change(function () {
 $('#entrepot').change(function () {
     checkIfAllRequirement()
 })
+
+function getProductIds(lenData) {
+    var listId = []
+    for (let i = 1; i < lenData + 1; i++) {
+        listId.push(parseInt($(`#product_id-${i}`).val()))
+    }
+    return listId
+}
 
 
 function closeSelect(idContainer, e, that) {
@@ -451,18 +497,8 @@ function calculate(num) {
 
 }
 
-$("body").on("keyup", '.qteDetail', function () {
-    var lenData = parseInt($('#lenData').val())
-    var mht = 0
-    var num = ($(this)[0].id)
-    var aa = num.lastIndexOf("-") + 1
-    var bb = num.lastIndexOf(num.substr(num.length - 1)) + 1
-    num = num.substring(
-        aa,
-        bb
-    );
-
-
+function calculateMontant(num, lenData, cahngedPriceList) {
+    mht = 0
     if ($('#quantite-' + num).val().length > 0 && $('#quantite-' + num).val() !== '0') {
 
         if ((parseFloat($('#quantite-' + num).val()) % parseFloat($('#conditionnement-' + num).val())) != 0) {
@@ -472,8 +508,8 @@ $("body").on("keyup", '.qteDetail', function () {
             $('#quantite-' + num).css('color', 'black');
         }
 
-        var montant = (parseFloat($('#quantite-' + num).val()) * parseFloat($('#prix_unitaire-' + num).val()))
-
+        var montant = (parseFloat($('#quantite-' + num).val()) * parseFloat($('#prix_unitaire-' + num).val().replaceAll(' ', '')))
+        console.log("montant " + montant)
 
         $('#mantant-' + num).val(montant.toString())
 
@@ -484,25 +520,38 @@ $("body").on("keyup", '.qteDetail', function () {
     }
 
 
-    // for (var i = 1; i <= lenData; i++) {
+    for (var i = 1; i <= lenData; i++) {
 
-    //     mht = mht + parseFloat($('#mantant-' + i).val())
+        mht = mht + parseFloat($('#mantant-' + i).val())
 
-    // }
+    }
+
+    if (cahngedPriceList) {
+        $('#mat').val(mht)
+    }
+
+    $('#MHT').val(mht)
+    $('#MHT-forshow').val(intspace(mht))
+}
+
+$("body").on("keyup", '.qteDetail', function () {
+    var lenData = parseInt($('#lenData').val())
+    var num = ($(this)[0].id)
+    var aa = num.lastIndexOf("-") + 1
+    var bb = num.lastIndexOf(num.substr(num.length - 1)) + 1
+    num = num.substring(
+        aa,
+        bb
+    );
 
 
-
-    // $('#MHT').val(mht)
-    // $('#MHT-forshow').val(intspace(mht))
+    calculateMontant(num, lenData, false)
 
     checkIfAllRequirement()
 
 })
 
 $("body").on("keyup", '.discount', function () {
-
-
-
 
     var num = ($(this)[0].id)
     var aa = num.lastIndexOf("-") + 1
@@ -543,7 +592,8 @@ function calculerRemise(num) {
         $("#remiseTotal").val(calculerTotalRemise().toString())
         console.log("htRemise " + calculerTotalRemise())
         var htRemise = calculerTotalRemise()
-        finalHT = parseFloat($("#mat").val()) - htRemise
+        //we are using mat because it is uncahangeable we need it to keep track in case we want to change remise or quantity 
+        finalHT = (parseFloat($("#mat").val()) - htRemise).toFixed(2)
         $("#MHT-forshow").val(finalHT.toString())
         $("#MHT").val(finalHT.toString())
     } else {
