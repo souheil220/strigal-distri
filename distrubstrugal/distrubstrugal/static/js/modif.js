@@ -308,23 +308,27 @@ try {
 }
 
 function checkIfAllRequirement() {
-    if ($('#selectjsLP-1-1').children('option').length <= 0) {
+    if ($('#listPrix-1').val() == 0) {
         $("#approuver").prop("disabled", true);
         return
     }
-    if ($('#selectjsRF-1-1').children('option').length <= 0) {
+    if ($('#regime-1').val() == 0) {
         $("#approuver").prop("disabled", true);
         return
     }
-    if ($('#selectjsCF-1-1').children('option').length <= 0) {
+    if ($('#creerFacture-1').val() == 0) {
         $("#approuver").prop("disabled", true);
         return
     }
-    if ($('#selectjsEC-1-1').children('option').length <= 0) {
+    if ($('#equipe-commerciale-1').val() == 0) {
         $("#approuver").prop("disabled", true);
         return
     }
-    if ($('#selectjsV-1-1').children('option').length <= 0) {
+    if ($('#vendeur-1').val() == 0) {
+        $("#approuver").prop("disabled", true);
+        return
+    }
+    if ($('#entrepot').val() == 0) {
         $("#approuver").prop("disabled", true);
         return
     }
@@ -349,22 +353,26 @@ function checkIfQTEisRed() {
     return red
 }
 
-$eventSelectLP.on("select2:close", function (e) {
-    checkIfAllRequirement()
-})
-$eventSelectRF.on("select2:close", function (e) {
-    checkIfAllRequirement()
-})
-$eventSelectCF.on("select2:close", function (e) {
-    checkIfAllRequirement()
-})
-$eventSelectEC.on("select2:close", function (e) {
-    checkIfAllRequirement()
-})
-$eventSelectV.on("select2:close", function (e) {
-    checkIfAllRequirement()
-})
 
+
+$('#listPrix-1').change(function () {
+    checkIfAllRequirement()
+})
+$('#regime-1').change(function () {
+    checkIfAllRequirement()
+})
+$('#creerFacture-1').change(function () {
+    checkIfAllRequirement()
+})
+$('#equipe-commerciale-1').change(function () {
+    checkIfAllRequirement()
+})
+$('#vendeur-1').change(function () {
+    checkIfAllRequirement()
+})
+$('#entrepot').change(function () {
+    checkIfAllRequirement()
+})
 
 
 function closeSelect(idContainer, e, that) {
