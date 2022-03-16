@@ -321,6 +321,12 @@ def detailAndModif(id):
         "code_article__conditionnement",
         "id_commande__totaleHT",
         "id_commande__n_commande_odoo",
+        "id_commande__list_des_prix__name",
+        "id_commande__regime_fiscal__name",
+        "id_commande__creer_facture__policy",
+        "id_commande__equipe_commerciale__name",
+        "id_commande__vendeur__name",
+        "id_commande__warehouse__name",
         "montant")
     print(list_commande[0]['id_commande__capture'])
     tva = int(list_commande[0]["id_commande__totaleHT"]) * 19 / 100
@@ -332,6 +338,12 @@ def detailAndModif(id):
                "client": list_commande[0]["id_commande__destributeur__nom"],
                "totaleHT": list_commande[0]["id_commande__totaleHT"],
                "tva": tva,
+               "list_des_prix": list_commande[0]["id_commande__list_des_prix__name"],
+               "regime_fiscal": list_commande[0]["id_commande__regime_fiscal__name"],
+               "creer_facture": list_commande[0]["id_commande__creer_facture__policy"],
+               "equipe_commerciale": list_commande[0]["id_commande__equipe_commerciale__name"],
+               "vendeur": list_commande[0]["id_commande__vendeur__name"],
+               "warehouse": list_commande[0]["id_commande__warehouse__name"],
                'montant': list_commande[0]["montant"],
                "date": list_commande[0]["id_commande__date"],
                "reference_description": list_commande[0]["id_commande__reference_description"], }
@@ -436,8 +448,7 @@ def approuverCommande(request, id):
                 request.POST['quantite-{}'.format(i)])
             list_article_commande.montant = float(request.POST.get(
                 'mantant-{}'.format(i)).replace(',', '.'))
-            product_id = Article.objects.get(
-                id_article=request.POST['product_id-{}'.format(i)]).product_id
+            product_id = int(request.POST['product_id-{}'.format(i)])
 
             database.insert_sale_order_line(list[0], list[1], request.user.email, list_article_commande.qte,
                                             request.POST['unite_de_mesure-{}'.format(
