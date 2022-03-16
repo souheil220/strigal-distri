@@ -17,12 +17,114 @@
         hidden
         value="{{list_commande|length}}"
       />
+      <input
+        name="rowNumber"
+        id="rowNumber"
+        hidden
+        value="{{list_commande|length}}"
+      />
+
       <input name="mat" id="mat" hidden value="{{totaleHT}}" />
       <input name="ttc" id="ttc" hidden value="{{totalTTC}}" />
       {% csrf_token %}
-      <div id="myRow-1" class="row align-items-end col-sm-12 test">
-        <!-- la somme des colonne est < 12 pk ? ajout un ligne et tu comprendra -->
-        {% for prod in list_commande %}
+      <div id="myRow-1-1" class="row align-items-end col-sm-12 test">
+        <!-- ****************** Liste des Prix ****************** -->
+
+        <div class="col col-12 col-lg-4 col-xl-3">
+          <div class="text-center">Liste des Prix</div>
+          <select
+            name="listPrix-1"
+            id="listPrix-1"
+            value="{{list_des_prix}}"
+            required
+          >
+            <option value="{{list_des_prix}}" hidden>- Liste des Prix -</option>
+            <option value="154">LISTE DE PRIX STRUGAL DISTRIBUTEUR</option>
+            <option value="346">TARIF DISTRIBUTEUR 9.5% INCLUS</option>
+            <option value="347">
+              TARIF DISTRIBUTEUR POUR VENTE A FACTURER
+            </option>
+            <option value="376">
+              PRICE LIST SPECIAL DSITRIBUTEUR (ANBT-ANNR)
+            </option>
+          </select>
+        </div>
+        <!-- ******************* Régime fiscal *************** -->
+        <div class="col col-12 col-lg-4 col-xl-3">
+          <div class="text-center">Régime fiscal</div>
+          <select name="regime-1" id="regime-1" required>
+            <option value="{{regime_fiscal}}" hidden>- Régime fiscal -</option>
+            <option value="1">Exonéré</option>
+          </select>
+        </div>
+        <!-- **************** Créer facture ******************* -->
+        <div class="col col-12 col-lg-4 col-xl-3">
+          <div class="text-center">Créer facture</div>
+          <select name="creerFacture-1" id="creerFacture-1" required>
+            <option value="{{creer_facture}}" hidden>- Créer facture -</option>
+            <option value="1">manual</option>
+            <option value="2">picking</option>
+          </select>
+        </div>
+        <!-- ************* Equipe Comerciale ****************** -->
+        <div class="col col-12 col-lg-4 col-xl-3">
+          <div class="text-center">Equipe Comerciale</div>
+          <select
+            name="equipe-commerciale-1"
+            id="equipe-commerciale-1"
+            required
+          >
+            <option value="{{equipe_commerciale }}" hidden>
+              - Equipe Comerciale -
+            </option>
+            <option value="49">DISTRIBUTION CENTRE-STRUGAL</option>
+            <option value="50">DISTRIBUTION EST-STRUGAL</option>
+            <option value="51">DISTRIBUTION OUEST-STRUGAL</option>
+            <option value="52">DISTRIBUTION SUD-STRUGAL</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="myRow-1-2" class="row align-items-end col-sm-12 test">
+        <!-- ************** Vendeur ************************ -->
+        <div class="col col-12 col-lg-4 col-xl-3">
+          <div class="text-center">Vendeur</div>
+          <select name="vendeur-1" id="vendeur-1" required>
+            <option value="{{vendeur}}" hidden>- Vendeur -</option>
+            <option value="299">Houssam Benmalek</option>
+            <option value="2034">Ayyoub Mensour</option>
+            <option value="2252">Sidahmed Benali</option>
+            <option value="2257">Mohamed Arfa</option>
+            <option value="2063">Karim Bouldjadj</option>
+          </select>
+        </div>
+        <!-- **************** Payment on picking ***************** -->
+        <div class="col col-12 col-lg-4 col-xl-3">
+          <input
+            type="checkbox"
+            id="payment_on_picking"
+            name="payment_on_picking"
+            checked=""
+          />
+          <label for="payment_on_picking">Payment on picking</label>
+        </div>
+        <!-- ***************** Entrepôt ***************** -->
+        <div class="col col-12 col-lg-4 col-xl-3">
+          <div class="text-center">Entrepôt</div>
+          <select name="entrepot" id="entrepot">
+            <option value="{{warehouse}}" hidden>- Entrepôt -</option>
+            <option value="9">STRUGAL</option>
+          </select>
+        </div>
+      </div>
+
+      <hr />
+      {% for prod in list_commande %}
+      <div
+        id="myRow-{{ forloop.counter }}"
+        class="row align-items-end col-sm-12 test"
+      >
+        <!-- la somme des colonne est < 12 pk ? ajout une colonne et tu comprendra -->
         <div class="col col-12 col-lg-4 col-xl-4">
           <div class="text-center">Article</div>
           <div class="">
@@ -116,8 +218,15 @@
             />
           </div>
         </div>
-        {% endfor %}
       </div>
+      {% endfor %}
+      <!-- <div style="display: flex; justify-content: center">
+        <button
+          id="add-one-more"
+          type="button"
+          class="icon solid fa-plus"
+        ></button>
+      </div> -->
       <div
         style="
           display: flex;
@@ -183,5 +292,65 @@
   </div>
 </div>
 <script src="{% static 'js/modif.js' %}"></script>
+
+<script>
+  var listPrix = $("#listPrix-1").val();
+  var regime = $("#regime-1").val();
+  var creerFacture = $("#creerFacture-1").val();
+  var equipeCommerciale = $("#equipe-commerciale-1").val();
+  var vendeur = $("#vendeur-1").val();
+  var entrepot = $("#entrepot").val();
+
+  if (listPrix == "LISTE DE PRIX STRUGAL DISTRIBUTEUR ") {
+    $("#listPrix-1 option[value='154']").attr("selected", "selected");
+  } else if (listPrix == "TARIF DISTRIBUTEUR 9.5% INCLUS") {
+    $("#listPrix-1 option[value='346']").attr("selected", "selected");
+  } else if (listPrix == "TARIF DISTRIBUTEUR POUR VENTE A FACTURER") {
+    $("#listPrix-1 option[value='347']").attr("selected", "selected");
+  } else {
+    $("#listPrix-1 option[value='376']").attr("selected", "selected");
+  }
+  console.log(regime);
+  if (regime == "Exonéré") {
+    $("#regime-1 option[value='1']").attr("selected", "selected");
+  }
+
+  if (creerFacture == "manual") {
+    $("#creerFacture-1 option[value='1']").attr("selected", "selected");
+  } else if (creerFacture == "picking") {
+    $("#creerFacture-1 option[value='2']").attr("selected", "selected");
+  } else {
+    $("#creerFacture-1 option[value='0']").attr("selected", "selected");
+  }
+
+  if (equipeCommerciale == "DISTRIBUTION CENTRE-STRUGAL") {
+    $("#equipe-commerciale-1 option[value='49']").attr("selected", "selected");
+  } else if (equipeCommerciale == "DISTRIBUTION EST-STRUGAL") {
+    $("#equipe-commerciale-1 option[value='50']").attr("selected", "selected");
+  } else if (equipeCommerciale == "DISTRIBUTION OUEST-STRUGAL") {
+    $("#equipe-commerciale-1 option[value='51']").attr("selected", "selected");
+  } else if (equipeCommerciale == "DISTRIBUTION SUD-STRUGAL") {
+    $("#equipe-commerciale-1 option[value='52']").attr("selected", "selected");
+  } else {
+    $("#equipe-commerciale-1 option[value='0']").attr("selected", "selected");
+  }
+
+  if (vendeur == "Houssam Benmalek") {
+    $("#vendeur-1 option[value='299']").attr("selected", "selected");
+  } else if (vendeur == "Ayyoub Mensour") {
+    $("#vendeur-1 option[value='2034']").attr("selected", "selected");
+  } else if (vendeur == "Sidahmed Benali") {
+    $("#vendeur-1 option[value='2252']").attr("selected", "selected");
+  } else if (vendeur == "Mohamed Arfa") {
+    $("#vendeur-1 option[value='2257']").attr("selected", "selected");
+  } else if (vendeur == "Karim Bouldjadj") {
+    $("#vendeur-1 option[value='2063']").attr("selected", "selected");
+  } else {
+    $("#vendeur-1 option[value='0']").attr("selected", "selected");
+  }
+  if (entrepot == "STRUGAL") {
+    $("#entrepot option[value='9']").attr("selected", "selected");
+  }
+</script>
 
 {% endblock %}
